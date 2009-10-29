@@ -19,7 +19,7 @@ class FormField extends AppModel {
 	function getFieldTypeList() {
 	    $sourcePath = VENDORS . 'oa-tools' . DS . 'field_types' . DS;
 	    $fh = new Folder($sourcePath);
-	    $files = $fh->ls();
+	    $files = $fh->read();
 	    $list = array();
 	    foreach($files[1] AS $fileName) {
 	        $pathInfo = pathinfo($fileName);

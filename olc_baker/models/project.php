@@ -20,7 +20,7 @@ class project extends AppModel {
 	function getProjectTypeList() {
 	    $sourcePath = VENDORS . 'oa-tools' . DS . 'project_types' . DS;
 	    $fh = new Folder($sourcePath);
-	    $files = $fh->ls();
+	    $files = $fh->read();
 	    $list = array();
 	    foreach($files[1] AS $fileName) {
 	        $pathInfo = pathinfo($fileName);
