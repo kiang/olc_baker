@@ -1,0 +1,111 @@
+<div id="<{$controllerName}>_control_page">
+<h2><{$actionLabel}></h2>
+<p>
+<?php
+echo $paginator->counter(array(
+'format' => '第 %page% 頁 / 共 %pages% 頁（ 共 %count% 筆資料）'
+));
+?></p>
+排序：
+<div class="actions">
+    <ul>
+<{foreach from=$fields key=className item=classFields}>
+<{foreach from=$classFields key=key item=item}>
+        <li><?php echo $paginator->sort('<{$item.label}>', '<{$className}>.<{$key}>', array('class' => 'pageControl'));?></li>
+<{/foreach}>
+<{/foreach}>
+    </ul>
+</div>
+<?php
+$i = 0;
+foreach ($items as $item):
+    $class = null;
+    if ($i++ % 2 == 0) {
+        $class = ' class="altrow"';
+    }
+?>
+<table cellpadding="0" cellspacing="0"<?php echo $class;?>>
+<{foreach from=$blocks.title key=className item=classFields}>
+<{foreach from=$classFields key=key item=label}>
+	<tr>
+		<td colspan="2"><?php echo $item['<{$className}>']['<{$key}>']; ?></td>
+	</tr>
+<{/foreach}>
+<{/foreach}>
+    <tr>
+<{foreach from=$blocks.picture key=className item=classFields}>
+<{foreach from=$classFields key=key item=label}>
+<{if isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'image'}>
+    	<td><?php
+    	echo $html->link(
+    	$upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
+    	FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
+    	array(), false, false
+    	);
+    	?></td>
+<{/if}>
+<{/foreach}>
+<{/foreach}>
+    	<td><table>
+<{foreach from=$blocks.body key=className item=classFields}>
+<{foreach from=$classFields key=key item=label}>
+    	<tr>
+    		<td><{$label}>：</td>
+    		<td><?php
+if($item['<{$className}>']['<{$key}>']) {
+<{if isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'file'}>
+    echo $html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
+<{elseif isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'image'}>
+    echo $html->link(
+        $upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
+        FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
+        array(), false, false
+    );
+<{else}>
+    echo $item['<{$className}>']['<{$key}>'];
+<{/if}>
+}
+?></td>
+		</tr>
+<{/foreach}>
+<{/foreach}>
+		</table>
+		<div class="actions">
+		<?php echo $html->link('檢視', array('action'=>'<{$parameters.links.view}>', $item['<{$modelName}>']['id']), array('class' => 'control')); ?>
+		</div>
+		</td>
+	</tr>
+</table>
+<?php endforeach; ?>
+<div class="paging">
+<?php echo $paginator->prev('<< 上一頁', array(), null, array('class'=>'disabled'));?>
+ | <?php echo $paginator->numbers();?>
+<?php echo $paginator->next('下一頁 >>', array(), null, array('class'=>'disabled'));?>
+</div>
+<div class="actions">
+    <ul>
+        <li><?php echo $html->link('回到一般列表', array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+    </ul>
+</div>
+<div id="<{$controllerName}>_control_panel"></div>
+<?php
+$scripts = '
+$(document).ready(function() {
+    $(\'div.paging a, a.pageControl\').click(function() {
+        $(\'#<{$controllerName}>_control_page\').load(this.href);
+        return false;
+    });
+    $(\'a.control\').click(function() {
+        var target = $(\'#<{$controllerName}>_control_panel\');
+        var targetOffset = target.offset().top;
+        $(target).load(this.href, {
+            success: function() {
+                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
+            }
+        });
+        return false;
+    });
+});';
+echo $javascript->codeBlock($scripts);
+?>
+</div>
