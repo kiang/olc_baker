@@ -8,10 +8,10 @@
 <?php endif; ?>
 <{/foreach}>
 <{/if}>
-<?php echo $form->end('送出'); ?>
+<?php echo $form->end(__('Submit', true)); ?>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('刪除', array('action'=>'delete', $id), null, '確定要刪除？'); ?></li>
+        <li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $id), null, __('Delete the item, sure?', true)); ?></li>
         <li><?php echo $html->link('列表', array('action'=>'index'));?></li>
     </ul>
 </div>

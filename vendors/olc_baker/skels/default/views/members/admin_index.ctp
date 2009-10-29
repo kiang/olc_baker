@@ -9,9 +9,9 @@
 	<th><?php echo $paginator->sort('編號', 'id');?></th>
 	<th><?php echo $paginator->sort('帳號', 'username');?></th>
 	<th><?php echo $paginator->sort('狀態', 'user_status');?></th>
-	<th><?php echo $paginator->sort('建立時間', 'created');?></th>
-	<th><?php echo $paginator->sort('更新時間', 'modified');?></th>
-	<th class="actions">操作</th>
+	<th><?php echo $paginator->sort(__('Created time', true), 'created');?></th>
+	<th><?php echo $paginator->sort(__('Modified time', true), 'modified');?></th>
+	<th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 <?php
 $i = 0;
@@ -38,9 +38,9 @@ foreach ($members as $member):
 			<?php echo $member['Member']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link('檢視', array('action'=>'view', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
-			<?php echo $html->link('編輯', array('action'=>'edit', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
-			<?php echo $html->link('刪除', array('action'=>'delete', $member['Member']['id']), null, '確定要刪除？'); ?>
+			<?php echo $html->link(__('View', true), array('action'=>'view', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
+			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
+			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $member['Member']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -48,7 +48,7 @@ foreach ($members as $member):
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('新增', array('action'=>'add'), array('class' => 'MembersAdminIndexControl')); ?></li>
+		<li><?php echo $html->link(__('Add', true), array('action'=>'add'), array('class' => 'MembersAdminIndexControl')); ?></li>
         <li><?php echo $html->link('群組', array('controller'=>'groups')); ?></li>
 		<li><?php echo $html->link('產生測試資料', array('action'=>'test')); ?></li>
         <li><?php echo $html->link('產生ACOs', array('action'=>'acos')); ?></li>

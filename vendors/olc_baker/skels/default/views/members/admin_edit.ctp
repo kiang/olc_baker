@@ -14,7 +14,7 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('刪除', array('action'=>'delete', $form->value('Member.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Member.id'))); ?></li>
+		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('Member.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Member.id'))); ?></li>
 		<li><?php echo $html->link('列表', array('action'=>'index'));?></li>
 	</ul>
 </div>

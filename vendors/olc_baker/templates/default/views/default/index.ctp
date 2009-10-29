@@ -9,7 +9,7 @@ if(!empty($foreignId) && !empty($foreignModel)) {
 }
 <{/if}>
 echo $paginator->counter(array(
-'format' => '第 %page% 頁 / 共 %pages% 頁（ 共 %count% 筆資料）'
+'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
@@ -29,7 +29,7 @@ echo $paginator->counter(array(
     <th><?php echo $paginator->sort('<{$item.label}>', '<{$modelName}>.<{$key}>', array('url' => $url));?></th>
 <{/foreach}>
 <{/foreach}>
-    <th class="actions">操作</th>
+    <th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 </thead>
 <tbody>
@@ -80,7 +80,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $html->link('檢視', array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>IndexControl')); ?>
+<?php echo $html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>IndexControl')); ?>
     </td>
 </tr>
 <?php endforeach; ?>

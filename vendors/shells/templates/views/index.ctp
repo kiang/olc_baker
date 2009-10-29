@@ -3,7 +3,7 @@
 <p>
 <?php echo "<?php
 echo \$paginator->counter(array(
-'format' => '第 %page% 頁 / 共 %pages% 頁（ 共 %count% 筆資料）'
+'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?>";?>
 </p>
@@ -43,7 +43,7 @@ foreach (\${$pluralVar} as \${$singularVar}):
 		echo "\t\t<td class=\"actions\">\n";
 		echo "\t\t\t<?php echo \$html->link(__('View', true), array('action'=>'view', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
 	 	echo "\t\t\t<?php echo \$html->link(__('Edit', true), array('action'=>'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?>\n";
-	 	echo "\t\t\t<?php echo \$html->link(__('Delete', true), array('action'=>'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, '確定要刪除？'); ?>\n";
+	 	echo "\t\t\t<?php echo \$html->link(__('Delete', true), array('action'=>'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, __('Delete the item, sure?', true)); ?>\n";
 		echo "\t\t</td>\n";
 	echo "\t</tr>\n";
 
@@ -52,9 +52,9 @@ echo "<?php endforeach; ?>\n";
 </table>
 </div>
 <div class="paging">
-<?php echo "\t<?php echo \$paginator->prev('<< 上一頁', array(), null, array('class'=>'disabled'));?>\n";?>
+<?php echo "\t<?php echo \$paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>\n";?>
  | <?php echo "\t<?php echo \$paginator->numbers();?>\n"?>
-<?php echo "\t<?php echo \$paginator->next('下一頁 >>', array(), null, array('class'=>'disabled'));?>\n";?>
+<?php echo "\t<?php echo \$paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>\n";?>
 </div>
 <div class="actions">
 	<ul>

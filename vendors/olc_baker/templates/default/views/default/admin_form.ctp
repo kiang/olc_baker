@@ -2,9 +2,9 @@
     <fieldset>
          <legend><?php
          if($id > 0) {
-             echo '編輯';
+             echo __('Edit', true);
          } else {
-             echo '新增';
+             echo __('Add', true);
          }
          ?><{$formLabel}></legend>
     <?php

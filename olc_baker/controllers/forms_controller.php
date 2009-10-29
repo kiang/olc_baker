@@ -5,7 +5,7 @@ class FormsController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('pForm', $this->Form->read(null, $id));
@@ -25,17 +25,17 @@ class FormsController extends AppController {
 
 	function add($projectId = null) {
 	    if (!$projectId) {
-	        $this->Session->setFlash('請依據網頁指示操作');
+	        $this->Session->setFlash(__('Please do following the links in the page', true));
 	        $this->redirect($this->referer());
 	    }
 		if (!empty($this->data)) {
 			$this->Form->create();
 			$this->data['Form']['project_id'] = $projectId;
 			if ($this->Form->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'view', $this->Form->getInsertID()));
 			} else {
-				$this->Session->setFlash('資料儲存失敗，請重試');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		$this->set('projectId', $projectId);
@@ -43,15 +43,15 @@ class FormsController extends AppController {
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
 			if ($this->Form->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('controller' => 'projects', 'action'=>'view', $this->Form->field('project_id')));
 			} else {
-				$this->Session->setFlash('資料儲存失敗，請重試');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -61,10 +61,10 @@ class FormsController extends AppController {
 
 	function delete($id = null) {
 		if (!$id || !$projectId = $this->Form->field('project_id', array('Form.id' => $id))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect($this->referer());
 		} else if ($this->Form->del($id)) {
-			$this->Session->setFlash('資料已經刪除');
+			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('controller' => 'projects', 'action'=>'view', $projectId));
 		}
 	}

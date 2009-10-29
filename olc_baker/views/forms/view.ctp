@@ -1,22 +1,22 @@
 <div class="forms view">
-<h2>表單</h2>
+<h2><?php __('View the form'); ?></h2>
 	<dl><?php $i = 0; $class = ' class="altrow"';?>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>系統名稱</dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('System name'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $pForm['Form']['name']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>顯示名稱</dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Display name'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $pForm['Form']['label']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>建立時間</dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Created time'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $pForm['Form']['created']; ?>
 			&nbsp;
 		</dd>
-		<dt<?php if ($i % 2 == 0) echo $class;?>>更新時間</dt>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Modified time'); ?></dt>
 		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
 			<?php echo $pForm['Form']['modified']; ?>
 			&nbsp;
@@ -25,22 +25,22 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('編輯', array('action'=>'edit', $pForm['Form']['id'])); ?> </li>
-		<li><?php echo $html->link('刪除', array('action'=>'delete', $pForm['Form']['id']), null, '確定要刪除？'); ?> </li>
-		<li><?php echo $html->link('回到專案', array('controller' => 'projects', 'action'=>'view', $pForm['Form']['project_id']));?></li>
+		<li><?php echo $html->link(__('Edit', true), array('action'=>'edit', $pForm['Form']['id'])); ?> </li>
+		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $pForm['Form']['id']), null, __('Delete the item, sure?', true)); ?> </li>
+		<li><?php echo $html->link(__('Back to the project', true), array('controller' => 'projects', 'action'=>'view', $pForm['Form']['project_id']));?></li>
 	</ul>
 </div>
 <div class="formFields index">
-<h2>表單欄位</h2>
+<h2><?php __('Form fields'); ?></h2>
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th>名稱</th>
-	<th>欄位類型</th>
-	<th>排序</th>
-	<th>必填</th>
-	<th>建立時間</th>
-	<th>更新時間</th>
-	<th class="actions">操作</th>
+	<th><?php __('Field name'); ?></th>
+	<th><?php __('Field type'); ?></th>
+	<th><?php __('Sort'); ?></th>
+	<th><?php __('Required'); ?></th>
+	<th><?php __('Created time'); ?></th>
+	<th><?php __('Modified time'); ?></th>
+	<th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 <?php
 $i = 0;
@@ -62,7 +62,7 @@ foreach ($formFields as $formField):
 			<?php echo $formField['FormField']['sort']; ?>
 		</td>
 		<td>
-			<?php echo ($formField['FormField']['is_required'] == 0) ? '非必填' : '必填'; ?>
+			<?php echo ($formField['FormField']['is_required'] == 0) ? __('Not required', true) : __('Required', true); ?>
 		</td>
 		<td>
 			<?php echo $formField['FormField']['created']; ?>
@@ -71,8 +71,8 @@ foreach ($formFields as $formField):
 			<?php echo $formField['FormField']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link('編輯', array('controller' => 'form_fields', 'action'=>'edit', $formField['FormField']['id'])); ?>
-			<?php echo $html->link('刪除', array('controller' => 'form_fields', 'action'=>'delete', $formField['FormField']['id']), null, '確定要刪除？'); ?>
+			<?php echo $html->link(__('Edit', true), array('controller' => 'form_fields', 'action'=>'edit', $formField['FormField']['id'])); ?>
+			<?php echo $html->link(__('Delete', true), array('controller' => 'form_fields', 'action'=>'delete', $formField['FormField']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -80,19 +80,19 @@ foreach ($formFields as $formField):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('新增', array('controller' => 'form_fields', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $html->link(__('Add', true), array('controller' => 'form_fields', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>
 
 <div class="relationships index">
-<h2>關聯</h2>
+<h2><?php __('Form relationships'); ?></h2>
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th>對象</th>
-	<th>類型</th>
-	<th>建立時間</th>
-	<th>更新時間</th>
-	<th class="actions">操作</th>
+	<th><?php __('Relationship target'); ?></th>
+	<th><?php __('Relationship type'); ?></th>
+	<th><?php __('Created time'); ?></th>
+	<th><?php __('Modified time'); ?></th>
+	<th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 <?php
 $i = 0;
@@ -111,7 +111,7 @@ foreach ($relationships as $relationship):
 		<td><?php echo $relationship['Relationship']['created']; ?></td>
 		<td><?php echo $relationship['Relationship']['modified']; ?></td>
 		<td class="actions">
-			<?php echo $html->link('刪除', array('controller' => 'relationships', 'action'=>'delete', $relationship['Relationship']['id']), null, '確定要刪除？'); ?>
+			<?php echo $html->link(__('Delete', true), array('controller' => 'relationships', 'action'=>'delete', $relationship['Relationship']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -119,21 +119,21 @@ foreach ($relationships as $relationship):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('新增', array('controller' => 'relationships', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $html->link(__('Add', true), array('controller' => 'relationships', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>
 
 <div class="actions index">
-<h2>前台介面</h2>
-*保留名稱： index, view, admin_index, admin_add, admin_edit, admin_view, admin_habtm_set
+<h2><?php __('Additional methods'); ?></h2>
+<?php __('Reserved method names:'); ?> index, view, admin_index, admin_add, admin_edit, admin_view, admin_habtm_set
 <table cellpadding="0" cellspacing="0">
 <tr>
-	<th>名稱</th>
-	<th>系統名稱</th>
-	<th>引擎</th>
-	<th>建立時間</th>
-	<th>更新時間</th>
-	<th class="actions">操作</th>
+	<th><?php __('Method name'); ?></th>
+	<th><?php __('System name'); ?></th>
+	<th><?php __('Method engine'); ?></th>
+	<th><?php __('Created time'); ?></th>
+	<th><?php __('Modified time'); ?></th>
+	<th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 <?php
 $i = 0;
@@ -150,8 +150,8 @@ foreach ($actions as $action):
 		<td><?php echo $action['Action']['created']; ?></td>
 		<td><?php echo $action['Action']['modified']; ?></td>
 		<td class="actions">
-			<?php echo $html->link('參數', '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
-			<?php echo $html->link('刪除', array('controller' => 'actions', 'action'=>'delete', $action['Action']['id']), null, '確定要刪除？'); ?>
+			<?php echo $html->link(__('Parameters', true), '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
+			<?php echo $html->link(__('Delete', true), array('controller' => 'actions', 'action'=>'delete', $action['Action']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 	<tr<?php echo $class;?> style="display:none;" id="parameters<?php echo $action['Action']['id']; ?>">
@@ -162,6 +162,6 @@ foreach ($actions as $action):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('新增', array('controller' => 'actions', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $html->link(__('Add', true), array('controller' => 'actions', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>

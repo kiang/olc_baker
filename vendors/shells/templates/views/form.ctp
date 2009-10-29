@@ -20,13 +20,13 @@
 ?>
 	</fieldset>
 <?php
-	echo "<?php echo \$form->end('送出');?>\n";
+	echo "<?php echo \$form->end(__('Submit', true));?>\n";
 ?>
 </div>
 <div class="actions">
 	<ul>
 <?php if ($action != 'add'):?>
-		<li><?php echo "<?php echo \$html->link('刪除', array('action'=>'delete', \$form->value('{$modelClass}.{$primaryKey}')), null, '確定要刪除？'); ?>";?></li>
+		<li><?php echo "<?php echo \$html->link(__('Delete', true), array('action'=>'delete', \$form->value('{$modelClass}.{$primaryKey}')), null, __('Delete the item, sure?', true)); ?>";?></li>
 <?php endif;?>
 		<li><?php echo "<?php echo \$html->link('列表', array('action'=>'index'));?>";?></li>
 	</ul>

@@ -11,7 +11,7 @@ class ProjectsController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('project', $this->Project->read(null, $id));
@@ -26,10 +26,10 @@ class ProjectsController extends AppController {
 		    }
 		    unset($this->data['Project']['option']);
 			if ($this->Project->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash('資料儲存失敗，請重試');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		$this->set('types', $this->Project->getProjectTypeList());
@@ -37,7 +37,7 @@ class ProjectsController extends AppController {
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
@@ -46,10 +46,10 @@ class ProjectsController extends AppController {
 		    }
 		    unset($this->data['Project']['option']);
 			if ($this->Project->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash('資料儲存失敗，請重試');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -60,11 +60,11 @@ class ProjectsController extends AppController {
 
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Project->del($id)) {
-			$this->Session->setFlash('資料已經刪除');
+			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('action'=>'index'));
 		}
 	}
@@ -93,7 +93,7 @@ class ProjectsController extends AppController {
 		        ),
 		    ),
 		))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		} else {
 		    $projectOptions = unserialize($project['Project']['options']);
@@ -735,7 +735,7 @@ class ProjectsController extends AppController {
 		    'conditions' => array('Project.id' => $projectId),
 		    'contain' => array(),
 		))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 		} else {
 		    $projectOptions = unserialize($project['Project']['options']);
 		    foreach($projectOptions['settings'] AS $key => $val) {

@@ -43,7 +43,7 @@
 <hr />
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('刪除', array('action'=>'delete', $form->value('<{$modelName}>.id')), null, '確定要刪除？'); ?></li>
+        <li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('<{$modelName}>.id')), null, __('Delete the item, sure?', true)); ?></li>
         <li><?php echo $html->link('<{$formLabel}>列表', array('action'=>'index')); ?> </li>
 <{if isset($relationships.hasOne)}>
 <{foreach from=$relationships.hasOne key=rModel item=rOption}>

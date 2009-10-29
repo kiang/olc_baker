@@ -5,7 +5,7 @@ class ActionsController extends AppController {
 
 	function add($formId = null) {
 	    if (!$formId) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
@@ -25,10 +25,10 @@ class ActionsController extends AppController {
 		        unset($this->data['Action']['parameter']);
 		        $this->Action->create();
 		        if ($this->Action->save($this->data)) {
-		            $this->Session->setFlash('資料已經儲存');
+		            $this->Session->setFlash(__('The data has been saved', true));
 		            $this->redirect(array('controller' => 'forms', 'action'=>'view', $formId));
 		        } else {
-		            $this->Session->setFlash('資料儲存失敗，請重試');
+		            $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 		        }
 		    }
 		}
@@ -38,11 +38,11 @@ class ActionsController extends AppController {
 
 	function delete($id = null) {
 	    if (!$id || !$formId = $this->Action->field('form_id', array('Action.id' => $id))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if ($this->Action->del($id)) {
-			$this->Session->setFlash('資料已經刪除');
+			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('controller' => 'forms', 'action'=>'view', $formId));
 		}
 	}

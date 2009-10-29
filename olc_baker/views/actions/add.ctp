@@ -1,15 +1,15 @@
 <div class="actions form">
 <?php echo $form->create('Action', array('url' => array($formId)));?>
 	<fieldset>
- 		<legend>新增</legend>
+ 		<legend><?php echo __('Add', true); ?></legend>
 	<?php
 	echo $form->input('action', array('label' => '系統名稱(小寫英文)'));
-	echo $form->input('name', array('label' => '顯示名稱'));
+	echo $form->input('name', array('label' => __('Display name', true)));
 	echo $form->input('engine', array('label' => '引擎', 'type' => 'select', 'options' => $engines));
 	?>
 	<div id="parameterBlock"></div>
 	</fieldset>
-<?php echo $form->end('送出');?>
+<?php echo $form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>

@@ -1,10 +1,10 @@
 <div class="formFields form">
 <?php echo $form->create('FormField', array('url' => array($formId)));?>
 	<fieldset>
- 		<legend>新增</legend>
+ 		<legend><?php echo __('Add', true); ?></legend>
 	<?php
-	echo $form->input('name', array('label' => '系統名稱'));
-	echo $form->input('label', array('label' => '顯示名稱'));
+	echo $form->input('name', array('label' => __('System name', true)));
+	echo $form->input('label', array('label' => __('Display name', true)));
 	echo $form->input('type', array('label' => '類型', 'type' => 'select', 'options' => $types));
 	echo $form->input('sort', array('label' => '排序', 'value' => 0));
 	echo $form->input('is_required', array('label' => '必填？'));
@@ -33,7 +33,7 @@
 	?>
 	<div id="optionBlock"></div>
 	</fieldset>
-<?php echo $form->end('送出');?>
+<?php echo $form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>

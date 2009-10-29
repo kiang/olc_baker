@@ -27,7 +27,7 @@ foreach ($groups as $group):
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $group['Group']['id']), array('class' => 'GroupsAdminIndexControl')); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $group['Group']['id']), null, '確定要刪除？'); ?>
+			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $group['Group']['id']), null, __('Delete the item, sure?', true)); ?>
 			<?php echo $html->link('子群組', array('action'=>'index', $group['Group']['id'])); ?>
 			<?php echo $html->link('設定權限', array('action'=>'acos', $group['Group']['id'])); ?>
 		</td>

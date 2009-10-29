@@ -11,7 +11,7 @@ if(!empty($foreignId) && !empty($foreignModel)) {
 <{/if}>
 ?>
 <div class="span-6"><?php
-echo $paginator->counter(array('format' => '第 %page% 頁 / 共 %pages% 頁（ 共 %count% 筆資料）'));
+echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
 ?></div>
 <div class="span-18 last">
 <?php
@@ -45,7 +45,7 @@ echo $form->end();
     <th><?php echo $paginator->sort('<{$item.label}>', '<{$modelName}>.<{$key}>', array('url' => $url));?></th>
 <{/foreach}>
 <{/foreach}>
-    <th class="actions">操作</th>
+    <th class="actions"><?php echo __('Action', true); ?></th>
 </tr>
 </thead>
 <tbody>
@@ -109,9 +109,9 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $html->link('檢視', array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $html->link('編輯', array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $html->link('刪除', array('action'=>'delete', $item['<{$modelName}>']['id']), null, '確定要刪除？'); ?>
+<?php echo $html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $html->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $html->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
     </td>
 </tr>
 <?php endforeach; ?>
@@ -122,9 +122,9 @@ if($item['<{$className}>']['<{$key}>']) {
     <ul>
 <{if isset($relationships.belongsTo)}>
 <?php $url = array_merge($url, array('action' => 'add')); ?>
-        <li><?php echo $html->link('新增', $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $html->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{else}>
-        <li><?php echo $html->link('新增', array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $html->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{/if}>
     </ul>
 </div>

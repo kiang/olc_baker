@@ -1,10 +1,11 @@
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('回到專案列表', array('action'=>'index')); ?></li>
+		<li><?php echo $html->link(__('List', true), array('action'=>'index')); ?></li>
 	</ul>
 </div>
 
-操作過程：<?php
+<?php
+echo __('Build operactions:', true);
 echo '<ul id="buildOperactions">';
 $count = 1;
 foreach($tasks AS $task) {
@@ -21,7 +22,7 @@ echo '<br /><br /><div id="operactionDetail"></div>';
 echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'ul#buildOperactions li a\').click(function() {
-		$(\'div#operactionDetail\').html(\'操作細節<br />\' + $(\'#\' + this.rel).html());
+		$(\'div#operactionDetail\').html(\'' . __('Operaction Detail', true) . '<br />\' + $(\'#\' + this.rel).html());
 		return false;
 	});
 });

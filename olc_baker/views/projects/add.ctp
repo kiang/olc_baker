@@ -1,19 +1,19 @@
 <div class="projects form">
 <?php echo $form->create('Project');?>
 	<fieldset>
- 		<legend>新增</legend>
+ 		<legend><?php echo __('Create a new project', true); ?></legend>
 	<?php
-	echo $form->input('name', array('label' => '系統名稱'));
-	echo $form->input('label', array('label' => '顯示名稱'));
-	echo $form->input('type', array('label' => '類型', 'type' => 'select', 'options' => $types));
+	echo $form->input('name', array('label' => __('System name', true)));
+	echo $form->input('label', array('label' => __('Display name', true)));
+	echo $form->input('type', array('label' => __('Project type', true), 'type' => 'select', 'options' => $types));
 	?>
 	<div id="optionBlock"></div>
 	</fieldset>
-<?php echo $form->end('送出');?>
+<?php echo $form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('列表', array('action'=>'index'));?></li>
+		<li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
 	</ul>
 </div>
 <?php

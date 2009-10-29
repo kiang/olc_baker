@@ -8,7 +8,7 @@ class RelationshipsController extends AppController {
 	        'conditions' => array('BaseForm.id' => $formId),
 	        'contain' => array(),
 	    ))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
@@ -40,7 +40,7 @@ class RelationshipsController extends AppController {
 				}
 				$this->redirect(array('controller' => 'forms', 'action'=>'view', $formId));
 			} else {
-				$this->Session->setFlash('資料儲存失敗，請重試');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		$this->set('targetForms', $this->Relationship->TargetForm->find('list', array(
@@ -54,7 +54,7 @@ class RelationshipsController extends AppController {
 
 	function delete($id = null) {
 		if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
-			$this->Session->setFlash('請依據網頁指示操作');
+			$this->Session->setFlash(__('Please do following the links in the page', true));
 		} else if ($this->Relationship->del($id) && $this->Relationship->del($parentId)) {
 			$this->Session->setFlash('資料已經刪除！');
 		}

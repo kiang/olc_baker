@@ -3,7 +3,7 @@
 <p>
 <?php
 echo $paginator->counter(array(
-'format' => '第 %page% 頁 / 共 %pages% 頁（ 共 %count% 筆資料）'
+'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
 排序：
@@ -71,16 +71,16 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 		</table>
 		<div class="actions">
-		<?php echo $html->link('檢視', array('action'=>'<{$parameters.links.view}>', $item['<{$modelName}>']['id']), array('class' => 'control')); ?>
+		<?php echo $html->link(__('View', true), array('action'=>'<{$parameters.links.view}>', $item['<{$modelName}>']['id']), array('class' => 'control')); ?>
 		</div>
 		</td>
 	</tr>
 </table>
 <?php endforeach; ?>
 <div class="paging">
-<?php echo $paginator->prev('<< 上一頁', array(), null, array('class'=>'disabled'));?>
+<?php echo $paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
  | <?php echo $paginator->numbers();?>
-<?php echo $paginator->next('下一頁 >>', array(), null, array('class'=>'disabled'));?>
+<?php echo $paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>
 </div>
 <div class="actions">
     <ul>

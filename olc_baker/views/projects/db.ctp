@@ -1,6 +1,6 @@
 <?php
 if(!empty($tables)) {
-    echo '<h2>選擇資料表</h2><table class="systable" cellpadding="0" cellspacing="0"><tr>';
+    echo '<h2>' . __('Please select a table') . '</h2><table class="systable" cellpadding="0" cellspacing="0"><tr>';
     $count = 0;
     foreach($tables AS $table) {
         echo '<td>' . $html->link($table, array('action' => 'db', $projectId, $table)) . '</td>';
@@ -13,17 +13,17 @@ if(!empty($tables)) {
     echo $form->create('Form', array('url' => array(
     	'controller' => 'projects', 'action' => 'db', $projectId, $tableName
     )));
-    echo '<h2>資料表： ' . $tableName . '</h2>';
+    echo '<h2>' . __('Table name:', true) . ' &nbsp; ' . $tableName . '</h2>';
     echo $form->input('Form.label', array(
-        'label' => '表單顯示名稱'
+        'label' => __('Display name of the form', true)
     ));
     echo '<table class="systable" cellpadding="0" cellspacing="0">
     <tr>
-    	<th>欄位名稱</th>
-    	<th>顯示名稱</th>
-    	<th>類型</th>
-    	<th>排序</th>
-    	<th>必填</th>
+    	<th>' . __('Form field', true) . '</th>
+    	<th>' . __('Display name', true) . '</th>
+    	<th>' . __('Type', true) . '</th>
+    	<th>' . __('Sort', true) . '</th>
+    	<th>' . __('Required', true) . '</th>
     </tr>';
     $fieldCount = 0;
     foreach($schema AS $field => $fieldOption) {
@@ -45,6 +45,6 @@ if(!empty($tables)) {
         echo '</tr>';
     }
     echo '</table>';
-    echo $form->end('送出');
+    echo $form->end(__('Submit', true));
 }
-echo $html->link('回到專案', array('action'=>'view', $projectId));
+echo $html->link(__('Back to the project', true), array('action'=>'view', $projectId));

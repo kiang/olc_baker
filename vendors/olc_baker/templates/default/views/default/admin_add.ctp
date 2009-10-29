@@ -21,7 +21,7 @@ echo $form->create('<{$modelName}>', array('type' => 'file', 'url' => $url));
 <div class="addForm"><?php echo $html->link(' ', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'form', 0, '<{$modelName}>')); ?></div>
 <{/foreach}>
 <{/if}>
-<?php echo $form->end('送出'); ?>
+<?php echo $form->end(__('Submit', true)); ?>
 <div class="actions">
     <ul>
         <li><?php echo $html->link('列表', array('action'=>'index'));?></li>

@@ -26,7 +26,7 @@ foreach ($fields as $field) {
 	<ul>
 <?php
 	echo "\t\t<li><?php echo \$html->link(__('Edit', true), array('action'=>'edit', \${$singularVar}['{$modelClass}']['{$primaryKey}'])); ?> </li>\n";
-	echo "\t\t<li><?php echo \$html->link(__('Delete', true), array('action'=>'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, '確定要刪除？'); ?> </li>\n";
+	echo "\t\t<li><?php echo \$html->link(__('Delete', true), array('action'=>'delete', \${$singularVar}['{$modelClass}']['{$primaryKey}']), null, __('Delete the item, sure?', true)); ?> </li>\n";
 	echo "\t\t<li><?php echo \$html->link(__('List', true), array('action'=>'index')); ?> </li>\n";
 	echo "\t\t<li><?php echo \$html->link(__('New', true), array('action'=>'add')); ?> </li>\n";
 
@@ -109,7 +109,7 @@ echo "\t<?php
 				echo "\t\t\t<td class=\"actions\">\n";
 				echo "\t\t\t\t<?php echo \$html->link(__('View', true), array('controller'=> '{$details['controller']}', 'action'=>'view', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
 				echo "\t\t\t\t<?php echo \$html->link(__('Edit', true), array('controller'=> '{$details['controller']}', 'action'=>'edit', \${$otherSingularVar}['{$details['primaryKey']}'])); ?>\n";
-				echo "\t\t\t\t<?php echo \$html->link(__('Delete', true), array('controller'=> '{$details['controller']}', 'action'=>'delete', \${$otherSingularVar}['{$details['primaryKey']}']), null, '確定要刪除？'); ?>\n";
+				echo "\t\t\t\t<?php echo \$html->link(__('Delete', true), array('controller'=> '{$details['controller']}', 'action'=>'delete', \${$otherSingularVar}['{$details['primaryKey']}']), null, __('Delete the item, sure?', true)); ?>\n";
 				echo "\t\t\t</td>\n";
 			echo "\t\t</tr>\n";
 

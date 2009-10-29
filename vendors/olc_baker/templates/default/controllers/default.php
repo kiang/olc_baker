@@ -72,7 +72,7 @@ class <{$controllerName}>Controller extends AppController {
 
     function view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
-            $this->Session->setFlash('請依據網頁指示操作');
+            $this->Session->setFlash(__('Please do following the links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -166,7 +166,7 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
-            $this->Session->setFlash('請依據網頁指示操作');
+            $this->Session->setFlash(__('Please do following the links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -189,13 +189,13 @@ class <{$controllerName}>Controller extends AppController {
         if (!empty($this->data)) {
             $this-><{$modelName}>->create();
             if ($this-><{$modelName}>->save($this->data)) {
-                $this->Session->setFlash('資料已經儲存');
+                $this->Session->setFlash(__('The data has been saved', true));
                 $this->Session->delete('form.<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
                 $this->Session->write('form.<{$modelName}>.data', $this->data);
                 $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
-                $this->Session->setFlash('資料儲存失敗，請重試');
+                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         $this->set('foreignId', $foreignId);
@@ -206,13 +206,13 @@ class <{$controllerName}>Controller extends AppController {
         if (!empty($this->data)) {
             $this-><{$modelName}>->create();
             if ($this-><{$modelName}>->save($this->data)) {
-                $this->Session->setFlash('資料已經儲存');
+                $this->Session->setFlash(__('The data has been saved', true));
                 $this->Session->delete('form.<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
                 $this->Session->write('form.<{$modelName}>.data', $this->data);
                 $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
-                $this->Session->setFlash('資料儲存失敗，請重試');
+                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
     }
@@ -220,18 +220,18 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash('請依據網頁指示操作');
+            $this->Session->setFlash(__('Please do following the links in the page', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             if ($this-><{$modelName}>->save($this->data)) {
-                $this->Session->setFlash('資料已經儲存');
+                $this->Session->setFlash(__('The data has been saved', true));
                 $this->Session->delete('form.<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
                 $this->Session->write('form.<{$modelName}>.data', $this->data);
                 $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
-                $this->Session->setFlash('資料儲存失敗，請重試');
+                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         $this->set('id', $id);
@@ -283,9 +283,9 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash('請依據網頁指示操作');
+            $this->Session->setFlash(__('Please do following the links in the page', true));
         } else if ($this-><{$modelName}>->del($id)) {
-            $this->Session->setFlash('資料已經刪除');
+            $this->Session->setFlash(__('The data has been deleted', true));
         }
         $this->redirect(array('action'=>'index'));
     }

@@ -4,8 +4,8 @@
  		<legend>編輯表單欄位</legend>
 	<?php
 	echo $form->input('id');
-	echo $form->input('name', array('label' => '系統名稱'));
-	echo $form->input('label', array('label' => '顯示名稱'));
+	echo $form->input('name', array('label' => __('System name', true)));
+	echo $form->input('label', array('label' => __('Display name', true)));
 	echo $form->input('type', array('label' => '類型', 'type' => 'select', 'options' => $types));
 	echo $form->input('sort', array('label' => '排序'));
 	echo $form->input('is_required', array('label' => '必填？'));
@@ -34,11 +34,11 @@
 	?>
 	<div id="optionBlock"></div>
 	</fieldset>
-<?php echo $form->end('送出');?>
+<?php echo $form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('刪除', array('action'=>'delete', $form->value('FormField.id')), null, '確定要刪除？'); ?></li>
+		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('FormField.id')), null, __('Delete the item, sure?', true)); ?></li>
 		<li><?php echo $html->link('回到表單', array('controller' => 'forms', 'action'=>'view', $form->value('FormField.form_id')));?></li>
 	</ul>
 </div>

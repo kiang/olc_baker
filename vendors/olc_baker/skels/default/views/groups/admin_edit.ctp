@@ -7,7 +7,7 @@
 		echo $form->input('name', array('label' => '名稱：'));
 	?>
 	</fieldset>
-<?php echo $form->end('送出');?>
+<?php echo $form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>
