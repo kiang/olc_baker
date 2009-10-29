@@ -13,7 +13,7 @@ $preferred_width_right = bounded_number(BLOCK_R_MIN_WIDTH, blocks_preferred_widt
                                         BLOCK_R_MAX_WIDTH);
 $headContent = $html->meta('icon') .
     $html->css('default') .
-    $javascript->link('jquery') .
+    $html->script('jquery') .
     $scripts_for_layout;
 print_header(
 '<{$projectLabel}>' . $title_for_layout,

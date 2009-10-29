@@ -65,7 +65,7 @@
 </div>
 <div id="<{$controllerName}>AdminViewPanel"></div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
     $(\'a.<{$controllerName}>AdminViewControl\').click(function() {
         $(\'#<{$controllerName}>AdminViewPanel\').load(this.href);

@@ -85,7 +85,7 @@ if(!empty($content)) {
                             'div' => false,
                         ));
                         echo '<br />' . $html->link('新增一個欄位', '#', array('id' => 'duplicate' . $domId));
-                        echo $javascript->codeBlock('
+                        echo $html->scriptBlock('
 $(\'#' . $domId . '\').attr(\'name\', $(\'#' . $domId . '\').attr(\'name\') + \'[]\');
 $(\'#duplicate' . $domId . '\').click(function() {
 	var target = $(\'#' . $domId . '\').clone();

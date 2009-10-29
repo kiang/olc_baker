@@ -56,7 +56,7 @@ foreach ($members as $member):
 </div>
 <div id="MembersAdminIndexPanel"></div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
     $(\'#MembersAdminIndexTable th a, #MembersAdminIndex div.paging a\').click(function() {
         $(\'#MembersAdminIndex\').load(this.href);

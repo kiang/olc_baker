@@ -518,7 +518,7 @@ class ProjectsController extends AppController {
 		    ));
 		    $dbn = $db->getDataSource('olc_baker-dev');
 		    $migrations = new Migrations('olc_baker-dev');
-		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'sql';
+		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'schema';
 
 		    $aResult = array();
 		    $sqlContent = "SET NAMES utf8;\n\n";

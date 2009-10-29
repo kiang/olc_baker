@@ -9,7 +9,7 @@ $body->mNoGallery = true;
 $body->addHeadItem('cakeHead',
     $html->meta('icon') .
     $html->css('default') .
-    $javascript->link('jquery') .
+    $html->script('jquery') .
     $scripts_for_layout
 );
 $body->mBodytext = '';

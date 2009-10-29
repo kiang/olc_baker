@@ -19,7 +19,7 @@
 	</ul>
 </div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'#ProjectType\').change(function() {
 		$(\'#optionBlock\').load(\'' . $html->url(array('action' => 'type_form')) . '/\' +

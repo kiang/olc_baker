@@ -190,7 +190,7 @@
  * Usage Example 8 : Stacked Bars, prototype, multiple charts and dom id
  *
  * <?php
- *       echo $javascript->link('prototype');
+ *       echo $html->script('prototype');
  *       echo $flashChart->begin(array('prototype'=>true));
  *       $flashChart->setTitle('Stacked Bars');
  *       $flashChart->axis('y',array('range' => array(0, 100, 10)));

@@ -17,7 +17,7 @@
 	</ul>
 </div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'#ActionEngine\').change(function() {
 		$(\'#parameterBlock\').load(\'' . $html->url(array('action' => 'engine_form', $formId)) . '/\' +

@@ -63,7 +63,7 @@
 </div>
 <div id="<{$controllerName}>ViewPanel"></div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
     $(\'a.<{$controllerName}>ViewControl\').click(function() {
         $(\'#<{$controllerName}>ViewPanel\').load(this.href);

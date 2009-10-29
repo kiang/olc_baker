@@ -2,7 +2,7 @@
 include ROOT . DS . 'header.php';
 $xoTheme->headContent(null,
     $html->css('default') .
-    $javascript->link('jquery') .
+    $html->script('jquery') .
     $scripts_for_layout
 );
 ?>

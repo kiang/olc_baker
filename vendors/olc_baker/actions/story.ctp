@@ -104,6 +104,6 @@ $(document).ready(function() {
         return false;
     });
 });';
-echo $javascript->codeBlock($scripts);
+echo $html->scriptBlock($scripts);
 ?>
 </div>

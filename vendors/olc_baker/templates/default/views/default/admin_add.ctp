@@ -28,7 +28,7 @@ echo $form->create('<{$modelName}>', array('type' => 'file', 'url' => $url));
     </ul>
 </div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
     $(\'#<{$controllerName}>AdminAdd div.addForm a\').each(function() {
         $(this).parent().load(this.href);

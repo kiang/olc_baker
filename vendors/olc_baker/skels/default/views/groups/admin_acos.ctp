@@ -43,7 +43,7 @@ foreach ($acos as $aco):
 echo $form->create('Group', array('url' => array('action' => 'acos', $groupId)));
 echo '<ul id="permissionStack"></ul>';
 echo $form->end('更新');
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'input.acoPermitted\').click(function() {
 		if($(\'#p\' + this.name).size() > 0) {

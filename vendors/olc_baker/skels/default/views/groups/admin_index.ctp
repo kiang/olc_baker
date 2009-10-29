@@ -46,7 +46,7 @@ foreach ($groups as $group):
 </div>
 <div id="GroupsAdminIndexPanel"></div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
     $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
         $(\'#GroupsAdminIndex\').load(this.href);

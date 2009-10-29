@@ -18,7 +18,7 @@ foreach($tasks AS $task) {
 }
 echo '</ul>';
 echo '<br /><br /><div id="operactionDetail"></div>';
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'ul#buildOperactions li a\').click(function() {
 		$(\'div#operactionDetail\').html(\'操作細節<br />\' + $(\'#\' + this.rel).html());

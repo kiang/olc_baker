@@ -164,6 +164,6 @@ if(!empty($op)) {
 }
 <{/if}>
 $scripts .= '});';
-echo $javascript->codeBlock($scripts);
+echo $html->scriptBlock($scripts);
 ?>
 </div>

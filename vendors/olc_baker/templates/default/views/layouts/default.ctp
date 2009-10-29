@@ -13,7 +13,7 @@
 	echo $html->css('ie', NULL, array('media' => 'screen, projection'));
 	echo '<![endif]-->';
 	echo $html->css('default');
-	echo $javascript->link('jquery');
+	echo $html->script('jquery');
 	echo $scripts_for_layout;
 	?>
 </head>

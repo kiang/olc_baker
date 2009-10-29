@@ -41,7 +41,7 @@
 	</ul>
 </div>
 <?php
-echo $javascript->codeBlock('
+echo $html->scriptBlock('
 function switchFunctionBlock() {
 	if($(\'#FormFieldFunctionType\').val() > 2) {
 		$(\'#functionBlock\').show();
