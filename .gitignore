@@ -1,0 +1,21 @@
+# PDT settings
+.project
+.settings
+.buildpath
+
+# OLC Baker settings
+olc_baker/config/database.php
+olc_baker/config/core.php
+
+# Cake cache
+olc_baker/tmp/cache/*
+olc_baker/tmp/cache/models/*
+olc_baker/tmp/cache/persistent/*
+ 
+# Cake logs
+olc_baker/tmp/logs/*.log
+
+# Apache settings
+.htaccess
+olc_baker/.htaccess
+olc_baker/webroot/.htaccess

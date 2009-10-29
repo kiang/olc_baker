@@ -1,1 +1,49 @@
-olc_baker is a web based baker for CakePHP
+olc_baker - A web based baker for CakePHP
+******************************
+
+Requirements
+============
+
+    * Apache with mod_rewrite
+    * PHP 5.2 or higher
+    * MySQL 4.1 or higher
+
+Installation in Ubuntu 9.04
+============
+
+git clone git://github.com/kiang/olc_baker.git
+/olc_baker$ cd olc_baker/
+/olc_baker/olc_baker$ chmod -R 777 tmp/
+/olc_baker/olc_baker$ cp .htaccess.default .htaccess
+/olc_baker/olc_baker$ cd webroot/
+/olc_baker/olc_baker/webroot$ cp .htaccess.default .htaccess
+/olc_baker/olc_baker/webroot$ cd ../config/
+/olc_baker/olc_baker/config$ cp database.php.default database.php
+/olc_baker/olc_baker/config$ cp core.php.default core.php
+
+kiang@kiang-ubuntu:~/public_html/olc_baker/olc_baker/config$ mysql -uroot -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 76
+Server version: 5.0.75-0ubuntu10.2 (Ubuntu)
+
+Type 'help;' or '\h' for help. Type '\c' to clear the buffer.
+
+mysql> CREATE DATABASE kiang_olc_baker DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> exit
+Bye
+kiang@kiang-ubuntu:~/public_html/olc_baker/olc_baker/config$ nano database.php
+
+        var $default = array(
+                'driver' => 'mysql',
+                'persistent' => false,
+                'host' => 'localhost',
+                'login' => 'user',
+                'password' => 'password',
+                'database' => 'kiang_olc_baker',
+                'prefix' => '',
+                'encoding' => 'utf8',
+        );
+
