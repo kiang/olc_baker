@@ -224,7 +224,7 @@
  **/
 App::import('Vendor', 'flashchart/open-flash-chart');
 class FlashChartHelper extends AppHelper {
-	public $helpers = array('Flash','Javascript');
+	public $helpers = array('Flash','Html', 'Javascript');
 
 	/**
 	 * The Vendor OpenFlashChart object. The helper
@@ -1024,7 +1024,7 @@ class FlashChartHelper extends AppHelper {
 	 * @return string
 	 */
 	private function renderData($chartId = 'default') {
-		return $this->Javascript->codeBlock(
+		return $this->Html->scriptBlock(
 			'function get_data_'.$chartId.'() {
 				'.$this->loading.'
 			    return to_string(data_'.$chartId.');
@@ -1043,21 +1043,21 @@ class FlashChartHelper extends AppHelper {
 	 */
 	private function scripts($options = array()) {
 		if (isset($options['prototype'])) {
-            $ret = $this->Javascript->codeBlock('
+            $ret = $this->Html->scriptBlock('
                 function to_string(arr) {
                     return Object.toJSON(arr);
                 }
             ');
 		} else {
-            $ret = $this->Javascript->link('json/json2');
-            $ret .= $this->Javascript->codeBlock('
+            $ret = $this->Html->script('json/json2');
+            $ret .= $this->Html->scriptBlock('
                 function to_string(arr) {
                     return JSON.stringify(arr);
                 }
             ');
 		}
 
-		$ret .= $this->Javascript->codeBlock(
+		$ret .= $this->Html->scriptBlock(
 		'
 			function ofc_ready()
 			{
