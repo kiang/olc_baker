@@ -1,15 +1,15 @@
 <?php
 return array(
     'name' => 'Moodle',
-    'description' => '程式將基於 Moodle 延伸，使外觀一致，在 Moodle 1.9.4 開發。<br />
-    	使用時調整 Moodle 主程式：<ul>
-    	<li>moodle/lib/setuplib.php 找到 class object {}; ，需改為 if(!class_exists(\'object\')) { class object {}; }</li>
-    	</ul>',
+	'description' => __('Application will use the layout of Moodle. Tested on Moodle 1.9.4.', true) .
+    __('Before using this application with moodle, you must modify part of moodle.<ul>
+    <li>Open the file moodle/lib/setuplib.php and find the string<br /><b>class object {};</b><br />Replace it with<br /><b>if(!class_exists(\'object\')) { class object {}; }</b></li>
+    </ul>', true),
     'options' => array(
 		'settings' => array(
 			'config_file' => array(
             	'type' => 'text',
-            	'label' => '設定檔案( config.php )的位置',
+                'label' => __('Absolute path of the configuration file (config.php)', true),
             ),
         ),
     ),

@@ -1,11 +1,11 @@
 <div class="actions form">
 <?php echo $form->create('Action', array('url' => array($formId)));?>
 	<fieldset>
- 		<legend><?php echo __('Add', true); ?></legend>
+ 		<legend><?php echo __('Add a method', true); ?></legend>
 	<?php
-	echo $form->input('action', array('label' => '系統名稱(小寫英文)'));
+	echo $form->input('action', array('label' => __('System name', true)));
 	echo $form->input('name', array('label' => __('Display name', true)));
-	echo $form->input('engine', array('label' => '引擎', 'type' => 'select', 'options' => $engines));
+	echo $form->input('engine', array('label' => __('Method engine', true), 'type' => 'select', 'options' => $engines));
 	?>
 	<div id="parameterBlock"></div>
 	</fieldset>
@@ -13,7 +13,7 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('回到表單', array('controller' => 'forms', 'action'=>'view', $formId));?></li>
+		<li><?php echo $html->link(__('Back to the form', true), array('controller' => 'forms', 'action'=>'view', $formId));?></li>
 	</ul>
 </div>
 <?php

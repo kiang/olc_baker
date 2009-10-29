@@ -44,7 +44,7 @@ if(!empty($content)) {
                         break;
                     case 'dateTimeField':
                         if(empty($dateTimeFieldOptions)) {
-                            echo '<div>*這個類型的介面需要一個日期時間欄位 (datetime)</div>';
+                            echo '<div>*' . __('This method will need a datetime field', true) . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -55,7 +55,7 @@ if(!empty($content)) {
                         break;
                     case 'imageField':
                         if(empty($imageFields)) {
-                            echo '<div>*這個類型的介面需要一個圖片欄位 (file_image)</div>';
+                            echo '<div>*' . __('This method will need a file_image field', true) . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -66,7 +66,7 @@ if(!empty($content)) {
                         break;
                     case 'fileField':
                         if(empty($fileFields)) {
-                            echo '<div>*這個類型的介面需要一個檔案欄位 (file)</div>';
+                            echo '<div>*' . __('This method will need a file field', true) . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -84,7 +84,7 @@ if(!empty($content)) {
                             'options' => $fields,
                             'div' => false,
                         ));
-                        echo '<br />' . $html->link('新增一個欄位', '#', array('id' => 'duplicate' . $domId));
+                        echo '<br />' . $html->link(__('Add a field', true), '#', array('id' => 'duplicate' . $domId));
                         echo $html->scriptBlock('
 $(\'#' . $domId . '\').attr(\'name\', $(\'#' . $domId . '\').attr(\'name\') + \'[]\');
 $(\'#duplicate' . $domId . '\').click(function() {

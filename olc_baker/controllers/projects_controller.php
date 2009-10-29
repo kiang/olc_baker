@@ -114,10 +114,10 @@ class ProjectsController extends AppController {
 		        }
 		    }
 		    /*
-		     * 確認指定目錄是否能夠寫入
+		     * Make sure the target path is writable
 		     */
 		    if(!isset($project['Project']['app_path']) || !is_writable(dirname($project['Project']['app_path']))) {
-		        $this->Session->setFlash('指定路徑無法寫入，或是設定有誤！');
+		        $this->Session->setFlash(__('The target path is not available for writing'));
 		        $this->redirect(array('action' => 'index'));
 		    }
 		    $tasks = array();
@@ -125,13 +125,13 @@ class ProjectsController extends AppController {
 		    if(file_exists($project['Project']['app_path'])) {
 		        $fh->delete($project['Project']['app_path']);
 		        $tasks[] = array(
-		            'title' => '指定路徑已經存在，刪除舊有結構',
+		            'title' => __('Target path exists. Delete the old folders.', true),
 		            'operactions' => $fh->__messages,
 		        );
 		        $fh->__messages = array();
 		    }
 		    /*
-		     * 複製專案預設檔案與目錄
+		     * Copy the skelecton of the application
 		     */
 		    $fh->copy(array(
 		        'to' => $project['Project']['app_path'],
@@ -140,13 +140,13 @@ class ProjectsController extends AppController {
 		    ));
 		    $errors = $fh->errors();
 		    if(!empty($errors)) {
-		        $this->Session->setFlash('複製檔案時發生錯誤！');
+		        $this->Session->setFlash(__('Something was wrong when copying files.', true));
 		        $this->set('tasks', $errors);
 		        return;
 		    }
 
 		    /*
-		     * 複製 CSS 檔案
+		     * Copy CSS file
 		     */
 		    $cssPath = DS . 'webroot' . DS . 'css' . DS . 'default.css';
 		    if($project['Project']['type'] == 'manual') {
@@ -162,13 +162,13 @@ class ProjectsController extends AppController {
 		        $project['Project']['app_path'] . $cssPath;
 		    }
 		    $tasks[] = array(
-		    	'title' => '複製預設目錄與檔案到指定路徑',
+		    	'title' => __('Copy the skelecton of application to the target path', true),
 		    	'operactions' => $fh->__messages,
 		    );
 		    $fh->__messages = array();
 
 		    /*
-		     * 寫入設定檔案
+		     * Write the settings
 		     */
 		    $this->Smarty->assign('rewriteBase', $project['Project']['rewrite_base']);
 		    $this->Smarty->assign('rootPath', dirname($project['Project']['app_path']));
@@ -198,12 +198,12 @@ class ProjectsController extends AppController {
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $tasks[] = array(
-		    	'title' => '產生設定檔案',
+		    	'title' => __('Generate the files of settings', true),
 		    	'operactions' => $operactions,
 		    );
 
 		    /*
-		     * 產生 MVC ，同時取得資料表結構
+		     * Generate the MVC files and fetch the table structures
 		     */
 		    $controllers = $tables = $models = $operactions = $htbtmModels = array();
 		    if(!empty($project['Form'])) {
@@ -225,7 +225,7 @@ class ProjectsController extends AppController {
 		        );
 
 		        /*
-		         * 確認需要產生的資料表與 Model
+		         * Confirm the tables and models
 		         */
 		        foreach($project['Form'] AS $key => $form) {
 		            $models[$form['name']]['file_name'] = Inflector::singularize($form['name']);
@@ -240,7 +240,7 @@ class ProjectsController extends AppController {
 		        }
 
 		        /*
-		         * 處理關聯與欄位
+		         * Deal with the relationships
 		         */
 		        foreach($project['Form'] AS $form) {
 		            extract($models[$form['name']]);
@@ -346,7 +346,7 @@ class ProjectsController extends AppController {
 		                if($formField['is_required']) {
 		                    $validate[$formField['name']]['notEmpty'] = array(
 		                        'rule' => '\'notEmpty\'',
-		                        'message' => '\'這個欄位必須輸入\'',
+		                        'message' => '__(\'This field is required\', true)',
 		                    );
 		                }
 		            }
@@ -357,7 +357,7 @@ class ProjectsController extends AppController {
 		        }
 
 		        /*
-		         * 實際輸出 MVC 檔案
+		         * Write the files of models, controllers, views
 		         */
 		        foreach($project['Form'] AS $form) {
 		            extract($models[$form['name']]);
@@ -480,7 +480,7 @@ class ProjectsController extends AppController {
 		        }
 		    }
 		    $tasks[] = array(
-		    	'title' => '產生 MVC 檔案',
+		    	'title' => __('Generate the MVC files', true),
 		    	'operactions' => $operactions,
 		    );
 		    $this->Smarty->assign('projectLabel', $project['Project']['label']);
@@ -501,7 +501,7 @@ class ProjectsController extends AppController {
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $tasks[] = array(
-		    	'title' => '產生整體畫面樣板檔案',
+		    	'title' => __('Generate the application layout', true),
 		    	'operactions' => $operactions,
 		    );
 
@@ -719,7 +719,7 @@ class ProjectsController extends AppController {
 		    file_put_contents($sqlPath . DS . 'schema.yaml', Spyc::YAMLDump($aResult));
 		    file_put_contents($sqlPath . DS . 'schema.sql', $sqlContent);
 		    $tasks[] = array(
-		    	'title' => '產生資料庫結構檔案',
+		    	'title' => __('Generate the database schema', true),
 		    	'operactions' => array(
 		            $sqlPath . DS . 'schema.yaml created',
 		            $sqlPath . DS . 'schema.sql created',
@@ -774,7 +774,7 @@ class ProjectsController extends AppController {
 		    $migrations->load($sqlPath . DS . 'schema.yaml');
 		    $migrations->down();
 		    $migrations->up();
-		    $this->Session->setFlash('資料庫已經重建！');
+		    $this->Session->setFlash(__('Database was rebuilt', true));
 		}
 		$this->redirect(array('action'=>'index'));
 	}
@@ -783,7 +783,7 @@ class ProjectsController extends AppController {
 	    $this->set('content', $this->Project->getProjectTypeContent($type, $id));
 	}
 	/*
-	 * 從資料庫取得資料表與欄位等資訊
+	 * Generate forms from the tables of database
 	 */
 	function db($projectId = 0, $tableName = null) {
 	    $projectId = intval($projectId);
@@ -833,12 +833,12 @@ class ProjectsController extends AppController {
 	                        'function_type' => 1,
 	                    )));
 	                }
-	                $this->Session->setFlash('表單已經建立！');
+	                $this->Session->setFlash(__('The form has been generated', true));
 	                $this->redirect('/forms/view/' . $formId);
 	            }
 	        }
 	        /*
-	         * 列舉欄位，設定
+	         * fields and settings
 	         */
 	        $tempModel = new Model(array(
 	        	'name' => 'OaToolTemp',

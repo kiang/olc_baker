@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '金錢',
-    'description' => '金錢',
+    'name' => __('Money', true),
+    'description' => __('Money', true),
     'schemaType' => 'float',
     'validate' => array(
         'moneyFormat' => array(
             'rule' => '\'money\'',
-            'message' => '\'格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

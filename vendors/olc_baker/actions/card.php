@@ -1,26 +1,26 @@
 <?php
 return array(
-    'name' => '名片列表',
-    'description' => '以檢視名片為基礎的列表',
+    'name' => __('Name card based list', true),
+    'description' => __('Name card based list', true),
     'options' => array(
 		'blocks' => array(
 			'title' => array(
             	'type' => 'field',
-            	'label' => '標題欄位：',
+            	'label' => __('Title field:', true),
             ),
             'picture' => array(
                 'type' => 'imageField',
-                'label' => '圖片欄位：',
+                'label' => __('Picture field:', true),
             ),
             'body' => array(
             	'type' => 'fields',
-            	'label' => '內容欄位：',
+            	'label' => __('Display fields:', true),
             ),
         ),
         'links' => array(
             'view' => array(
                 'type' => 'text',
-                'label' => '檢視操作介面名稱：',
+                'label' => __('Method name:', true),
                 'value' => 'view',
             ),
         ),

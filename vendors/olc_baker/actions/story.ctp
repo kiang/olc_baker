@@ -6,7 +6,7 @@ echo $paginator->counter(array(
 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
-排序：
+<?php __('Sort'); ?>
 <div class="actions">
     <ul>
 <{foreach from=$fields key=className item=classFields}>
@@ -82,7 +82,7 @@ if($item['<{$className}>']['<{$key}>']) {
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('回到一般列表', array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>

@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '網址',
-    'description' => '網址',
+    'name' => __('Url', true),
+    'description' => __('Url', true),
     'schemaType' => 'string',
     'validate' => array(
         'urlFormat' => array(
             'rule' => '\'url\'',
-            'message' => '\'網址格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

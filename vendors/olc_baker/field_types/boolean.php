@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '是/否',
-    'description' => '是/否',
+    'name' => __('True or false', true),
+    'description' => __('True or false', true),
     'schemaType' => 'boolean',
     'validate' => array(
         'booleanFormat' => array(
             'rule' => '\'boolean\'',
-            'message' => '\'資料有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

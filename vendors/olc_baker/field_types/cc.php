@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '信用卡',
-    'description' => '信用卡',
+    'name' => __('Credit card', true),
+    'description' => __('Credit card', true),
     'schemaType' => 'string',
     'validate' => array(
         'ccFormat' => array(
             'rule' => '\'cc\'',
-            'message' => '\'格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

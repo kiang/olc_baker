@@ -1,18 +1,18 @@
 <?php
 return array(
-    'name' => '一般列表',
-    'description' => '以條列方式呈現資料列表',
+    'name' => __('Normal list', true),
+    'description' => __('A table based list page', true),
     'options' => array(
 		'blocks' => array(
 			'body' => array(
             	'type' => 'fields',
-            	'label' => '要顯示欄位：',
+            	'label' => __('Display fields:', true),
             ),
         ),
         'links' => array(
             'view' => array(
                 'type' => 'text',
-                'label' => '檢視操作介面名稱：',
+                'label' => __('Method name:', true),
                 'value' => 'view',
             ),
         ),

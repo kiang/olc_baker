@@ -16,9 +16,9 @@ class RelationshipsController extends AppController {
 			$this->data['Relationship']['project_id'] = $baseForm['BaseForm']['project_id'];
 			$this->data['Relationship']['form_id_base'] = $baseForm['BaseForm']['id'];
 			if ($this->Relationship->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存！');
+				$this->Session->setFlash(__('Data has been saved', true));
 				/*
-				 * 建立相對關聯
+				 * Build the related relationship
 				 */
 				$this->data['Relationship']['parent_id'] = $this->Relationship->getInsertID();
 				switch($this->data['Relationship']['type']) {
@@ -56,7 +56,7 @@ class RelationshipsController extends AppController {
 		if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
 			$this->Session->setFlash(__('Please do following the links in the page', true));
 		} else if ($this->Relationship->del($id) && $this->Relationship->del($parentId)) {
-			$this->Session->setFlash('資料已經刪除！');
+			$this->Session->setFlash(__('Data has been deleted', true));
 		}
 		$this->redirect($this->referer());
 	}

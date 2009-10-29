@@ -56,7 +56,7 @@ if($item['<{$className}>']['<{$key}>']) {
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('回到一般列表', array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>

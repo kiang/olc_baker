@@ -1,6 +1,6 @@
 <?php
 return array(
-    'name' => '下拉選單',
-    'description' => '下拉選單',
+    'name' => __('Dropdown list', true),
+    'description' => __('Dropdown list', true),
     'schemaType' => 'integer',
 );

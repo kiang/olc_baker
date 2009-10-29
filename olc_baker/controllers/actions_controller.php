@@ -16,7 +16,7 @@ class ActionsController extends AppController {
 		        'form_id' => $formId,
 		    	'action' => $this->data['Action']['action'],
 		    ))) {
-		        $this->Session->setFlash('介面名稱重複');
+		        $this->Session->setFlash(__('Method name is duplicated', true));
 		    } else {
 		        $this->data['Action']['form_id'] = $formId;
 		        if(!empty($this->data['Action']['parameter'])) {
@@ -49,7 +49,7 @@ class ActionsController extends AppController {
 
 	function engine_form($formId, $engine) {
 	    /*
-	     * 取得可用欄位，自己的、belongsto 與 hasone
+	     * Fetch available fields
 	     */
 	    $form = $this->Action->Form->find('first', array(
 	        'fields' => array('name', 'label'),

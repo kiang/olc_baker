@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '電子信箱',
-    'description' => '電子信箱',
+    'name' => __('Email', true),
+    'description' => __('Email', true),
     'schemaType' => 'string',
     'validate' => array(
         'emailFormat' => array(
             'rule' => '\'email\'',
-            'message' => '\'信箱格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

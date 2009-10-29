@@ -1,7 +1,7 @@
 <h2><{$actionLabel}></h2>
 <?php
 if(empty($charData)) {
-    echo '目前沒有任何資料！';
+    __('There\'s no data to display.');
 } else {
     $colorBase = array('0', '3', '6', '9', 'A', 'C', 'F');
     echo $flashChart->begin();
@@ -27,6 +27,6 @@ if(empty($charData)) {
 ?>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('回到一般列表', array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>

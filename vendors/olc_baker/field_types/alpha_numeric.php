@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '英文/數字',
-    'description' => '英文/數字',
+    'name' => __('Alphabetic and numeric format characters', true),
+    'description' => __('Alphabetic and numeric format characters', true),
     'schemaType' => 'string',
     'validate' => array(
         'alphaNumericFormat' => array(
             'rule' => '\'alphaNumeric\'',
-            'message' => '\'格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

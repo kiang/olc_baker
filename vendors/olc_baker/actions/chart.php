@@ -1,54 +1,54 @@
 <?php
 return array(
-    'name' => '圖表',
-    'description' => '檢視各種類型的圖表',
+    'name' => __('Flash charts', true),
+    'description' => __('Several types of flash charts', true),
     'options' => array(
 		'blocks' => array(
 			'group_field' => array(
             	'type' => 'fieldWithId',
-            	'label' => '集合欄位：',
+            	'label' => __('Group by field:', true),
             ),
             'calculate_field' => array(
             	'type' => 'fieldWithId',
-            	'label' => '計算欄位：',
+            	'label' => __('Calculate field:', true),
             ),
             'label_field' => array(
             	'type' => 'field',
-            	'label' => '顯示名稱欄位：',
+            	'label' => __('Chart label field:', true),
             ),
         ),
         'settings' => array(
             'sql_method' => array(
                 'type' => 'select',
-                'label' => '計算方式：',
+                'label' => __('Calculate method in database query:', true),
                 'options' => array(
-                    'COUNT' => '數量',
-                    'SUM' => '加總',
-                    'AVG' => '平均',
-                    'MAX' => '最大',
-                    'MIN' => '最小',
+                    'COUNT' => __('Number count', true),
+                    'SUM' => __('Summary', true),
+                    'AVG' => __('Average', true),
+                    'MAX' => __('Maximum value', true),
+                    'MIN' => __('Minimum value', true),
                 ),
             ),
             'chart_type' => array(
                 'type' => 'select',
-                'label' => '圖表類型：',
+                'label' => __('Chart type', true),
                 'options' => array(
-                    'pie' => '圓餅圖',
-                    'line' => '曲線圖',
-                    'line_hollow' => '空心點曲線圖',
-                    'area_line' => '曲線面積圖',
-                    'bar' => '長條圖',
-                    'bar_3d' => '3D 長條圖',
-                    'bar_glass' => '半透明長條圖',
-                    'bar_cylinder' => '圓柱長條圖',
-                    'bar_round' => '橢圓長條圖',
+                    'pie' => __('Pie chart', true),
+                    'line' => __('Line chart', true),
+                    'line_hollow' => __('Hollow point line chart', true),
+                    'area_line' => __('Area line chart', true),
+                    'bar' => __('Bar chart', true),
+                    'bar_3d' => __('3D bar chart', true),
+                    'bar_glass' => __('Glass bar chart', true),
+                    'bar_cylinder' => __('Cylinder bar chart', true),
+                    'bar_round' => __('Round bar chart', true),
                 ),
             ),
         ),
         'links' => array(
             'view' => array(
                 'type' => 'text',
-                'label' => '檢視操作介面名稱：',
+                'label' => __('Method name:', true),
                 'value' => 'view',
             ),
         ),

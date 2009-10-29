@@ -1,16 +1,16 @@
 <?php
 return array(
-    'name' => '多行文字',
-    'description' => '多行文字',
+    'name' => __('Multiple line Text', true),
+    'description' => __('Multiple line Text', true),
     'options' => array(
 		'form' => array(
 			'rows' => array(
             	'type' => 'text',
-            	'label' => '列數：',
+            	'label' => __('Rows', true),
             ),
         	'cols' => array(
             	'type' => 'text',
-            	'label' => '欄數：',
+            	'label' => __('Columns', true),
             ),
         ),
     ),

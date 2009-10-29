@@ -3,19 +3,19 @@ class OaToolHelper extends AppHelper {
     function relation_type($key) {
         switch($key) {
             case 'bt':
-                return '屬於 (belongsTo)';
+                return 'has an ancestor (belongsTo)';
                 break;
             case 'ho':
-                return '一對一 (hasOne)';
+                return 'has a descendant (hasOne)';
                 break;
             case 'hm':
-                return '一對多 (hasMany)';
+                return 'has many descendants (hasMany)';
                 break;
             case 'habtm':
-                return '多對多 (hasAndBelongsToMany)';
+                return 'many with many (hasAndBelongsToMany)';
                 break;
         }
-        return '未知';
+        return 'Unknown';
     }
 
     function relation_list() {

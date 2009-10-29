@@ -1,6 +1,6 @@
 <?php
 return array(
-    'name' => '時間',
-    'description' => '時間',
+    'name' => __('Time', true),
+    'description' => __('Time', true),
     'schemaType' => 'time',
 );

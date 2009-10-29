@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => '數字',
-    'description' => '數字',
+    'name' => __('Number', true),
+    'description' => __('Number', true),
     'schemaType' => 'integer',
     'validate' => array(
         'numberFormat' => array(
             'rule' => '\'numeric\'',
-            'message' => '\'數字格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

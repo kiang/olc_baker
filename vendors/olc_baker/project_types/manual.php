@@ -1,32 +1,32 @@
 <?php
 return array(
-    'name' => '手動設定',
-    'description' => '獨立的程式，不依賴其他應用。',
+    'name' => __('Manual', true),
+    'description' => __('An independent application', true),
     'options' => array(
 		'settings' => array(
 			'rewrite_base' => array(
             	'type' => 'text',
-            	'label' => '網址相對於根目錄路徑，例如 http://localhost/~kiang/demo/ 時輸入 /~kiang/demo/',
+            	'label' => __('Relative path to the root of url. For example, fill in /~kiang/demo/ when the url is http://localhost/~kiang/demo/', true),
             ),
         	'app_path' => array(
             	'type' => 'text',
-            	'label' => '應用程式路徑：',
+            	'label' => __('Absolute path to the application:', true),
             ),
             'db_host' => array(
             	'type' => 'text',
-            	'label' => '資料庫主機位置：',
+            	'label' => __('Location of database:', true),
             ),
             'db_login' => array(
             	'type' => 'text',
-            	'label' => '資料庫帳號：',
+            	'label' => __('Username of database:', true),
             ),
             'db_password' => array(
             	'type' => 'password',
-            	'label' => '資料庫密碼：',
+            	'label' => __('Password of database:', true),
             ),
             'db_name' => array(
             	'type' => 'text',
-            	'label' => '資料庫名稱：',
+            	'label' => __('Name of the database:', true),
             ),
         ),
     ),

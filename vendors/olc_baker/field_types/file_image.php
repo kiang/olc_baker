@@ -1,7 +1,7 @@
 <?php
 return array(
-    'name' => '圖片',
-    'description' => '圖片上傳',
+    'name' => __('Picture', true),
+    'description' => __('Picture', true),
     'schemaType' => 'string',
     'formType' => 'file',
 );

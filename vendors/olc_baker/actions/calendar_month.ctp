@@ -8,19 +8,19 @@ $lastDay = date('j', $daysRange['end']);
 <h2><{$actionLabel}>： <?php echo $currentMonth; ?></h2>
 <div class="actions">
     <ul>
-    	<li><?php echo $html->link('上個月', explode('/', $previousMonth), array('class' => 'pageControl')); ?></li>
-    	<li><?php echo $html->link('下個月', explode('/', $nextMonth), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $html->link(__('Previous month', true), explode('/', $previousMonth), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $html->link(__('Next month', true), explode('/', $nextMonth), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <table cellpadding="0" cellspacing="0">
 	<tr>
-		<th>星期一</th>
-		<th>星期二</th>
-		<th>星期三</th>
-		<th>星期四</th>
-		<th>星期五</th>
-		<th>星期六</th>
-		<th>星期日</th>
+		<th><?php __('Monday'); ?></th>
+		<th><?php __('Tuesday'); ?></th>
+		<th><?php __('Wednesday'); ?></th>
+		<th><?php __('Thursday'); ?></th>
+		<th><?php __('Friday'); ?></th>
+		<th><?php __('Saturday'); ?></th>
+		<th><?php __('Sunday'); ?></th>
 	</tr>
 	<tr>
 	<?php
@@ -55,7 +55,7 @@ $lastDay = date('j', $daysRange['end']);
 </table>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('回到一般列表', array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>

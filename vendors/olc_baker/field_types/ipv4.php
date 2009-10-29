@@ -1,12 +1,12 @@
 <?php
 return array(
-    'name' => 'IP(v4)',
-    'description' => 'IP(v4)',
+    'name' => __('IP address', true),
+    'description' => __('IP address', true),
     'schemaType' => 'string',
     'validate' => array(
         'ipFormat' => array(
             'rule' => '\'ip\'',
-            'message' => '\'格式有誤\'',
+            'message' => '__(\'Wrong format\', true)',
             'allowEmpty' => 'true',
         ),
     ),

@@ -1,22 +1,22 @@
 <?php
 return array(
-    'name' => '月行事曆',
-    'description' => '以月行事曆為基礎的列表',
+    'name' => __('Calendar(month)', true),
+    'description' => __('A calendar', true),
     'options' => array(
 		'blocks' => array(
 			'datetime' => array(
             	'type' => 'dateTimeField',
-            	'label' => '時間基礎欄位：',
+            	'label' => __('Time field:', true),
             ),
             'title' => array(
             	'type' => 'field',
-            	'label' => '標題欄位：',
+            	'label' => __('Title field:', true),
             ),
         ),
         'links' => array(
             'view' => array(
                 'type' => 'text',
-                'label' => '檢視操作介面名稱：',
+                'label' => __('Method name:', true),
                 'value' => 'view',
             ),
         ),

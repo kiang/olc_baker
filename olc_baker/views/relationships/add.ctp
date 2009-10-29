@@ -1,15 +1,15 @@
 <div class="relationships form">
 <?php echo $form->create('Relationship', array('url' => array($baseForm['BaseForm']['id'])));?>
 	<fieldset>
- 		<legend><?php echo __('Add', true); ?></legend>
+ 		<legend><?php echo __('Add a relationship', true); ?></legend>
 	<?php
 	echo $form->input('form_id_target', array(
-	    'label' => '關聯對象',
+	    'label' => __('Relationship target', true),
 	    'type' => 'select',
 	    'options' => $targetForms,
 	));
 	echo $form->input('type', array(
-	    'label' => '關聯類型',
+	    'label' => __('Relationship type', true),
 	    'type' => 'select',
 	    'options' => $oaTool->relation_list(),
 	));
@@ -19,6 +19,6 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link('回到專案', array('controller' => 'projects', 'action'=>'view', $baseForm['BaseForm']['project_id']));?></li>
+		<li><?php echo $html->link(__('Back to the project', true), array('controller' => 'projects', 'action'=>'view', $baseForm['BaseForm']['project_id']));?></li>
 	</ul>
 </div>
