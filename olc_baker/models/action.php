@@ -15,7 +15,7 @@ class Action extends AppModel {
 	);
 
 	function getEngineList() {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'actions' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'actions' . DS;
 	    $fh = new Folder($sourcePath);
 	    $files = $fh->find('.*\.php$');
 	    $list = array();
@@ -28,7 +28,7 @@ class Action extends AppModel {
 	}
 
 	function getEngineContent($engine) {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'actions' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'actions' . DS;
 	    $fileContent = array();
 	    if(file_exists($sourcePath . $engine . '.php')) {
 	        $fileContent = include($sourcePath . $engine . '.php');

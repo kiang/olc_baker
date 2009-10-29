@@ -17,7 +17,7 @@ class FormField extends AppModel {
 	);
 
 	function getFieldTypeList() {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'field_types' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'field_types' . DS;
 	    $fh = new Folder($sourcePath);
 	    $files = $fh->read();
 	    $list = array();
@@ -30,7 +30,7 @@ class FormField extends AppModel {
 	}
 
 	function getFieldTypeContent($typeName, $id = null) {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'field_types' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'field_types' . DS;
 	    $fileContent = array();
 	    if(file_exists($sourcePath . $typeName . '.php')) {
 	        $fileContent = include($sourcePath . $typeName . '.php');

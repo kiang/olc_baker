@@ -18,7 +18,7 @@ class project extends AppModel {
 	);
 
 	function getProjectTypeList() {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'project_types' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'project_types' . DS;
 	    $fh = new Folder($sourcePath);
 	    $files = $fh->read();
 	    $list = array();
@@ -31,7 +31,7 @@ class project extends AppModel {
 	}
 
 	function getProjectTypeContent($typeName, $id = null) {
-	    $sourcePath = VENDORS . 'oa-tools' . DS . 'project_types' . DS;
+	    $sourcePath = VENDORS . 'olc_baker' . DS . 'project_types' . DS;
 	    $fileContent = array();
 	    if(file_exists($sourcePath . $typeName . '.php')) {
 	        $fileContent = include($sourcePath . $typeName . '.php');

@@ -1,4 +1,4 @@
-<h2>Sweet, "Oa-tools" got Baked by CakePHP!</h2>
+<h2>Sweet, "olc_baker" got Baked by CakePHP!</h2>
 
 <?php
 if (Configure::read() > 0):

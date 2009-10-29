@@ -101,10 +101,10 @@ class ProjectsController extends AppController {
 		        $project['Project'][$key] = $val;
 		    }
 		    if($project['Project']['type'] != 'manual' && isset($project['Project']['config_file'])
-		        && file_exists(VENDORS . 'oa-tools' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
+		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
 		        && is_file($project['Project']['config_file'])
 		    ) {
-		        include VENDORS . 'oa-tools' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
+		        include VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
 		        $handlerName = $project['Project']['type'] . 'Handler';
 		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
 		        if(!empty($result)) {
@@ -135,7 +135,7 @@ class ProjectsController extends AppController {
 		     */
 		    $fh->copy(array(
 		        'to' => $project['Project']['app_path'],
-		        'from' => VENDORS . 'oa-tools' . DS . 'skels' . DS . 'default',
+		        'from' => VENDORS . 'olc_baker' . DS . 'skels' . DS . 'default',
 		        'chmod' => 777,
 		    ));
 		    $errors = $fh->errors();
@@ -155,10 +155,10 @@ class ProjectsController extends AppController {
 		        $cssSourcePath = DS . 'webroot' . DS . 'css' . DS . $project['Project']['type'] . '.css';
 		    }
 		    if(copy(
-		        VENDORS . 'oa-tools' . DS . 'templates' . DS . 'default' . $cssSourcePath,
+		        VENDORS . 'olc_baker' . DS . 'templates' . DS . 'default' . $cssSourcePath,
 		        $project['Project']['app_path'] . $cssPath
 		    )) {
-		        $fh->__messages[] = VENDORS . 'oa-tools' . DS . 'templates' . DS . 'default' . $cssSourcePath . ' copied to ' .
+		        $fh->__messages[] = VENDORS . 'olc_baker' . DS . 'templates' . DS . 'default' . $cssSourcePath . ' copied to ' .
 		        $project['Project']['app_path'] . $cssPath;
 		    }
 		    $tasks[] = array(
@@ -315,7 +315,7 @@ class ProjectsController extends AppController {
 		            $validate = array();
 		            foreach($form['FormField'] AS $formField) {
 		                if(!isset($fieldType[$formField['type']])) {
-		                    $fieldType[$formField['type']] = include(VENDORS . 'oa-tools' . DS . 'field_types' . DS . $formField['type'] . '.php');
+		                    $fieldType[$formField['type']] = include(VENDORS . 'olc_baker' . DS . 'field_types' . DS . $formField['type'] . '.php');
 		                }
 		                $formField['options'] = unserialize($formField['options']);
 		                if(!empty($formField['options']['form'])) {
@@ -453,12 +453,12 @@ class ProjectsController extends AppController {
 		                file_put_contents(
 		                    $viewPath . $action['action'] . '.ctp',
 		                    $this->Smarty->fetch(
-		                        VENDORS . 'oa-tools' . DS . 'actions' . DS . $action['engine'] . '.ctp'
+		                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp'
 		                    )
 		                );
 		                $this->Smarty->assign('actionName', $action['action']);
 		                $customMethods .= $this->Smarty->fetch(
-		                    VENDORS . 'oa-tools' . DS . 'actions' . DS . 'methods' . DS .
+		                    VENDORS . 'olc_baker' . DS . 'actions' . DS . 'methods' . DS .
 		                    $action['parameters']['methods']['method'] . '.php'
 		                );
 		                $operactions[] = $viewPath . $action['action'] . '.ctp created';
@@ -507,7 +507,7 @@ class ProjectsController extends AppController {
 
 		    App::Import('vendor', 'migrations');
 		    $db = & ConnectionManager::getInstance();
-		    $db->create('oa-tools-dev', array(
+		    $db->create('olc_baker-dev', array(
 		        'driver' => 'mysql',
 		        'host' => $project['Project']['db_host'],
 		        'login' => $project['Project']['db_login'],
@@ -516,8 +516,8 @@ class ProjectsController extends AppController {
 		        'encoding' => 'utf8',
 		        'persistent' => false,
 		    ));
-		    $dbn = $db->getDataSource('oa-tools-dev');
-		    $migrations = new Migrations('oa-tools-dev');
+		    $dbn = $db->getDataSource('olc_baker-dev');
+		    $migrations = new Migrations('olc_baker-dev');
 		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'sql';
 
 		    $aResult = array();
@@ -742,10 +742,10 @@ class ProjectsController extends AppController {
 		        $project['Project'][$key] = $val;
 		    }
 		    if($project['Project']['type'] != 'manual' && isset($project['Project']['config_file'])
-		        && file_exists(VENDORS . 'oa-tools' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
+		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
 		        && is_file($project['Project']['config_file'])
 		    ) {
-		        include VENDORS . 'oa-tools' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
+		        include VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
 		        $handlerName = $project['Project']['type'] . 'Handler';
 		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
 		        if(!empty($result)) {
@@ -756,7 +756,7 @@ class ProjectsController extends AppController {
 		    }
 		    App::Import('vendor', 'migrations');
 		    $db = & ConnectionManager::getInstance();
-		    $db->create('oa-tools-dev', array(
+		    $db->create('olc_baker-dev', array(
 		        'driver' => 'mysql',
 		        'host' => $project['Project']['db_host'],
 		        'login' => $project['Project']['db_login'],
@@ -765,12 +765,12 @@ class ProjectsController extends AppController {
 		        'encoding' => 'utf8',
 		        'persistent' => false,
 		    ));
-		    $dbn = $db->getDataSource('oa-tools-dev');
+		    $dbn = $db->getDataSource('olc_baker-dev');
 		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'sql';
 		    $dbn->execute('CREATE DATABASE IF NOT EXISTS `' . $project['Project']['db_name'] . '`
 		    DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
 		    $dbn->execute('USE `' . $project['Project']['db_name'] . '`;');
-		    $migrations = new Migrations('oa-tools-dev');
+		    $migrations = new Migrations('olc_baker-dev');
 		    $migrations->load($sqlPath . DS . 'schema.yaml');
 		    $migrations->down();
 		    $migrations->up();
@@ -791,7 +791,7 @@ class ProjectsController extends AppController {
 	    if($project = $this->Project->read(null, $projectId)) {
 	        $projectOptions = unserialize($project['Project']['options']);
 	        $db = & ConnectionManager::getInstance();
-	        $db->create('oa-tools-dev', array(
+	        $db->create('olc_baker-dev', array(
 		        'driver' => 'mysql',
 		        'host' => $projectOptions['settings']['db_host'],
 		        'login' => $projectOptions['settings']['db_login'],
@@ -800,7 +800,7 @@ class ProjectsController extends AppController {
 		        'encoding' => 'utf8',
 		        'persistent' => false,
 	        ));
-	        $dbn = $db->getDataSource('oa-tools-dev');
+	        $dbn = $db->getDataSource('olc_baker-dev');
 	        $tables = $dbn->listSources();
 	        $currentForms = Set::extract('{n}.name', $project['Form']);
 	        foreach($currentForms AS $formName) {
@@ -843,7 +843,7 @@ class ProjectsController extends AppController {
 	        $tempModel = new Model(array(
 	        	'name' => 'OaToolTemp',
 	        	'table' => $tableName,
-	        	'ds' => 'oa-tools-dev'
+	        	'ds' => 'olc_baker-dev'
 	        ));
 	        $this->set('tableName', $tableName);
 	        $this->set('schema', $tempModel->_schema);
