@@ -609,6 +609,19 @@ class View extends Object {
  */
 	function entity() {
 		$assoc = ($this->association) ? $this->association : $this->model;
+		if (!empty($this->entityPath)) {
+			$path = explode('.',$this->entityPath);
+			$count = count($path);
+			if (
+				($count == 1 && !empty($this->association)) ||
+				($count == 1 && $this->model != $this->entityPath) ||
+				($count  == 2 && !empty($this->fieldSuffix)) ||
+				is_numeric($path[0])
+			) {
+				array_unshift($path,$assoc);
+			}
+			return Set::filter($path);
+		}
 		return array_values(Set::filter(
 			array($assoc, $this->modelId, $this->field, $this->fieldSuffix)
 		));
@@ -937,12 +950,7 @@ class View extends Object {
 					$paths[] = $viewPaths[$i] . 'plugins' . DS . $plugin . DS;
 				}
 			}
-			$pluginPaths = App::path('plugins');
-			$count = count($pluginPaths);
-
-			for ($i = 0; $i < $count; $i++) {
-				$paths[] = $pluginPaths[$i] . $plugin . DS . 'views' . DS;
-			}
+			$paths[] = App::pluginPath($plugin) . 'views' . DS;
 		}
 		$paths = array_merge($paths, $viewPaths);
 

@@ -222,18 +222,15 @@ class ShellDispatcher {
  */
 	function __buildPaths() {
 		$paths = array();
-		$pluginPaths = App::path('plugins');
 		if (!class_exists('Folder')) {
 			require LIBS . 'folder.php';
 		}
-		foreach ($pluginPaths as $pluginPath) {
-			$Folder = new Folder($pluginPath);
-			list($plugins,) = $Folder->read(false, true);
-			foreach ((array)$plugins as $plugin) {
-				$path = $pluginPath . Inflector::underscore($plugin) . DS . 'vendors' . DS . 'shells' . DS;
-				if (file_exists($path)) {
-					$paths[] = $path;
-				}
+		$plugins = App::objects('plugin', null, false);
+		foreach ((array)$plugins as $plugin) {
+			$pluginPath = App::pluginPath($plugin);
+			$path = $pluginPath . 'vendors' . DS . 'shells' . DS;
+			if (file_exists($path)) {
+				$paths[] = $path;
 			}
 		}
 
@@ -480,13 +477,14 @@ class ShellDispatcher {
  *
  * @param string $string String to output.
  * @param boolean $newline If true, the outputs gets an added newline.
+ * @return integer Returns the number of bytes output to stdout.
  * @access public
  */
 	function stdout($string, $newline = true) {
 		if ($newline) {
-			fwrite($this->stdout, $string . "\n");
+			return fwrite($this->stdout, $string . "\n");
 		} else {
-			fwrite($this->stdout, $string);
+			return fwrite($this->stdout, $string);
 		}
 	}
 
