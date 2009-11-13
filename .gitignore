@@ -19,3 +19,6 @@ olc_baker/tmp/logs/*.log
 .htaccess
 olc_baker/.htaccess
 olc_baker/webroot/.htaccess
+
+# olc_baker cache
+olc_baker/tmp/smarty/*
