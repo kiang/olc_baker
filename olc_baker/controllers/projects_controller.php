@@ -104,7 +104,9 @@ class ProjectsController extends AppController {
 		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
 		        && is_file($project['Project']['config_file'])
 		    ) {
-		        include VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
+		        App::import('vendor', 'olc_baker', array(
+		        	'file' => 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php'
+		        ));
 		        $handlerName = $project['Project']['type'] . 'Handler';
 		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
 		        if(!empty($result)) {
@@ -519,6 +521,9 @@ class ProjectsController extends AppController {
 		    $dbn = $db->getDataSource('olc_baker-dev');
 		    $migrations = new Migrations('olc_baker-dev');
 		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'schema';
+		    if(!file_exists($sqlPath)) {
+		        mkdir($sqlPath, 0777, true);
+		    }
 
 		    $aResult = array();
 		    $sqlContent = "SET NAMES utf8;\n\n";
@@ -745,7 +750,9 @@ class ProjectsController extends AppController {
 		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
 		        && is_file($project['Project']['config_file'])
 		    ) {
-		        include VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php';
+		        App::import('vendor', 'olc_baker', array(
+		        	'file' => 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php'
+		        ));
 		        $handlerName = $project['Project']['type'] . 'Handler';
 		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
 		        if(!empty($result)) {
