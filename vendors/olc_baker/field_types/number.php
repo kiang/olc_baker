@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'numberFormat' => array(
             'rule' => '\'numeric\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

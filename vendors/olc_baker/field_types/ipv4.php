@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'ipFormat' => array(
             'rule' => '\'ip\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

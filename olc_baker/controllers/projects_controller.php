@@ -348,7 +348,7 @@ class ProjectsController extends AppController {
 		                if($formField['is_required']) {
 		                    $validate[$formField['name']]['notEmpty'] = array(
 		                        'rule' => '\'notEmpty\'',
-		                        'message' => '__(\'This field is required\', true)',
+		                        'message' => '\'This field is required\'',
 		                    );
 		                }
 		            }

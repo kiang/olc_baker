@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'ccFormat' => array(
             'rule' => '\'cc\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

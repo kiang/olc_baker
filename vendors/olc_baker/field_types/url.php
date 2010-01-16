@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'urlFormat' => array(
             'rule' => '\'url\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

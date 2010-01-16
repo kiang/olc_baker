@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'moneyFormat' => array(
             'rule' => '\'money\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'alphaNumericFormat' => array(
             'rule' => '\'alphaNumeric\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),

@@ -6,7 +6,7 @@ return array(
     'validate' => array(
         'emailFormat' => array(
             'rule' => '\'email\'',
-            'message' => '__(\'Wrong format\', true)',
+            'message' => '\'Wrong format\'',
             'allowEmpty' => 'true',
         ),
     ),
