@@ -8,7 +8,7 @@ class RelationshipsController extends AppController {
 	        'conditions' => array('BaseForm.id' => $formId),
 	        'contain' => array(),
 	    ))) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
@@ -54,7 +54,7 @@ class RelationshipsController extends AppController {
 
 	function delete($id = null) {
 		if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 		} else if ($this->Relationship->del($id) && $this->Relationship->del($parentId)) {
 			$this->Session->setFlash(__('Data has been deleted', true));
 		}

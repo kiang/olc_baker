@@ -72,7 +72,7 @@ class <{$controllerName}>Controller extends AppController {
 
     function view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
-            $this->Session->setFlash(__('Please do following the links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -166,7 +166,7 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
-            $this->Session->setFlash(__('Please do following the links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
     }
@@ -220,7 +220,7 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(__('Please do following the links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
@@ -283,8 +283,8 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(__('Please do following the links in the page', true));
-        } else if ($this-><{$modelName}>->del($id)) {
+            $this->Session->setFlash(__('Please do following links in the page', true));
+        } else if ($this-><{$modelName}>->delete($id)) {
             $this->Session->setFlash(__('The data has been deleted', true));
         }
         $this->redirect(array('action'=>'index'));

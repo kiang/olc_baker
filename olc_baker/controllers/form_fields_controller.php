@@ -5,7 +5,7 @@ class FormFieldsController extends AppController {
 
 	function add($formId = null) {
 	    if (!$formId) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
@@ -28,7 +28,7 @@ class FormFieldsController extends AppController {
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
@@ -51,7 +51,7 @@ class FormFieldsController extends AppController {
 
 	function delete($id = null) {
 	    if (!$id || !$formId = $this->FormField->field('form_id', array('FormField.id' => $id))) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
 		}
 		if ($this->FormField->del($id)) {

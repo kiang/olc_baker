@@ -11,7 +11,7 @@ class ProjectsController extends AppController {
 
 	function view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('project', $this->Project->read(null, $id));
@@ -37,7 +37,7 @@ class ProjectsController extends AppController {
 
 	function edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
@@ -60,7 +60,7 @@ class ProjectsController extends AppController {
 
 	function delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Project->del($id)) {
@@ -93,7 +93,7 @@ class ProjectsController extends AppController {
 		        ),
 		    ),
 		))) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		} else {
 		    $projectOptions = unserialize($project['Project']['options']);
@@ -740,7 +740,7 @@ class ProjectsController extends AppController {
 		    'conditions' => array('Project.id' => $projectId),
 		    'contain' => array(),
 		))) {
-			$this->Session->setFlash(__('Please do following the links in the page', true));
+			$this->Session->setFlash(__('Please do following links in the page', true));
 		} else {
 		    $projectOptions = unserialize($project['Project']['options']);
 		    foreach($projectOptions['settings'] AS $key => $val) {
