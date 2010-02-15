@@ -1,7 +1,8 @@
 <?php
-class project extends AppModel {
+App::import('vendor', 'smarty', array('file' => 'Smarty.class.php'));
+class Project extends AppModel {
 
-	var $name = 'project';
+	var $name = 'Project';
 	var $validate = array(
 		'name' => array('notempty'),
 		'label' => array('notempty'),
@@ -16,6 +17,16 @@ class project extends AppModel {
 			'dependent' => false,
 	    )
 	);
+	
+	function __construct($id = false, $table = null, $ds = null) {
+		parent::__construct($id, $table, $ds);
+		$this->smarty = new Smarty;
+		$this->smarty->template_dir = VENDORS . 'olc_baker' . DS . 'templates' . DS;
+		$this->smarty->compile_dir = TMP . 'smarty' . DS . 'compile' . DS;
+		$this->smarty->cache_dir = TMP . 'smarty' . DS . 'cache' . DS;
+		$this->smarty->left_delimiter = '<{';
+		$this->smarty->right_delimiter = '}>';
+	}
 	
 	var $tasks = array();
 	var $errorMessage = '';

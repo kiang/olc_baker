@@ -2,7 +2,6 @@
 class ProjectsController extends AppController {
 
 	var $name = 'Projects';
-	var $components = array('Smarty');
 
 	function index() {
 		$this->Project->recursive = 0;
@@ -92,14 +91,14 @@ class ProjectsController extends AppController {
 		    /*
 		     * Write the settings
 		     */
-		    $this->Smarty->assign('rewriteBase', $project['Project']['rewrite_base']);
-		    $this->Smarty->assign('rootPath', dirname($project['Project']['app_path']));
-		    $this->Smarty->assign('appDir', basename($project['Project']['app_path']));
-		    $this->Smarty->assign('cakeIncludePath', CAKE_CORE_INCLUDE_PATH);
-		    $this->Smarty->assign('db_host', $project['Project']['db_host']);
-		    $this->Smarty->assign('db_login', $project['Project']['db_login']);
-		    $this->Smarty->assign('db_password', $project['Project']['db_password']);
-		    $this->Smarty->assign('db_name', $project['Project']['db_name']);
+		    $this->Project->smarty->assign('rewriteBase', $project['Project']['rewrite_base']);
+		    $this->Project->smarty->assign('rootPath', dirname($project['Project']['app_path']));
+		    $this->Project->smarty->assign('appDir', basename($project['Project']['app_path']));
+		    $this->Project->smarty->assign('cakeIncludePath', CAKE_CORE_INCLUDE_PATH);
+		    $this->Project->smarty->assign('db_host', $project['Project']['db_host']);
+		    $this->Project->smarty->assign('db_login', $project['Project']['db_login']);
+		    $this->Project->smarty->assign('db_password', $project['Project']['db_password']);
+		    $this->Project->smarty->assign('db_name', $project['Project']['db_name']);
 		    $files = array(
 		        DS . '.htaccess',
 		        DS . 'webroot' . DS . '.htaccess',
@@ -109,7 +108,7 @@ class ProjectsController extends AppController {
 		    
 		    $operactions = array();
 		    foreach($files AS $file) {
-		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
+		        file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $this->Project->tasks[] = array(
@@ -279,18 +278,18 @@ class ProjectsController extends AppController {
 
 		            $controllers[$table_name] = $form['label'];
 
-		            $this->Smarty->assign('relationships', $relationships);
-		            $this->Smarty->assign('models', $models);
-		            $this->Smarty->assign('modelName', $model_name);
-		            $this->Smarty->assign('uploads', $uploads);
-		            $this->Smarty->assign('modelFields', $tables[$table_name]);
-		            $this->Smarty->assign('htbtmModels', $htbtmModels);
-		            $this->Smarty->assign('modelFileName', $file_name);
-		            $this->Smarty->assign('controllerName', $controller_name);
+		            $this->Project->smarty->assign('relationships', $relationships);
+		            $this->Project->smarty->assign('models', $models);
+		            $this->Project->smarty->assign('modelName', $model_name);
+		            $this->Project->smarty->assign('uploads', $uploads);
+		            $this->Project->smarty->assign('modelFields', $tables[$table_name]);
+		            $this->Project->smarty->assign('htbtmModels', $htbtmModels);
+		            $this->Project->smarty->assign('modelFileName', $file_name);
+		            $this->Project->smarty->assign('controllerName', $controller_name);
 
 		            file_put_contents(
 		                $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php',
-		                $this->Smarty->fetch('default' . DS . 'models' . DS . 'default.php')
+		                $this->Project->smarty->fetch('default' . DS . 'models' . DS . 'default.php')
 		            );
 		            $operactions[] = $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php created';
 
@@ -299,14 +298,14 @@ class ProjectsController extends AppController {
 		                mkdir($viewPath, 0777, true);
 		            }
 		            $operactions[] = $viewPath . ' created';
-		            $this->Smarty->assign('formLabel', $form['label']);
-		            $this->Smarty->assign('fields', $fields);
-		            $this->Smarty->assign('fieldTypes', $fieldTypes);
+		            $this->Project->smarty->assign('formLabel', $form['label']);
+		            $this->Project->smarty->assign('fields', $fields);
+		            $this->Project->smarty->assign('fieldTypes', $fieldTypes);
 		            $formOptions = array();
 		            if(!empty($uploads)) {
 		                $formOptions['type'] = 'file';
 		            }
-		            $this->Smarty->assign('formOptions', $formOptions);
+		            $this->Project->smarty->assign('formOptions', $formOptions);
 		            $actions = array(
 		            	'admin_add.ctp',
 		            	'admin_edit.ctp',
@@ -321,7 +320,7 @@ class ProjectsController extends AppController {
 		            foreach($actions AS $action) {
 		                file_put_contents(
 		                    $viewPath . $action,
-		                    $this->Smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action)
+		                    $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action)
 		                );
 		                $operactions[] = $viewPath . $action . ' created';
 		            }
@@ -361,35 +360,35 @@ class ProjectsController extends AppController {
 		                        $customFields[$fieldModel][$fieldName]['label'] = $labelName;
 		                    }
 		                }
-		                $this->Smarty->assign('actionLabel', $action['name']);
-		                $this->Smarty->assign('parameters', $action['parameters']);
-		                $this->Smarty->assign('fields', $customFields);
-		                $this->Smarty->assign('blocks', $blocks);
+		                $this->Project->smarty->assign('actionLabel', $action['name']);
+		                $this->Project->smarty->assign('parameters', $action['parameters']);
+		                $this->Project->smarty->assign('fields', $customFields);
+		                $this->Project->smarty->assign('blocks', $blocks);
 		                file_put_contents(
 		                    $viewPath . $action['action'] . '.ctp',
-		                    $this->Smarty->fetch(
+		                    $this->Project->smarty->fetch(
 		                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp'
 		                    )
 		                );
-		                $this->Smarty->assign('actionName', $action['action']);
-		                $customMethods .= $this->Smarty->fetch(
+		                $this->Project->smarty->assign('actionName', $action['action']);
+		                $customMethods .= $this->Project->smarty->fetch(
 		                    VENDORS . 'olc_baker' . DS . 'actions' . DS . 'methods' . DS .
 		                    $action['parameters']['methods']['method'] . '.php'
 		                );
 		                $operactions[] = $viewPath . $action['action'] . '.ctp created';
 		            }
-		            $this->Smarty->assign('fields', $fields);
-		            $this->Smarty->assign('actions', $actions);
+		            $this->Project->smarty->assign('fields', $fields);
+		            $this->Project->smarty->assign('actions', $actions);
 		            file_put_contents(
 		                $viewPath . 'index.ctp',
-		                $this->Smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . 'index.ctp')
+		                $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . 'index.ctp')
 		            );
 		            $operactions[] = $viewPath . 'index.ctp created';
 
-		            $this->Smarty->assign('customMethods', $customMethods);
+		            $this->Project->smarty->assign('customMethods', $customMethods);
 		            file_put_contents(
 		                $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php',
-		                $this->Smarty->fetch('default' . DS . 'controllers' . DS . 'default.php')
+		                $this->Project->smarty->fetch('default' . DS . 'controllers' . DS . 'default.php')
 		            );
 		            $operactions[] = $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php created';
 		        }
@@ -398,15 +397,15 @@ class ProjectsController extends AppController {
 		    	'title' => __('Generate the MVC files', true),
 		    	'operactions' => $operactions,
 		    );
-		    $this->Smarty->assign('projectLabel', $project['Project']['label']);
-		    $this->Smarty->assign('controllers', $controllers);
+		    $this->Project->smarty->assign('projectLabel', $project['Project']['label']);
+		    $this->Project->smarty->assign('controllers', $controllers);
 		    $file = DS . 'views' . DS . 'layouts' . DS . 'default.ctp';
 		    $operactions = array();
 		    $operactions[] = $project['Project']['app_path'] . $file . ' created';
-		    file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
+		    file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
 		    
 		    foreach($files AS $file) {
-		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
+		        file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $this->Project->tasks[] = array(
