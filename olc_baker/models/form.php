@@ -29,5 +29,9 @@ class Form extends AppModel {
 			'foreignKey' => 'form_id',
 	    ),
 	);
+	
+	function generateModel() {
+		
+	}
 
 }

@@ -5,7 +5,15 @@
 	<?php
 	echo $form->input('name', array('label' => __('System name', true)));
 	echo $form->input('label', array('label' => __('Display name', true)));
-	echo $form->input('type', array('label' => __('Project type', true), 'type' => 'select', 'options' => $types));
+	echo $form->input('rewrite_base', array('label' => __('Relative path to the root of url. For example, fill in /~kiang/demo/ when the url is http://localhost/~kiang/demo/', true)));
+	echo $form->input('app_path', array('label' => __('Absolute path to the application:', true)));
+	echo $form->input('db_host', array('label' => __('Location of database:', true)));
+	echo $form->input('db_login', array('label' => __('Username of database:', true)));
+	echo $form->input('db_password', array(
+		'type' => 'password',
+		'label' => __('Username of database:', true)
+	));
+	echo $form->input('db_name', array('label' => __('Name of the database:', true)));
 	?>
 	<div id="optionBlock"></div>
 	</fieldset>
@@ -16,14 +24,3 @@
 		<li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
 	</ul>
 </div>
-<?php
-echo $html->scriptBlock('
-$(document).ready(function() {
-	$(\'#ProjectType\').change(function() {
-		$(\'#optionBlock\').load(\'' . $html->url(array('action' => 'type_form')) . '/\' +
-			$(\'#ProjectType option:selected\').val()
-		);
-	});
-	$(\'#ProjectType\').trigger(\'change\');
-});
-');

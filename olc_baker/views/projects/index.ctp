@@ -10,7 +10,6 @@ echo $paginator->counter(array(
 <tr>
 	<th><?php echo $paginator->sort(__('System name', true), 'name');?></th>
 	<th><?php echo $paginator->sort(__('Display name', true), 'label');?></th>
-	<th><?php echo $paginator->sort(__('Project type', true), 'type');?></th>
 	<th><?php echo $paginator->sort(__('Created time', true), 'created');?></th>
 	<th><?php echo $paginator->sort(__('Modified time', true), 'modified');?></th>
 	<th class="actions"><?php echo __('Actions'); ?></th>
@@ -26,7 +25,6 @@ foreach ($projects as $project):
 	<tr<?php echo $class;?>>
 		<td><?php echo $project['Project']['name']; ?></td>
 		<td><?php echo $project['Project']['label']; ?></td>
-		<td><?php echo $project['Project']['type']; ?></td>
 		<td><?php echo $project['Project']['created']; ?></td>
 		<td><?php echo $project['Project']['modified']; ?></td>
 		<td class="actions">

@@ -32,7 +32,6 @@ class ProjectsController extends AppController {
 				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
-		$this->set('types', $this->Project->getProjectTypeList());
 	}
 
 	function edit($id = null) {
@@ -55,7 +54,6 @@ class ProjectsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Project->read(null, $id);
 		}
-		$this->set('types', $this->Project->getProjectTypeList());
 	}
 
 	function delete($id = null) {
@@ -96,25 +94,6 @@ class ProjectsController extends AppController {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		} else {
-		    $projectOptions = unserialize($project['Project']['options']);
-		    foreach($projectOptions['settings'] AS $key => $val) {
-		        $project['Project'][$key] = $val;
-		    }
-		    if($project['Project']['type'] != 'manual' && isset($project['Project']['config_file'])
-		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
-		        && is_file($project['Project']['config_file'])
-		    ) {
-		        App::import('vendor', 'olc_baker', array(
-		        	'file' => 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php'
-		        ));
-		        $handlerName = $project['Project']['type'] . 'Handler';
-		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
-		        if(!empty($result)) {
-		            foreach($result AS $key => $val) {
-		                $project['Project'][$key] = $val;
-		            }
-		        }
-		    }
 		    /*
 		     * Make sure the target path is writable
 		     */
@@ -147,22 +126,6 @@ class ProjectsController extends AppController {
 		        return;
 		    }
 
-		    /*
-		     * Copy CSS file
-		     */
-		    $cssPath = DS . 'webroot' . DS . 'css' . DS . 'default.css';
-		    if($project['Project']['type'] == 'manual') {
-		        $cssSourcePath = $cssPath;
-		    } else {
-		        $cssSourcePath = DS . 'webroot' . DS . 'css' . DS . $project['Project']['type'] . '.css';
-		    }
-		    if(copy(
-		        VENDORS . 'olc_baker' . DS . 'templates' . DS . 'default' . $cssSourcePath,
-		        $project['Project']['app_path'] . $cssPath
-		    )) {
-		        $fh->__messages[] = VENDORS . 'olc_baker' . DS . 'templates' . DS . 'default' . $cssSourcePath . ' copied to ' .
-		        $project['Project']['app_path'] . $cssPath;
-		    }
 		    $tasks[] = array(
 		    	'title' => __('Copy the skelecton of application to the target path', true),
 		    	'operactions' => $fh->__messages,
@@ -185,15 +148,8 @@ class ProjectsController extends AppController {
 		        DS . 'webroot' . DS . '.htaccess',
 		        DS . 'config' . DS . 'database.php',
 		    );
-		    if($project['Project']['type'] == 'manual') {
-		        $files[] = DS . 'webroot' . DS . 'index.php';
-		    } else {
-		        file_put_contents(
-		            $project['Project']['app_path'] . DS . 'webroot' . DS . 'index.php',
-		            $this->Smarty->fetch('default' . DS . 'webroot' . DS . $project['Project']['type'] . '.php')
-		        );
-		        $operactions[] = $project['Project']['app_path'] . DS . 'webroot' . DS . 'index.php';
-		    }
+		    $files[] = DS . 'webroot' . DS . 'index.php';
+		    
 		    $operactions = array();
 		    foreach($files AS $file) {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
@@ -490,14 +446,8 @@ class ProjectsController extends AppController {
 		    $file = DS . 'views' . DS . 'layouts' . DS . 'default.ctp';
 		    $operactions = array();
 		    $operactions[] = $project['Project']['app_path'] . $file . ' created';
-		    if($project['Project']['type'] == 'manual') {
-		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
-		    } else {
-		        file_put_contents(
-		            $project['Project']['app_path'] . $file,
-		            $this->Smarty->fetch('default' . DS . 'views' . DS . 'layouts' . DS . $project['Project']['type'] . '.ctp')
-		        );
-		    }
+		    file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
+		    
 		    foreach($files AS $file) {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
@@ -742,25 +692,6 @@ class ProjectsController extends AppController {
 		))) {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 		} else {
-		    $projectOptions = unserialize($project['Project']['options']);
-		    foreach($projectOptions['settings'] AS $key => $val) {
-		        $project['Project'][$key] = $val;
-		    }
-		    if($project['Project']['type'] != 'manual' && isset($project['Project']['config_file'])
-		        && file_exists(VENDORS . 'olc_baker' . DS . 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php')
-		        && is_file($project['Project']['config_file'])
-		    ) {
-		        App::import('vendor', 'olc_baker', array(
-		        	'file' => 'project_types' . DS . 'handlers' . DS . $project['Project']['type'] . '.php'
-		        ));
-		        $handlerName = $project['Project']['type'] . 'Handler';
-		        $result = $handlerName($project['Project']['config_file'], $project['Project']);
-		        if(!empty($result)) {
-		            foreach($result AS $key => $val) {
-		                $project['Project'][$key] = $val;
-		            }
-		        }
-		    }
 		    App::Import('vendor', 'migrations');
 		    $db = & ConnectionManager::getInstance();
 		    $db->create('olc_baker-dev', array(
@@ -786,9 +717,6 @@ class ProjectsController extends AppController {
 		$this->redirect(array('action'=>'index'));
 	}
 
-	function type_form($type, $id = null) {
-	    $this->set('content', $this->Project->getProjectTypeContent($type, $id));
-	}
 	/*
 	 * Generate forms from the tables of database
 	 */
@@ -796,14 +724,13 @@ class ProjectsController extends AppController {
 	    $projectId = intval($projectId);
 
 	    if($project = $this->Project->read(null, $projectId)) {
-	        $projectOptions = unserialize($project['Project']['options']);
 	        $db = & ConnectionManager::getInstance();
 	        $db->create('olc_baker-dev', array(
 		        'driver' => 'mysql',
-		        'host' => $projectOptions['settings']['db_host'],
-		        'login' => $projectOptions['settings']['db_login'],
-		        'password' => $projectOptions['settings']['db_password'],
-		        'database' => $projectOptions['settings']['db_name'],
+		        'host' => $project['Project']['db_host'],
+		        'login' => $project['Project']['db_login'],
+		        'password' => $project['Project']['db_password'],
+		        'database' => $project['Project']['db_name'],
 		        'encoding' => 'utf8',
 		        'persistent' => false,
 	        ));
