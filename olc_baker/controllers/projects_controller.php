@@ -72,65 +72,22 @@ class ProjectsController extends AppController {
 	 * http://cakebaker.42dh.com/2007/10/17/pagination-of-data-from-a-habtm-relationship/
 	 */
 	function build($projectId = null) {
-	    if (!$projectId || !$project = $this->Project->find('first', array(
-		    'conditions' => array('Project.id' => $projectId),
-		    'contain' => array(
-		        'Form' => array(
-		        	'FormField' => array(
-		                'order' => array('sort ASC'),
-		            ),
-		            'Relationship' => array(
-		                'fields' => array('type'),
-		                'TargetForm' => array(
-		                    'fields' => array('name'),
-		                ),
-		            ),
-		            'Action' => array(
-		                'fields' => array('name', 'action', 'engine', 'parameters'),
-		            ),
-		        ),
-		    ),
-		))) {
+	    if (!$projectId || !$project = $this->Project->fetchProject($projectId)) {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		} else {
 		    /*
 		     * Make sure the target path is writable
 		     */
-		    if(!isset($project['Project']['app_path']) || !is_writable(dirname($project['Project']['app_path']))) {
+		    if(!is_writable(dirname($project['Project']['app_path']))) {
 		        $this->Session->setFlash(__('The target path is not available for writing'));
 		        $this->redirect(array('action' => 'index'));
 		    }
-		    $tasks = array();
-		    $fh = new Folder();
-		    if(file_exists($project['Project']['app_path'])) {
-		        $fh->delete($project['Project']['app_path']);
-		        $tasks[] = array(
-		            'title' => __('Target path exists. Delete the old folders.', true),
-		            'operactions' => $fh->__messages,
-		        );
-		        $fh->__messages = array();
+		    
+		    if(false === $this->Project->initialAppPath($project['Project']['app_path'])) {
+		    	$this->Session->setFlash($this->Project->errorMessage);
+		    	$this->redirect(array('action' => 'index'));
 		    }
-		    /*
-		     * Copy the skelecton of the application
-		     */
-		    $fh->copy(array(
-		        'to' => $project['Project']['app_path'],
-		        'from' => VENDORS . 'olc_baker' . DS . 'skels' . DS . 'default',
-		        'chmod' => 777,
-		    ));
-		    $errors = $fh->errors();
-		    if(!empty($errors)) {
-		        $this->Session->setFlash(__('Something was wrong when copying files.', true));
-		        $this->set('tasks', $errors);
-		        return;
-		    }
-
-		    $tasks[] = array(
-		    	'title' => __('Copy the skelecton of application to the target path', true),
-		    	'operactions' => $fh->__messages,
-		    );
-		    $fh->__messages = array();
 
 		    /*
 		     * Write the settings
@@ -155,7 +112,7 @@ class ProjectsController extends AppController {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
-		    $tasks[] = array(
+		    $this->Project->tasks[] = array(
 		    	'title' => __('Generate the files of settings', true),
 		    	'operactions' => $operactions,
 		    );
@@ -437,7 +394,7 @@ class ProjectsController extends AppController {
 		            $operactions[] = $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php created';
 		        }
 		    }
-		    $tasks[] = array(
+		    $this->Project->tasks[] = array(
 		    	'title' => __('Generate the MVC files', true),
 		    	'operactions' => $operactions,
 		    );
@@ -452,7 +409,7 @@ class ProjectsController extends AppController {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Smarty->fetch('default' . $file));
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
-		    $tasks[] = array(
+		    $this->Project->tasks[] = array(
 		    	'title' => __('Generate the application layout', true),
 		    	'operactions' => $operactions,
 		    );
@@ -673,15 +630,14 @@ class ProjectsController extends AppController {
 		    }
 		    file_put_contents($sqlPath . DS . 'schema.yaml', Spyc::YAMLDump($aResult));
 		    file_put_contents($sqlPath . DS . 'schema.sql', $sqlContent);
-		    $tasks[] = array(
+		    $this->Project->tasks[] = array(
 		    	'title' => __('Generate the database schema', true),
 		    	'operactions' => array(
 		            $sqlPath . DS . 'schema.yaml created',
 		            $sqlPath . DS . 'schema.sql created',
 		        ),
 		    );
-		    $this->set('tasks', $tasks);
-		    $fh->chmod($project['Project']['app_path'], 0777, true);
+		    $this->set('tasks', $this->Project->tasks);
 		}
 	}
 
