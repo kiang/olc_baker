@@ -2,8 +2,6 @@
 /**
  * StringTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
@@ -208,7 +206,7 @@ class StringTest extends CakeTestCase {
  * test Clean Insert
  *
  * @return void
- **/
+ */
 	function testCleanInsert() {
 		$result = String::cleanInsert(':incomplete', array(
 			'clean' => true, 'before' => ':', 'after' => ''

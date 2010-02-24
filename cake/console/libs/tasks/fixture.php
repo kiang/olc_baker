@@ -4,19 +4,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
  * Copyright 2005-2009, Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
  * @since         CakePHP(tm) v 1.3
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -55,14 +54,16 @@ class FixtureTask extends Shell {
  * The db connection being used for baking
  *
  * @var string
- **/
+ * @access public
+ */
 	var $connection = null;
 
 /**
  * Schema instance
  *
  * @var object
- **/
+ * @access protected
+ */
 	var $_Schema = null;
 
 /**
@@ -82,10 +83,6 @@ class FixtureTask extends Shell {
  * @access public
  */
 	function execute() {
-		if (!class_exists('CakeSchema')) {
-			App::import('Model', 'CakeSchema', false);
-		}
-
 		if (empty($this->args)) {
 			$this->__interactive();
 		}
@@ -108,7 +105,7 @@ class FixtureTask extends Shell {
  *
  * @access public
  * @return void
- **/
+ */
 	function all() {
 		$this->interactive = false;
 		$this->Model->interactive = false;
@@ -145,7 +142,8 @@ class FixtureTask extends Shell {
  *
  * @param string $modelName Name of model you are dealing with.
  * @return array Array of import options.
- **/
+ * @access public
+ */
 	function importOptions($modelName) {
 		$options = array();
 		$doSchema = $this->in(__('Would you like to import schema for this fixture?', true), array('y', 'n'), 'n');
@@ -172,10 +170,13 @@ class FixtureTask extends Shell {
  * @param string $model Name of model to bake.
  * @param string $useTable Name of table to use.
  * @param array $importOptions Options for var $import
- * @return string Baked fixture
- * @access private
+ * @return string Baked fixture content
+ * @access public
  */
 	function bake($model, $useTable = false, $importOptions = array()) {
+		if (!class_exists('CakeSchema')) {
+			App::import('Model', 'CakeSchema', false);
+		}
 		$table = $schema = $records = $import = $modelImport = $recordImport = null;
 		if (!$useTable) {
 			$useTable = Inflector::tableize($model);
@@ -230,9 +231,9 @@ class FixtureTask extends Shell {
  *
  * @param string $model name of the model being generated
  * @param string $fixture Contents of the fixture file.
+ * @return string Content saved into fixture file.
  * @access public
- * @return void
- **/
+ */
 	function generateFixtureFile($model, $otherVars) {
 		$defaults = array('table' => null, 'schema' => null, 'records' => null, 'import' => null, 'fields' => null);
 		$vars = array_merge($defaults, $otherVars);
@@ -257,7 +258,8 @@ class FixtureTask extends Shell {
  *
  * @param array $table Table schema array
  * @return string fields definitions
- **/
+ * @access protected
+ */
 	function _generateSchema($tableInfo) {
 		$schema = $this->_Schema->generateTable('f', $tableInfo);
 		return substr($schema, 10, -2);
@@ -268,7 +270,8 @@ class FixtureTask extends Shell {
  *
  * @param array $table Table schema array
  * @return array Array of records to use in the fixture.
- **/
+ * @access protected
+ */
 	function _generateRecords($tableInfo, $recordCount = 1) {
 		$records = array();
 		for ($i = 0; $i < $recordCount; $i++) {
@@ -279,9 +282,11 @@ class FixtureTask extends Shell {
 				}
 				switch ($fieldInfo['type']) {
 					case 'integer':
+					case 'float':
 						$insert = $i + 1;
 					break;
-					case 'string';
+					case 'string':
+					case 'binary':
 						$isPrimaryUuid = (
 							isset($fieldInfo['key']) && strtolower($fieldInfo['key']) == 'primary' &&
 							isset($fieldInfo['length']) && $fieldInfo['length'] == 36
@@ -337,7 +342,8 @@ class FixtureTask extends Shell {
  *
  * @param array $records Array of records to be converted to string
  * @return string A string value of the $records array.
- **/
+ * @access protected
+ */
 	function _makeRecordString($records) {
 		$out = "array(\n";
 		foreach ($records as $record) {
@@ -360,7 +366,8 @@ class FixtureTask extends Shell {
  * @param string $modelName name of the model to take records from.
  * @param string $useTable Name of table to use.
  * @return array Array of records.
- **/
+ * @access protected
+ */
 	function _getRecordsFromTable($modelName, $useTable = null) {
 		if ($this->interactive) {
 			$condition = null;
@@ -378,7 +385,7 @@ class FixtureTask extends Shell {
 			'recursive' => -1
 		));
 		$db =& ConnectionManager::getDataSource($modelObject->useDbConfig);
-		$schema = $modelObject->schema();
+		$schema = $modelObject->schema(true);
 		$out = array();
 		foreach ($records as $record) {
 			$row = array();

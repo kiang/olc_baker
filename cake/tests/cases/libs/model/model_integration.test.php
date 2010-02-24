@@ -4,8 +4,6 @@
 /**
  * ModelIntegrationTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -536,7 +534,7 @@ class ModelIntegrationTest extends BaseModelTest {
  * test deconstruct() with time fields.
  *
  * @return void
- **/
+ */
 	function testDeconstructFieldsTime() {
 		$this->loadFixtures('Apple');
 		$TestModel =& new Apple();
@@ -878,10 +876,10 @@ class ModelIntegrationTest extends BaseModelTest {
 	}
 
 /**
- * ensure that __exists is reset on create
+ * ensure that exists() does not persist between method calls reset on create
  *
  * @return void
- **/
+ */
 	function testResetOfExistsOnCreate() {
 		$this->loadFixtures('Article');
 		$Article =& new Article();
@@ -897,6 +895,30 @@ class ModelIntegrationTest extends BaseModelTest {
 		$Article->saveField('title', 'Staying alive');
 		$result = $Article->read(null, 2);
 		$this->assertEqual($result['Article']['title'], 'Staying alive');
+	}
+
+/**
+ * testUseTableFalseExistsCheck method
+ *
+ * @return void
+ */
+	function testUseTableFalseExistsCheck() {
+		$this->loadFixtures('Article');
+		$Article =& new Article();
+		$Article->id = 1337;
+		$result = $Article->exists();
+		$this->assertFalse($result);
+
+		$Article->useTable = false;
+		$Article->id = null;
+		$result = $Article->exists();
+		$this->assertFalse($result);
+
+		// An article with primary key of '1' has been loaded by the fixtures.
+		$Article->useTable = false;
+		$Article->id = 1;
+		$result = $Article->exists();
+		$this->assertTrue($result);
 	}
 
 /**
@@ -1179,7 +1201,7 @@ class ModelIntegrationTest extends BaseModelTest {
  * ensure that $actsAS and $_findMethods are merged.
  *
  * @return void
- **/
+ */
 	function testConstruct() {
 		$this->loadFixtures('Post', 'Comment');
 
@@ -1200,7 +1222,7 @@ class ModelIntegrationTest extends BaseModelTest {
  * ensure that $actsAS and $_findMethods are merged.
  *
  * @return void
- **/
+ */
 	function testConstructWithAlternateDataSource() {
 		$TestModel =& ClassRegistry::init(array(
 			'class' => 'DoesntMatter', 'ds' => 'test_suite', 'table' => false

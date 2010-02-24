@@ -2,8 +2,6 @@
 /**
  * SessionTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -24,12 +22,12 @@ if (!class_exists('CakeSession')) {
 }
 
 /**
- * SessionTest class
+ * CakeSessionTest class
  *
  * @package       cake
  * @subpackage    cake.tests.cases.libs
  */
-class SessionTest extends CakeTestCase {
+class CakeSessionTest extends CakeTestCase {
 
 /**
  * Fixtures used in the SessionTest
@@ -169,6 +167,7 @@ class SessionTest extends CakeTestCase {
 		$this->assertTrue($this->Session->started());
 
 		unset($_SESSION);
+		$_SESSION = null;
 		$this->assertFalse($this->Session->started());
 		$this->assertTrue($this->Session->start());
 	}
@@ -287,6 +286,20 @@ class SessionTest extends CakeTestCase {
 
 		$this->assertTrue($this->Session->write('Session Test.Test Case', "test"));
 		$this->assertTrue($this->Session->check('Session Test.Test Case'));
+	}
+
+/**
+ * test key exploitation
+ *
+ * @return void
+ */
+	function testKeyExploit() {
+		$key = "a'] = 1; phpinfo(); \$_SESSION['a";
+		$result = $this->Session->write($key, 'haxored');
+		$this->assertTrue($result);
+
+		$result = $this->Session->read($key);
+		$this->assertEqual($result, 'haxored');
 	}
 
 /**

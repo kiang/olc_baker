@@ -2,23 +2,20 @@
 /**
  * Language string extractor
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs
  * @since         CakePHP(tm) v 1.2.0.5012
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -49,7 +46,7 @@ class ExtractTask extends Shell {
  * Merge all domains string into the default.pot file
  *
  * @var boolean
- * @access public
+ * @access private
  */
 	var $__merge = false;
 
@@ -233,9 +230,9 @@ class ExtractTask extends Shell {
 				}
 
 				if (is_array($token)) {
-					$lineNumber += count(split("\n", $token[1])) - 1;
+					$lineNumber += count(explode("\n", $token[1])) - 1;
 				} else {
-					$lineNumber += count(split("\n", $token)) - 1;
+					$lineNumber += count(explode("\n", $token)) - 1;
 				}
 			}
 			unset($allTokens);

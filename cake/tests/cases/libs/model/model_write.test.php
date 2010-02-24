@@ -4,8 +4,6 @@
 /**
  * ModelWriteTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -313,7 +311,7 @@ class ModelWriteTest extends BaseModelTest {
  * as url for controller could be either overallFavorites/index or overall_favorites/index
  *
  * @return void
- **/
+ */
 	function testCacheClearOnSave() {
 		$_back = array(
 			'check' => Configure::read('Cache.check'),
@@ -620,11 +618,11 @@ class ModelWriteTest extends BaseModelTest {
  * test that beforeValidate returning false can abort saves.
  *
  * @return void
- **/
+ */
 	function testBeforeValidateSaveAbortion() {
 		$Model =& new CallbackPostTestModel();
 		$Model->beforeValidateReturn = false;
-		
+
 		$data = array(
 			'title' => 'new article',
 			'body' => 'this is some text.'
@@ -637,7 +635,7 @@ class ModelWriteTest extends BaseModelTest {
  * test that beforeSave returning false can abort saves.
  *
  * @return void
- **/
+ */
 	function testBeforeSaveSaveAbortion() {
 		$Model =& new CallbackPostTestModel();
 		$Model->beforeSaveReturn = false;
@@ -2016,6 +2014,54 @@ class ModelWriteTest extends BaseModelTest {
 	}
 
 /**
+ * test that saving habtm records respects conditions set in the the 'conditions' key
+ * for the association.
+ *
+ * @return void
+ */
+	function testHabtmSaveWithConditionsInAssociation() {
+		$this->loadFixtures('JoinThing', 'Something', 'SomethingElse');
+		$Something =& new Something();
+		$Something->unbindModel(array('hasAndBelongsToMany' => array('SomethingElse')), false);
+
+		$Something->bindModel(array(
+			'hasAndBelongsToMany' => array(
+				'DoomedSomethingElse' => array(
+					'className' => 'SomethingElse',
+					'joinTable' => 'join_things',
+					'conditions' => 'JoinThing.doomed = 1',
+					'unique' => true
+				),
+				'NotDoomedSomethingElse' => array(
+					'className' => 'SomethingElse',
+					'joinTable' => 'join_things',
+					'conditions' => array('JoinThing.doomed' => 0),
+					'unique' => true
+				)
+			)
+		), false);
+		$result = $Something->read(null, 1);
+		$this->assertTrue(empty($result['NotDoomedSomethingElse']));
+		$this->assertEqual(count($result['DoomedSomethingElse']), 1);
+
+		$data = array(
+			'Something' => array('id' => 1),
+			'NotDoomedSomethingElse' => array(
+				'NotDoomedSomethingElse' => array(
+					array('something_else_id' => 2, 'doomed' => 0),
+					array('something_else_id' => 3, 'doomed' => 0)
+				)
+			)
+		);
+		$Something->create($data);
+		$result = $Something->save();
+		$this->assertTrue($result);
+
+		$result = $Something->read(null, 1);
+		$this->assertEqual(count($result['NotDoomedSomethingElse']), 2);
+		$this->assertEqual(count($result['DoomedSomethingElse']), 1);
+	}
+/**
  * testHabtmSaveKeyResolution method
  *
  * @access public
@@ -2512,8 +2558,12 @@ class ModelWriteTest extends BaseModelTest {
 
 		$TestModel =& new TheVoid();
 		$this->assertFalse($TestModel->exists());
+
 		$TestModel->id = 5;
+		$this->expectError();
+		ob_start();
 		$this->assertFalse($TestModel->exists());
+		$output = ob_get_clean();
 	}
 
 /**
@@ -2622,7 +2672,7 @@ class ModelWriteTest extends BaseModelTest {
  * test HABTM saving when join table has no primary key and only 2 columns.
  *
  * @return void
- **/
+ */
 	function testHabtmSavingWithNoPrimaryKeyUuidJoinTable() {
 		$this->loadFixtures('UuidTag', 'Fruit', 'FruitsUuidTag');
 		$Fruit =& new Fruit();
@@ -2646,7 +2696,7 @@ class ModelWriteTest extends BaseModelTest {
  * test HABTM saving when join table has no primary key and only 2 columns, no with model is used.
  *
  * @return void
- **/
+ */
 	function testHabtmSavingWithNoPrimaryKeyUuidJoinTableNoWith() {
 		$this->loadFixtures('UuidTag', 'Fruit', 'FruitsUuidTag');
 		$Fruit =& new FruitNoWith();
@@ -3058,6 +3108,19 @@ class ModelWriteTest extends BaseModelTest {
 				'attachment' => 'some_file.zip'
 		)));
 		$this->assertEqual($result, $expected);
+
+
+		$model->Attachment->bindModel(array('belongsTo' => array('Comment')), false);
+		$data = array(
+			'Comment' => array(
+				'comment' => 'Comment with attachment',
+				'article_id' => 1,
+				'user_id' => 1
+			),
+			'Attachment' => array(
+				'attachment' => 'some_file.zip'
+		));
+		$this->assertTrue($model->saveAll($data, array('validate' => 'first')));
 	}
 
 /**

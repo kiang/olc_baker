@@ -2,31 +2,26 @@
 /**
  * Validation Class.  Used for validation of model data
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
  * @since         CakePHP(tm) v 1.2.0.3830
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 if (!class_exists('Multibyte')) {
 	App::import('Core', 'Multibyte', false);
 }
 /**
  * Offers different validation methods.
- *
- * Long description for file
  *
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -58,7 +53,6 @@ class Validation extends Object {
  * @access private
  */
 	var $__pattern = array(
-		'ip' => '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])',
 		'hostname' => '(?:[a-z0-9][-a-z0-9]*\.)*(?:[a-z0-9][-a-z0-9]{0,62})\.(?:(?:[a-z]{2}\.)?[a-z]{2,4}|museum|travel)'
 	);
 
@@ -214,8 +208,8 @@ class Validation extends Object {
  *
  * @param mixed $check credit card number to validate
  * @param mixed $type 'all' may be passed as a sting, defaults to fast which checks format of most major credit cards
- * 							if an array is used only the values of the array are checked.
- * 							Example: array('amex', 'bankcard', 'maestro')
+ *    if an array is used only the values of the array are checked.
+ *    Example: array('amex', 'bankcard', 'maestro')
  * @param boolean $deep set to true this will check the Luhn algorithm of the credit card.
  * @param string $regex A custom regex can also be passed, this will be used instead of the defined regex values
  * @return boolean Success
@@ -507,8 +501,13 @@ class Validation extends Object {
 		}
 
 		if ($return === true && preg_match('/@(' . $_this->__pattern['hostname'] . ')$/i', $_this->check, $regs)) {
-			$host = gethostbynamel($regs[1]);
-			return is_array($host);
+			if (function_exists('getmxrr')) {
+				return getmxrr($regs[1], $mxhosts);
+			}
+			if (function_exists('checkdnsrr')) {
+				return checkdnsrr($regs[1], 'MX');
+			}
+			return is_array(gethostbynamel($regs[1]));
 		}
 		return false;
 	}
@@ -547,17 +546,63 @@ class Validation extends Object {
 	}
 
 /**
- * Validation of an IPv4 address.
+ * Validation of an IP address.
+ *
+ * Valid IP version strings for type restriction are:
+ * - both: Check both IPv4 and IPv6, return true if the supplied address matches either version
+ * - IPv4: Version 4 (Eg: 127.0.0.1, 192.168.10.123, 203.211.24.8)
+ * - IPv6: Version 6 (Eg: ::1, 2001:0db8::1428:57ab)
  *
  * @param string $check The string to test.
+ * @param string $type The IP Version to test against
  * @return boolean Success
  * @access public
  */
-	function ip($check) {
+	function ip($check, $type = 'both') {
 		$_this =& Validation::getInstance();
-		$_this->check = $check;
-		$_this->regex = '/^' . $_this->__pattern['ip'] . '$/';
-		return $_this->_check();
+		$success = false;
+		$type = strtolower($type);
+		if ($type === 'ipv4' || $type === 'both') {
+			$success |= $_this->_ipv4($check);
+		}
+		if ($type === 'ipv6' || $type === 'both') {
+			$success |= $_this->_ipv6($check);
+		}
+		return $success;
+	}
+
+/**
+ * Validation of IPv4 addresses.
+ *
+ * @param string $check IP Address to test
+ * @return boolean Success
+ * @access protected
+ */
+	function _ipv4($check) {
+		if (function_exists('filter_var')) {
+			return filter_var($check, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV4)) !== false;
+		}
+		$this->__populateIp();
+		$this->check = $check;
+		$this->regex = '/^' . $this->__pattern['IPv4'] . '$/';
+		return $this->_check();
+	}
+
+/**
+ * Validation of IPv6 addresses.
+ *
+ * @param string $check IP Address to test
+ * @return boolean Success
+ * @access protected
+ */
+	function _ipv6($check) {
+		if (function_exists('filter_var')) {
+			return filter_var($check, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV6)) !== false;
+		}
+		$this->__populateIp();
+		$this->check = $check;
+		$this->regex = '/^' . $this->__pattern['IPv6'] . '$/';
+		return $this->_check();
 	}
 
 /**
@@ -609,12 +654,14 @@ class Validation extends Object {
 /**
  * Validate a multiple select.
  *
+ * Valid Options
+ *
+ * - in => provide a list of choices that selections must be made from
+ * - max => maximun number of non-zero choices that can be made
+ * - min => minimum number of non-zero choices that can be made
+ *
  * @param mixed $check Value to check
  * @param mixed $options Options for the check.
- * 	Valid options
- *	  in => provide a list of choices that selections must be made from
- *	  max => maximun number of non-zero choices that can be made
- * 	  min => minimum number of non-zero choices that can be made
  * @return boolean Success
  * @access public
  */
@@ -625,10 +672,10 @@ class Validation extends Object {
 		if (empty($check)) {
 			return false;
 		}
-		if ($options['max'] && sizeof($check) > $options['max']) {
+		if ($options['max'] && count($check) > $options['max']) {
 			return false;
 		}
-		if ($options['min'] && sizeof($check) < $options['min']) {
+		if ($options['min'] && count($check) < $options['min']) {
 			return false;
 		}
 		if ($options['in'] && is_array($options['in'])) {
@@ -673,11 +720,15 @@ class Validation extends Object {
 		if (is_null($_this->regex)) {
 			switch ($_this->country) {
 				case 'us':
+				case 'all':
+				case 'can':
 				// includes all NANPA members. see http://en.wikipedia.org/wiki/North_American_Numbering_Plan#List_of_NANPA_countries_and_territories
-				default:
 					$_this->regex  = '/^(?:\+?1)?[-. ]?\\(?[2-9][0-8][0-9]\\)?[-. ]?[2-9][0-9]{2}[-. ]?[0-9]{4}$/';
 				break;
 			}
+		}
+		if (empty($_this->regex)) {
+			return $_this->_pass('phone', $check, $country);
 		}
 		return $_this->_check();
 	}
@@ -699,6 +750,9 @@ class Validation extends Object {
 		if (is_array($check)) {
 			$_this->_extract($check);
 		}
+		if (empty($country)) {
+			$_this->country = 'us';
+		}
 
 		if (is_null($_this->regex)) {
 			switch ($_this->country) {
@@ -716,10 +770,12 @@ class Validation extends Object {
 					$_this->regex  = '/^[1-9]{1}[0-9]{3}$/i';
 					break;
 				case 'us':
-				default:
 					$_this->regex  = '/\\A\\b[0-9]{5}(?:-[0-9]{4})?\\b\\z/i';
 					break;
 			}
+		}
+		if (empty($_this->regex)) {
+			return $_this->_pass('postal', $check, $country);
 		}
 		return $_this->_check();
 	}
@@ -772,11 +828,27 @@ class Validation extends Object {
 					$_this->regex  = '/\\A\\b[0-9]{9}\\b\\z/i';
 					break;
 				case 'us':
-				default:
 					$_this->regex  = '/\\A\\b[0-9]{3}-[0-9]{2}-[0-9]{4}\\b\\z/i';
 					break;
 			}
 		}
+		if (empty($_this->regex)) {
+			return $_this->_pass('ssn', $check, $country);
+		}
+		return $_this->_check();
+	}
+
+/**
+ * Checks that a value is a valid uuid - http://tools.ietf.org/html/rfc4122
+ * 
+ * @param string $check Value to check
+ * @return boolean Success
+ * @access public
+ */
+	function uuid($check) {
+		$_this =& Validation::getInstance();
+		$_this->check = $check;
+		$_this->regex = '/^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i';
 		return $_this->_check();
 	}
 
@@ -784,13 +856,14 @@ class Validation extends Object {
  * Checks that a value is a valid URL according to http://www.w3.org/Addressing/URL/url-spec.txt
  *
  * The regex checks for the following component parts:
- * 	a valid, optional, scheme
- * 		a valid ip address OR
- * 		a valid domain name as defined by section 2.3.1 of http://www.ietf.org/rfc/rfc1035.txt
- *	  with an optional port number
- *	an optional valid path
- *	an optional query string (get parameters)
- *	an optional fragment (anchor tag)
+ *
+ * - a valid, optional, scheme
+ * - a valid ip address OR
+ *   a valid domain name as defined by section 2.3.1 of http://www.ietf.org/rfc/rfc1035.txt
+ *   with an optional port number
+ * - an optional valid path
+ * - an optional query string (get parameters)
+ * - an optional fragment (anchor tag)
  *
  * @param string $check Value to check
  * @param boolean $strict Require URL to be prefixed by a valid scheme (one of http(s)/ftp(s)/file/news/gopher)
@@ -799,10 +872,12 @@ class Validation extends Object {
  */
 	function url($check, $strict = false) {
 		$_this =& Validation::getInstance();
+		$_this->__populateIp();
 		$_this->check = $check;
 		$validChars = '([' . preg_quote('!"$&\'()*+,-.@_:;=~') . '\/0-9a-z]|(%[0-9a-f]{2}))';
 		$_this->regex = '/^(?:(?:https?|ftps?|file|news|gopher):\/\/)' . (!empty($strict) ? '' : '?') .
-			'(?:' . $_this->__pattern['ip'] . '|' . $_this->__pattern['hostname'] . ')(?::[1-9][0-9]{0,3})?' .
+			'(?:' . $_this->__pattern['IPv4'] . '|\[' . $_this->__pattern['IPv6'] . '\]|' . $_this->__pattern['hostname'] . ')' .
+			'(?::[1-9][0-9]{0,4})?' .
 			'(?:\/?|\/' . $validChars . '*)?' .
 			'(?:\?' . $validChars . '*)?' .
 			'(?:#' . $validChars . '*)?$/i';
@@ -833,6 +908,31 @@ class Validation extends Object {
  */
 	function userDefined($check, $object, $method, $args = null) {
 		return call_user_func_array(array(&$object, $method), array($check, $args));
+	}
+
+/**
+ * Attempts to pass unhandled Validation locales to a class starting with $classPrefix
+ * and ending with Validation.  For example $classPrefix = 'nl', the class would be
+ * `NlValidation`.
+ *
+ * @param string $method The method to call on the other class.
+ * @param mixed $check The value to check or an array of parameters for the method to be called.
+ * @param string $classPrefix The prefix for the class to do the validation.
+ * @return mixed Return of Passed method, false on failure
+ * @access protected
+ **/
+	function _pass($method, $check, $classPrefix) {
+		$className = ucwords($classPrefix) . 'Validation';
+		if (!class_exists($className)) {
+			trigger_error(sprintf(__('Could not find %s class, unable to complete validation.', true), $className), E_USER_WARNING);
+			return false;
+		}
+		if (!is_callable(array($className, $method))) {
+			trigger_error(sprintf(__('Method %s does not exist on %s unable to complete validation.', true), $method, $className), E_USER_WARNING);
+			return false;
+		}
+		$check = (array)$check;
+		return call_user_func_array(array($className, $method), $check);
 	}
 
 /**
@@ -909,6 +1009,37 @@ class Validation extends Object {
 		}
 
 		return ($sum % 10 == 0);
+	}
+
+/*
+ * Lazily popualate the IP address patterns used for validations
+ *
+ * @return void
+ * @access private
+ */
+	function __populateIp() {
+		if (!isset($this->__pattern['IPv6'])) {
+			$pattern  = '((([0-9A-Fa-f]{1,4}:){7}(([0-9A-Fa-f]{1,4})|:))|(([0-9A-Fa-f]{1,4}:){6}';
+			$pattern .= '(:|((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})';
+			$pattern .= '|(:[0-9A-Fa-f]{1,4})))|(([0-9A-Fa-f]{1,4}:){5}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})';
+			$pattern .= '(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)';
+			$pattern .= '{4}(:[0-9A-Fa-f]{1,4}){0,1}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
+			$pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){3}(:[0-9A-Fa-f]{1,4}){0,2}';
+			$pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|';
+			$pattern .= '((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:){2}(:[0-9A-Fa-f]{1,4}){0,3}';
+			$pattern .= '((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2}))';
+			$pattern .= '{3})?)|((:[0-9A-Fa-f]{1,4}){1,2})))|(([0-9A-Fa-f]{1,4}:)(:[0-9A-Fa-f]{1,4})';
+			$pattern .= '{0,4}((:((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)';
+			$pattern .= '|((:[0-9A-Fa-f]{1,4}){1,2})))|(:(:[0-9A-Fa-f]{1,4}){0,5}((:((25[0-5]|2[0-4]';
+			$pattern .= '\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})?)|((:[0-9A-Fa-f]{1,4})';
+			$pattern .= '{1,2})))|(((25[0-5]|2[0-4]\d|[01]?\d{1,2})(\.(25[0-5]|2[0-4]\d|[01]?\d{1,2})){3})))(%.+)?';
+
+			$this->__pattern['IPv6'] = $pattern;
+		}
+		if (!isset($this->__pattern['IPv4'])) {
+			$pattern = '(?:(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|(?:(?:1[0-9])?|[1-9]?)[0-9])';
+			$this->__pattern['IPv4'] = $pattern;
+		}
 	}
 
 /**

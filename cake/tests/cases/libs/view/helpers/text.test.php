@@ -2,8 +2,6 @@
 /**
  * TextHelperTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -362,6 +360,15 @@ class TextHelperTest extends CakeTestCase {
 
 		$result = $this->Text->toList(array('Dusty', 'Lucky', 'Ned'), 'y');
 		$this->assertEqual($result, 'Dusty, Lucky y Ned');
+
+        $result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'y');
+        $this->assertEqual($result, 'Dusty, Lucky y Ned');
+
+        $result = $this->Text->toList(array( 1 => 'Dusty', 2 => 'Lucky', 3 => 'Ned'), 'and', ' + ');
+        $this->assertEqual($result, 'Dusty + Lucky and Ned');
+
+        $result = $this->Text->toList(array( 'name1' => 'Dusty', 'name2' => 'Lucky'));
+        $this->assertEqual($result, 'Dusty and Lucky');
 	}
 }
 ?>

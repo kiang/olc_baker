@@ -2,8 +2,6 @@
 /**
  * ComponentTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -454,7 +452,7 @@ class ComponentTest extends CakeTestCase {
 		$this->assertTrue(is_a($Controller->ParamTest, 'ParamTestComponent'));
 		$this->assertTrue(is_a($Controller->ParamTest->Banana, 'BananaComponent'));
 		$this->assertTrue(is_a($Controller->Orange, 'OrangeComponent'));
-		$this->assertTrue(is_a($Controller->Session, 'SessionComponent'));
+		$this->assertFalse(isset($Controller->Session));
 		$this->assertEqual($Controller->Orange->settings, array('colour' => 'blood orange'));
 		$this->assertEqual($Controller->ParamTest->test, 'value');
 		$this->assertEqual($Controller->ParamTest->flag, true);
@@ -477,7 +475,7 @@ class ComponentTest extends CakeTestCase {
  * Ensure that settings are not duplicated when passed into component initialize.
  *
  * @return void
- **/
+ */
 	function testComponentParamsNoDuplication() {
 		if ($this->skipIf(defined('APP_CONTROLLER_EXISTS'), '%s Need a non-existent AppController')) {
 			return;

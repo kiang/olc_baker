@@ -136,7 +136,7 @@ class ConfigureTest extends CakeTestCase {
  * testSetErrorReporting Level
  *
  * @return void
- **/
+ */
 	function testSetErrorReportingLevel() {
 		Configure::write('log', false);
 
@@ -160,7 +160,7 @@ class ConfigureTest extends CakeTestCase {
  * test that log and debug configure values interact well.
  *
  * @return void
- **/
+ */
 	function testInteractionOfDebugAndLog() {
 		Configure::write('log', false);
 
@@ -176,6 +176,11 @@ class ConfigureTest extends CakeTestCase {
 		Configure::write('debug', 2);
 		$this->assertEqual(ini_get('error_reporting'), E_ALL & ~E_DEPRECATED);
 		$this->assertEqual(ini_get('display_errors'), 1);
+
+		Configure::write('debug', 0);
+		Configure::write('log', false);
+		$this->assertEqual(ini_get('error_reporting'), 0);
+		$this->assertEqual(ini_get('display_errors'), 0);
 	}
 
 /**
@@ -222,6 +227,30 @@ class ConfigureTest extends CakeTestCase {
 
 		$result = Configure::load('config');
 		$this->assertTrue($result === null);
+
+		$result = Configure::load('../../index');
+		$this->assertFalse($result);
+	}
+
+/**
+ * testLoad method
+ *
+ * @access public
+ * @return void
+ */
+	function testLoadPlugin() {
+		App::build(array('plugins' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS)), true);
+		$result = Configure::load('test_plugin.load');
+		$this->assertTrue($result === null);
+		$expected = '/test_app/plugins/test_plugin/config/load.php';
+		$config = Configure::read('plugin_load');
+		$this->assertEqual($config, $expected);
+
+		$result = Configure::load('test_plugin.more.load');
+		$this->assertTrue($result === null);
+		$expected = '/test_app/plugins/test_plugin/config/more.load.php';
+		$config = Configure::read('plugin_more_load');
+		$this->assertEqual($config, $expected);
 	}
 
 /**
@@ -233,17 +262,20 @@ class ConfigureTest extends CakeTestCase {
 	function testStoreAndLoad() {
 		Configure::write('Cache.disable', false);
 
-		$expected = array('data' => 'value');
+		$expected = array('data' => 'value with backslash \, \'singlequote\' and "doublequotes"');
 		Configure::store('SomeExample', 'test', $expected);
 
 		Configure::load('test');
 		$config = Configure::read('SomeExample');
 		$this->assertEqual($config, $expected);
 
-		$expected = array('data' => array('first' => 'value', 'second' => 'value2'));
-		Configure::store('AnotherExample', 'test.config', $expected);
+		$expected = array(
+			'data' => array('first' => 'value with backslash \, \'singlequote\' and "doublequotes"', 'second' => 'value2'),
+			'data2' => 'value'
+		);
+		Configure::store('AnotherExample', 'test_config', $expected);
 
-		Configure::load('test.config');
+		Configure::load('test_config');
 		$config = Configure::read('AnotherExample');
 		$this->assertEqual($config, $expected);
 	}
@@ -389,6 +421,40 @@ class AppImportTest extends UnitTestCase {
 
 		$result = App::objects('NonExistingType');
 		$this->assertFalse($result);
+
+		App::build(array(
+			'plugins' => array(
+				TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'libs' . DS
+			)
+		));
+		$result = App::objects('plugin', null, false);
+		$this->assertTrue(in_array('Cache', $result));
+		$this->assertTrue(in_array('Log', $result));
+
+		App::build();
+	}
+
+/**
+ * test that pluginPath can find paths for plugins.
+ *
+ * @return void
+ */
+	function testPluginPath() {
+		App::build(array(
+			'plugins' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS)
+		));
+		$path = App::pluginPath('test_plugin');
+		$expected = TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS . 'test_plugin' . DS;
+		$this->assertEqual($path, $expected);
+
+		$path = App::pluginPath('TestPlugin');
+		$expected = TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS . 'test_plugin' . DS;
+		$this->assertEqual($path, $expected);
+
+		$path = App::pluginPath('TestPluginTwo');
+		$expected = TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS . 'test_plugin_two' . DS;
+		$this->assertEqual($path, $expected);
+		App::build();
 	}
 
 /**

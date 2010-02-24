@@ -2,8 +2,6 @@
 /**
  * JavascriptHelperTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -792,7 +790,7 @@ class JavascriptTest extends CakeTestCase {
  * test string escaping and compare to json_encode()
  *
  * @return void
- **/
+ */
 	function testStringJsonEncodeCompliance() {
 		if (!function_exists('json_encode')) {
 			return;
@@ -822,7 +820,7 @@ class JavascriptTest extends CakeTestCase {
  * test that text encoded with Javascript::object decodes properly
  *
  * @return void
- **/
+ */
 	function testObjectDecodeCompatibility() {
 		if (!function_exists('json_decode')) {
 			return;

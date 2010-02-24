@@ -2,8 +2,6 @@
 /**
  * HelperTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -341,7 +339,7 @@ class HelperTest extends CakeTestCase {
  * test getting values from Helper
  *
  * @return void
- **/
+ */
 	function testValue() {
 		$this->Helper->data = array('fullname' => 'This is me');
 		$this->Helper->setEntity('fullname');
@@ -393,7 +391,7 @@ class HelperTest extends CakeTestCase {
  * Ensure HTML escaping of url params.  So link addresses are valid and not exploited
  *
  * @return void
- **/
+ */
 	function testUrlConversion() {
 		$result = $this->Helper->url('/controller/action/1');
 		$this->assertEqual($result, '/controller/action/1');
@@ -429,7 +427,7 @@ class HelperTest extends CakeTestCase {
  * test assetTimestamp application
  *
  * @return void
- **/
+ */
 	function testAssetTimestamp() {
 		$_timestamp = Configure::read('Asset.timestamp');
 		$_debug = Configure::read('debug');
@@ -662,6 +660,44 @@ class HelperTest extends CakeTestCase {
 		$this->Helper->data['My']['title'] = 'My Title';
 		$result = $this->Helper->value('My.title');
 		$this->assertEqual($result,'My Title');
+	}
+	
+	function testWebrootPaths() {
+		$this->Helper->webroot = '/';
+		$result = $this->Helper->webroot('/img/cake.power.gif');
+		$expected = '/img/cake.power.gif';
+		$this->assertEqual($result, $expected);
+		
+		$this->Helper->theme = 'test_theme';
+		
+		App::build(array(
+			'views' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'views'. DS)
+		));
+	
+		$result = $this->Helper->webroot('/img/cake.power.gif');
+		$expected = '/theme/test_theme/img/cake.power.gif';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Helper->webroot('/img/test.jpg');
+		$expected = '/theme/test_theme/img/test.jpg';
+		$this->assertEqual($result, $expected);
+
+		$webRoot = Configure::read('App.www_root');
+		Configure::write('App.www_root', TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'webroot' . DS);
+		
+		$result = $this->Helper->webroot('/img/cake.power.gif');
+		$expected = '/theme/test_theme/img/cake.power.gif';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Helper->webroot('/img/test.jpg');
+		$expected = '/theme/test_theme/img/test.jpg';
+		$this->assertEqual($result, $expected);
+		
+		$result = $this->Helper->webroot('/img/cake.icon.gif');
+		$expected = '/img/cake.icon.gif';
+		$this->assertEqual($result, $expected);
+		
+		Configure::write('App.www_root', $webRoot);
 	}
 
 }

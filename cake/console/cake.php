@@ -7,22 +7,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008,	Cake Software Foundation, Inc.
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009,	Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console
  * @since         CakePHP(tm) v 1.2.0.5012
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 if (!defined('E_DEPRECATED')) {
 	define('E_DEPRECATED', 8192);
@@ -124,15 +120,6 @@ class ShellDispatcher {
 	var $shellName = null;
 
 /**
- * Constructs this ShellDispatcher instance.
- *
- * @param array $args the argv.
- */
-	function ShellDispatcher($args = array()) {
-		$this->__construct($args);
-	}
-
-/**
  * Constructor
  *
  * The execution of the script is stopped after dispatching the request with
@@ -142,7 +129,7 @@ class ShellDispatcher {
  * @return void
  * @access public
  */
-	function __construct($args = array()) {
+	function ShellDispatcher($args = array()) {
 		set_time_limit(0);
 
 		$this->__initConstants();
@@ -321,13 +308,8 @@ class ShellDispatcher {
 			$this->help();
 			return true;
 		}
-
-		if (strpos($arg, '.') !== false)  {
-			list($plugin, $shell) = explode('.', $arg);
-		} else {
-			$plugin = null;
-			$shell = $arg;
-		}
+		
+		list($plugin, $shell) = pluginSplit($arg);
 		$this->shell = $shell;
 		$this->shellName = Inflector::camelize($shell);
 		$this->shellClass = $this->shellName . 'Shell';

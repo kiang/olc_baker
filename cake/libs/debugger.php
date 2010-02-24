@@ -213,7 +213,7 @@ class Debugger extends Object {
  * @link http://book.cakephp.org/view/460/Using-the-Debugger-Class
 */
 	function dump($var) {
-		$_this = Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 		pr($_this->exportVar($var));
 	}
 
@@ -228,7 +228,7 @@ class Debugger extends Object {
  * @link http://book.cakephp.org/view/460/Using-the-Debugger-Class
  */
 	function log($var, $level = LOG_DEBUG) {
-		$_this = Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 		$source = $_this->trace(array('start' => 1)) . "\n";
 		CakeLog::write($level, "\n" . $source . $_this->exportVar($var));
 	}
@@ -249,7 +249,7 @@ class Debugger extends Object {
 			return;
 		}
 
-		$_this = Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 
 		if (empty($file)) {
 			$file = '[internal]';
@@ -312,7 +312,7 @@ class Debugger extends Object {
 		}
 
 		if ($error == 'Fatal Error') {
-			die();
+			exit();
 		}
 		return true;
 	}
@@ -327,7 +327,7 @@ class Debugger extends Object {
  * @link http://book.cakephp.org/view/460/Using-the-Debugger-Class
  */
 	function trace($options = array()) {
-		$_this = Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 		$defaults = array(
 			'depth'   => 999,
 			'format'  => $_this->_outputFormat,
@@ -393,7 +393,7 @@ class Debugger extends Object {
 		if ($options['format'] == 'array' || $options['format'] == 'points') {
 			return $back;
 		}
-		return join("\n", $back);
+		return implode("\n", $back);
 	}
 
 /**
@@ -472,7 +472,7 @@ class Debugger extends Object {
  * @link http://book.cakephp.org/view/460/Using-the-Debugger-Class
  */
 	function exportVar($var, $recursion = 0) {
-		$_this =  Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 		switch (strtolower(gettype($var))) {
 			case 'boolean':
 				return ($var) ? 'true' : 'false';
@@ -503,10 +503,10 @@ class Debugger extends Object {
 					}
 				}
 				$n = null;
-				if (count($vars) > 0) {
+				if (!empty($vars)) {
 					$n = "\n";
 				}
-				return $out . join(",", $vars) . "{$n})";
+				return $out . implode(",", $vars) . "{$n})";
 			break;
 			case 'resource':
 				return strtolower(gettype($var));
@@ -545,7 +545,7 @@ class Debugger extends Object {
 				$out[] = "$className::$$key = " . $value;
 			}
 		}
-		return join("\n", $out);
+		return implode("\n", $out);
 	}
 
 /**
@@ -556,7 +556,7 @@ class Debugger extends Object {
  * @access protected
  */
 	function output($format = null, $strings = array()) {
-		$_this = Debugger::getInstance();
+		$_this =& Debugger::getInstance();
 		$data = null;
 
 		if (is_null($format)) {
@@ -664,14 +664,18 @@ class Debugger extends Object {
 	}
 
 /**
- * Verifies that the application's salt value has been changed from the default value.
+ * Verifies that the application's salt and cipher seed value has been changed from the default value.
  *
  * @access public
  * @static
  */
-	function checkSessionKey() {
+	function checkSecurityKeys() {
 		if (Configure::read('Security.salt') == 'DYhG93b0qyJfIxfs2guVoUubWwvniR2G0FgaC9mi') {
 			trigger_error(__('Please change the value of \'Security.salt\' in app/config/core.php to a salt value specific to your application', true), E_USER_NOTICE);
+		}
+
+		if (Configure::read('Security.cipherSeed') == '76859309657453542496749683645') {
+			trigger_error(__('Please change the value of \'Security.cipherSeed\' in app/config/core.php to a numeric (digits only) seed value specific to your application', true), E_USER_NOTICE);
 		}
 	}
 

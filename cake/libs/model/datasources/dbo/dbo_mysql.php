@@ -1,29 +1,21 @@
 <?php
-/* SVN FILE: $Id$ */
-
 /**
  * MySQL layer for DBO
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2008, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.model.datasources.dbo
  * @since         CakePHP(tm) v 0.10.5.1790
- * @version       $Revision$
- * @modifiedby    $LastChangedBy$
- * @lastmodified  $Date$
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -174,7 +166,7 @@ class DboMysqlBase extends DboSource {
 
 		$alias = $joins = false;
 		$fields = $this->_prepareUpdateFields($model, $combined, empty($conditions), !empty($conditions));
-		$fields = join(', ', $fields);
+		$fields = implode(', ', $fields);
 		$table = $this->fullTableName($model);
 
 		if (!empty($conditions)) {
@@ -358,7 +350,7 @@ class DboMysqlBase extends DboSource {
  * @param array $parameters Parameters to add & drop.
  * @return array Array of table property alteration statementes.
  * @todo Implement this method.
- **/
+ */
 	function _alterTableParameters($table, $parameters) {
 		if (isset($parameters['change'])) {
 			return $this->buildTableParameters($parameters['change']);
@@ -398,7 +390,7 @@ class DboMysqlBase extends DboSource {
 					}
 				}
 				if (is_array($value['column'])) {
-					$out .= 'KEY '. $name .' (' . join(', ', array_map(array(&$this, 'name'), $value['column'])) . ')';
+					$out .= 'KEY '. $name .' (' . implode(', ', array_map(array(&$this, 'name'), $value['column'])) . ')';
 				} else {
 					$out .= 'KEY '. $name .' (' . $this->name($value['column']) . ')';
 				}
@@ -418,7 +410,7 @@ class DboMysqlBase extends DboSource {
 	function insertMulti($table, $fields, $values) {
 		$table = $this->fullTableName($table);
 		if (is_array($fields)) {
-			$fields = join(', ', array_map(array(&$this, 'name'), $fields));
+			$fields = implode(', ', array_map(array(&$this, 'name'), $fields));
 		}
 		$values = implode(', ', $values);
 		$this->query("INSERT INTO {$table} ({$fields}) VALUES {$values}");
@@ -456,19 +448,52 @@ class DboMysqlBase extends DboSource {
 	}
 
 /**
- * Query charset by collation
+ * Converts database-layer column types to basic types
  *
- * @param string $name Collation name
- * @return string Character set name
+ * @param string $real Real database-layer column type (i.e. "varchar(255)")
+ * @return string Abstract column type (i.e. "string")
  */
-	function getCharsetName($name) {
-		$cols = $this->query('SELECT CHARACTER_SET_NAME FROM INFORMATION_SCHEMA.COLLATIONS WHERE COLLATION_NAME= ' . $this->value($name) . ';');
-		if (isset($cols[0]['COLLATIONS']['CHARACTER_SET_NAME'])) {
-			return $cols[0]['COLLATIONS']['CHARACTER_SET_NAME'];
+	function column($real) {
+		if (is_array($real)) {
+			$col = $real['name'];
+			if (isset($real['limit'])) {
+				$col .= '('.$real['limit'].')';
+			}
+			return $col;
 		}
-		return false;
-	}
 
+		$col = str_replace(')', '', $real);
+		$limit = $this->length($real);
+		if (strpos($col, '(') !== false) {
+			list($col, $vals) = explode('(', $col);
+		}
+
+		if (in_array($col, array('date', 'time', 'datetime', 'timestamp'))) {
+			return $col;
+		}
+		if (($col == 'tinyint' && $limit == 1) || $col == 'boolean') {
+			return 'boolean';
+		}
+		if (strpos($col, 'int') !== false) {
+			return 'integer';
+		}
+		if (strpos($col, 'char') !== false || $col == 'tinytext') {
+			return 'string';
+		}
+		if (strpos($col, 'text') !== false) {
+			return 'text';
+		}
+		if (strpos($col, 'blob') !== false || $col == 'binary') {
+			return 'binary';
+		}
+		if (strpos($col, 'float') !== false || strpos($col, 'double') !== false || strpos($col, 'decimal') !== false) {
+			return 'float';
+		}
+		if (strpos($col, 'enum') !== false) {
+			return "enum($vals)";
+		}
+		return 'text';
+	}
 }
 
 /**
@@ -499,8 +524,7 @@ class DboMysql extends DboMysqlBase {
 		'login' => 'root',
 		'password' => '',
 		'database' => 'cake',
-		'port' => '3306',
-		'connect' => 'mysql_pconnect'
+		'port' => '3306'
 	);
 
 /**
@@ -510,20 +534,20 @@ class DboMysql extends DboMysqlBase {
  */
 	function connect() {
 		$config = $this->config;
-		$connect = $config['connect'];
 		$this->connected = false;
 
 		if (!$config['persistent']) {
 			$this->connection = mysql_connect($config['host'] . ':' . $config['port'], $config['login'], $config['password'], true);
+			$config['connect'] = 'mysql_connect';
 		} else {
-			$this->connection = $connect($config['host'] . ':' . $config['port'], $config['login'], $config['password']);
+			$this->connection = mysql_pconnect($config['host'] . ':' . $config['port'], $config['login'], $config['password']);
 		}
 
 		if (mysql_select_db($config['database'], $this->connection)) {
 			$this->connected = true;
 		}
 
-		if (isset($config['encoding']) && !empty($config['encoding'])) {
+		if (!empty($config['encoding'])) {
 			$this->setEncoding($config['encoding']);
 		}
 
@@ -536,7 +560,7 @@ class DboMysql extends DboMysqlBase {
  * Check whether the MySQL extension is installed/loaded
  *
  * @return boolean
- **/
+ */
 	function enabled() {
 		return extension_loaded('mysql');
 	}
@@ -581,7 +605,7 @@ class DboMysql extends DboMysqlBase {
 		} else {
 			$tables = array();
 
-			while ($line = mysql_fetch_array($result)) {
+			while ($line = mysql_fetch_row($result)) {
 				$tables[] = $line[0];
 			}
 			parent::listSources($tables);
@@ -688,54 +712,6 @@ class DboMysql extends DboMysqlBase {
 	}
 
 /**
- * Converts database-layer column types to basic types
- *
- * @param string $real Real database-layer column type (i.e. "varchar(255)")
- * @return string Abstract column type (i.e. "string")
- */
-	function column($real) {
-		if (is_array($real)) {
-			$col = $real['name'];
-			if (isset($real['limit'])) {
-				$col .= '('.$real['limit'].')';
-			}
-			return $col;
-		}
-
-		$col = str_replace(')', '', $real);
-		$limit = $this->length($real);
-		if (strpos($col, '(') !== false) {
-			list($col, $vals) = explode('(', $col);
-		}
-
-		if (in_array($col, array('date', 'time', 'datetime', 'timestamp'))) {
-			return $col;
-		}
-		if (($col == 'tinyint' && $limit == 1) || $col == 'boolean') {
-			return 'boolean';
-		}
-		if (strpos($col, 'int') !== false) {
-			return 'integer';
-		}
-		if (strpos($col, 'char') !== false || $col == 'tinytext') {
-			return 'string';
-		}
-		if (strpos($col, 'text') !== false) {
-			return 'text';
-		}
-		if (strpos($col, 'blob') !== false || $col == 'binary') {
-			return 'binary';
-		}
-		if (strpos($col, 'float') !== false || strpos($col, 'double') !== false || strpos($col, 'decimal') !== false) {
-			return 'float';
-		}
-		if (strpos($col, 'enum') !== false) {
-			return "enum($vals)";
-		}
-		return 'text';
-	}
-
-/**
  * Enter description here...
  *
  * @param unknown_type $results
@@ -751,7 +727,6 @@ class DboMysql extends DboMysqlBase {
 		$j = 0;
 
 		while ($j < $numFields) {
-
 			$column = mysql_fetch_field($results,$j);
 			if (!empty($column->table)) {
 				$this->map[$index++] = array($column->table, $column->name);
@@ -789,6 +764,22 @@ class DboMysql extends DboMysqlBase {
  */
 	function getEncoding() {
 		return mysql_client_encoding($this->connection);
+	}
+
+/**
+ * Query charset by collation
+ *
+ * @param string $name Collation name
+ * @return string Character set name
+ */
+	function getCharsetName($name) {
+		if ((bool)version_compare(mysql_get_server_info($this->connection), "5", ">=")) {
+			$cols = $this->query('SELECT CHARACTER_SET_NAME FROM INFORMATION_SCHEMA.COLLATIONS WHERE COLLATION_NAME= ' . $this->value($name) . ';');
+			if (isset($cols[0]['COLLATIONS']['CHARACTER_SET_NAME'])) {
+				return $cols[0]['COLLATIONS']['CHARACTER_SET_NAME'];
+			}
+		}
+		return false;
 	}
 }
 ?>

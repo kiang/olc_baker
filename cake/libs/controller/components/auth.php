@@ -6,19 +6,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 App::import('Core', array('Router', 'Security'), false);
@@ -254,29 +253,32 @@ class AuthComponent extends Object {
  * @return void
  * @access public
  */
-	function initialize(&$controller) {
+	function initialize(&$controller, $settings = array()) {
 		$this->params = $controller->params;
 		$crud = array('create', 'read', 'update', 'delete');
 		$this->actionMap = array_merge($this->actionMap, array_combine($crud, $crud));
 		$this->_methods = $controller->methods;
 
-		$admin = Configure::read('Routing.admin');
-		if (!empty($admin)) {
-			$this->actionMap = array_merge($this->actionMap, array(
-				$admin . '_index'	=> 'read',
-				$admin . '_add'		=> 'create',
-				$admin . '_edit'	=> 'update',
-				$admin . '_view'	=> 'read',
-				$admin . '_remove'	=> 'delete',
-				$admin . '_create'	=> 'create',
-				$admin . '_read'	=> 'read',
-				$admin . '_update'	=> 'update',
-				$admin . '_delete'	=> 'delete'
-			));
+		$prefixes = Router::prefixes();
+		if (!empty($prefixes)) {
+			foreach ($prefixes as $prefix) {
+				$this->actionMap = array_merge($this->actionMap, array(
+					$prefix . '_index' => 'read',
+					$prefix . '_add' => 'create',
+					$prefix . '_edit' => 'update',
+					$prefix . '_view' => 'read',
+					$prefix . '_remove' => 'delete',
+					$prefix . '_create' => 'create',
+					$prefix . '_read' => 'read',
+					$prefix . '_update' => 'update',
+					$prefix . '_delete' => 'delete'
+				));
+			}
 		}
+		$this->_set($settings);
 		if (Configure::read() > 0) {
 			App::import('Debugger');
-			Debugger::checkSessionKey();
+			Debugger::checkSecurityKeys();
 		}
 	}
 
@@ -335,7 +337,7 @@ class AuthComponent extends Object {
 		if ($loginAction == $url) {
 			$model =& $this->getModel();
 			if (empty($controller->data) || !isset($controller->data[$model->alias])) {
-				if (!$this->Session->check('Auth.redirect') && env('HTTP_REFERER')) {
+				if (!$this->Session->check('Auth.redirect') && !$this->loginRedirect && env('HTTP_REFERER')) {
 					$this->Session->write('Auth.redirect', $controller->referer(null, true));
 				}
 				return false;
@@ -401,9 +403,7 @@ class AuthComponent extends Object {
 				if (isset($controller->Acl)) {
 					$this->Acl =& $controller->Acl;
 				} else {
-					$err = 'Could not find AclComponent. Please include Acl in ';
-					$err .= 'Controller::$components.';
-					trigger_error(__($err, true), E_USER_WARNING);
+					trigger_error(__('Could not find AclComponent. Please include Acl in Controller::$components.', true), E_USER_WARNING);
 				}
 			break;
 			case 'model':
@@ -512,10 +512,8 @@ class AuthComponent extends Object {
 			case 'crud':
 				$this->mapActions();
 				if (!isset($this->actionMap[$this->params['action']])) {
-					$err = 'Auth::startup() - Attempted access of un-mapped action "%1$s" in';
-					$err .= ' controller "%2$s"';
 					trigger_error(
-						sprintf(__($err, true), $this->params['action'], $this->params['controller']),
+						sprintf(__('Auth::startup() - Attempted access of un-mapped action "%1$s" in controller "%2$s"', true), $this->params['action'], $this->params['controller']),
 						E_USER_WARNING
 					);
 				} else {

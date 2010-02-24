@@ -2,8 +2,6 @@
 /**
  * SetTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -1033,6 +1031,22 @@ class SetTest extends CakeTestCase {
 	}
 
 /**
+ * testExtractWithArrays method
+ * 
+ * @access public
+ * @return void
+ */
+	function testExtractWithArrays() {
+		$data = array(
+			'Level1' => array(
+				'Level2' => array('test1', 'test2'),
+				'Level2bis' => array('test3', 'test4')
+			)
+		);
+		$this->assertEqual(Set::extract('/Level1/Level2', $data), array(array('Level2' => array('test1', 'test2'))));
+		$this->assertEqual(Set::extract('/Level1/Level2bis', $data), array(array('Level2bis' => array('test3', 'test4'))));
+	}
+/**
  * testMatches method
  *
  * @access public
@@ -1806,18 +1820,18 @@ class SetTest extends CakeTestCase {
 
 		$model = new Model(array('id' => false, 'name' => 'Model', 'table' => false));
 		$expected = array(
-			'Behaviors' => array('modelName' => 'Model', '_attached' => array(), '_disabled' => array(), '__methods' => array(), '__mappedMethods' => array(), '_log' => null),
+			'Behaviors' => array('modelName' => 'Model', '_attached' => array(), '_disabled' => array(), '__methods' => array(), '__mappedMethods' => array()),
 			'useDbConfig' => 'default', 'useTable' => false, 'displayField' => null, 'id' => false, 'data' => array(), 'table' => 'models', 'primaryKey' => 'id', '_schema' => null, 'validate' => array(),
 			'validationErrors' => array(), 'tablePrefix' => null, 'name' => 'Model', 'alias' => 'Model', 'tableToModel' => array(), 'logTransactions' => false, 'transactional' => false, 'cacheQueries' => false,
 			'belongsTo' => array(), 'hasOne' =>  array(), 'hasMany' =>  array(), 'hasAndBelongsToMany' =>  array(), 'actsAs' => null, 'whitelist' =>  array(), 'cacheSources' => true,
-			'findQueryType' => null, 'recursive' => 1, 'order' => null, '__exists' => null,
+			'findQueryType' => null, 'recursive' => 1, 'order' => null, 'virtualFields' => array(),
 			'__associationKeys' => array(
 				'belongsTo' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'counterCache'),
 				'hasOne' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'dependent'),
 				'hasMany' => array('className', 'foreignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'dependent', 'exclusive', 'finderQuery', 'counterQuery'),
 				'hasAndBelongsToMany' => array('className', 'joinTable', 'with', 'foreignKey', 'associationForeignKey', 'conditions', 'fields', 'order', 'limit', 'offset', 'unique', 'finderQuery', 'deleteQuery', 'insertQuery')),
 			'__associations' => array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany'), '__backAssociation' => array(), '__insertID' => null, '__numRows' => null, '__affectedRows' => null,
-				'_findMethods' => array('all' => true, 'first' => true, 'count' => true, 'neighbors' => true, 'list' => true, 'threaded' => true), '_log' => null);
+				'_findMethods' => array('all' => true, 'first' => true, 'count' => true, 'neighbors' => true, 'list' => true, 'threaded' => true));
 		$result = Set::reverse($model);
 
 		ksort($result);
@@ -2390,9 +2404,11 @@ class SetTest extends CakeTestCase {
 		$expected = 9;
 		$this->assertEqual($result, $expected);
 
-		$result = Set::apply('/Movie/rating', $data, 'array_product');
-		$expected = 15;
-		$this->assertEqual($result, $expected);
+		if (PHP5) {
+			$result = Set::apply('/Movie/rating', $data, 'array_product');
+			$expected = 15;
+			$this->assertEqual($result, $expected);
+		}
 
 		$result = Set::apply('/Movie/title', $data, 'ucfirst', array('type' => 'map'));
 		$expected = array('Movie 3', 'Movie 1', 'Movie 2');

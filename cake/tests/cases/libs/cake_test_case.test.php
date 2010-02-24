@@ -164,6 +164,56 @@ class CakeTestCaseTest extends CakeTestCase {
 	}
 
 /**
+ * testNumericValuesInExpectationForAssertTags
+ *
+ * @access public
+ * @return void
+ */
+	function testNumericValuesInExpectationForAssertTags() {
+		$value = 220985;
+
+		$input = '<p><strong>' . $value . '</strong></p>';
+		$pattern = array(
+			'<p',
+				'<strong',
+					$value,
+				'/strong',
+			'/p'
+		);
+		$this->assertTrue($this->Case->assertTags($input, $pattern));
+
+		$input = '<p><strong>' . $value . '</strong></p><p><strong>' . $value . '</strong></p>';
+		$pattern = array(
+			'<p',
+				'<strong',
+					$value,
+				'/strong',
+			'/p',
+			'<p',
+				'<strong',
+					$value,
+				'/strong',
+			'/p',
+		);
+		$this->assertTrue($this->Case->assertTags($input, $pattern));
+
+		$input = '<p><strong>' . $value . '</strong></p><p id="' . $value . '"><strong>' . $value . '</strong></p>';
+		$pattern = array(
+			'<p',
+				'<strong',
+					$value,
+				'/strong',
+			'/p',
+			'p' => array('id' => $value),
+				'<strong',
+					$value,
+				'/strong',
+			'/p',
+		);
+		$this->assertTrue($this->Case->assertTags($input, $pattern));
+	}
+
+ /**
  * testBadAssertTags
  *
  * @access public
@@ -257,7 +307,7 @@ class CakeTestCaseTest extends CakeTestCase {
  *
  * @access public
  * @return void
- **/
+ */
 	function testTestAction() {
 		App::build(array(
 			'plugins' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'plugins' . DS),
@@ -293,7 +343,6 @@ class CakeTestCaseTest extends CakeTestCase {
 			'method' => 'get',
 		));
 		$this->assertTrue(isset($result['params']['url']['url']));
-		$this->assertTrue(isset($result['params']['url']['output']));
 		$this->assertEqual(array_keys($result['params']['named']), array('var1', 'var2'));
 
 		$result = $this->Case->testAction('/tests_apps_posts/url_var/gogo/val2', array(
@@ -311,7 +360,6 @@ class CakeTestCaseTest extends CakeTestCase {
 				'blue' => 'mana'
 			)
 		));
-		$this->assertTrue(isset($result['params']['url']['output']));
 		$this->assertTrue(isset($result['params']['url']['red']));
 		$this->assertTrue(isset($result['params']['url']['blue']));
 		$this->assertTrue(isset($result['params']['url']['url']));
@@ -389,7 +437,7 @@ class CakeTestCaseTest extends CakeTestCase {
  * testSkipIf
  *
  * @return void
- **/
+ */
 	function testSkipIf() {
 		$this->assertTrue($this->Case->skipIf(true));
 		$this->assertFalse($this->Case->skipIf(false));

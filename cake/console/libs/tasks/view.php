@@ -2,23 +2,20 @@
 /**
  * The View Tasks handles creating and updating view files.
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
  * @since         CakePHP(tm) v 1.2
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Controller', 'Controller', false);
 
@@ -113,6 +110,7 @@ class ViewTask extends Shell {
 		$this->controllerName = Inflector::camelize($this->args[0]);
 		$this->controllerPath = Inflector::underscore($this->controllerName);
 
+		$this->Project->interactive = false;
 		if (strtolower($this->args[0]) == 'all') {
 			return $this->all();
 		}
@@ -145,7 +143,7 @@ class ViewTask extends Shell {
  * Get a list of actions that can / should have views baked for them.
  *
  * @return array Array of action names that should be baked
- **/
+ */
 	function _methodsToBake() {
 		$methods =  array_diff(
 			array_map('strtolower', get_class_methods($this->controllerName . 'Controller')),
@@ -177,7 +175,7 @@ class ViewTask extends Shell {
  * Bake All views for All controllers.
  *
  * @return void
- **/
+ */
 	function all() {
 		$this->Controller->interactive = false;
 		$tables = $this->Controller->listAll($this->connection, false);
@@ -285,7 +283,7 @@ class ViewTask extends Shell {
 			$displayField = $modelObj->displayField;
 			$singularVar = Inflector::variable($modelClass);
 			$singularHumanName = $this->_singularHumanName($modelClass);
-			$schema = $modelObj->schema();
+			$schema = $modelObj->schema(true);
 			$fields = array_keys($schema);
 			$associations = $this->__associations($modelObj);
 		} else {
@@ -309,7 +307,7 @@ class ViewTask extends Shell {
  *
  * @param array $actions Array of actions to make files for.
  * @return void
- **/
+ */
 	function bakeActions($actions, $vars) {
 		foreach ($actions as $action) {
 			$content = $this->getContent($action, $vars);
@@ -321,7 +319,7 @@ class ViewTask extends Shell {
  * handle creation of baking a custom action view file
  *
  * @return void
- **/
+ */
 	function customAction() {
 		$action = '';
 		while ($action == '') {
@@ -461,7 +459,7 @@ class ViewTask extends Shell {
  * @return  array $associations
  * @access private
  */
-	function __associations($model) {
+	function __associations(&$model) {
 		$keys = array('belongsTo', 'hasOne', 'hasMany', 'hasAndBelongsToMany');
 		$associations = array();
 
@@ -471,7 +469,7 @@ class ViewTask extends Shell {
 				$associations[$type][$assocKey]['displayField'] = $model->{$assocKey}->displayField;
 				$associations[$type][$assocKey]['foreignKey'] = $assocData['foreignKey'];
 				$associations[$type][$assocKey]['controller'] = Inflector::pluralize(Inflector::underscore($assocData['className']));
-				$associations[$type][$assocKey]['fields'] =  array_keys($model->{$assocKey}->schema());
+				$associations[$type][$assocKey]['fields'] =  array_keys($model->{$assocKey}->schema(true));
 			}
 		}
 		return $associations;

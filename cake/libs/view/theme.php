@@ -4,19 +4,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -38,15 +37,9 @@ class ThemeView extends View {
  *
  * @param Controller $controller
  */
-	function __construct(&$controller) {
-		parent::__construct($controller);
+	function __construct(&$controller, $register = true) {
+		parent::__construct($controller, $register);
 		$this->theme =& $controller->theme;
-
-		if (!empty($this->theme)) {
-			if (is_dir(WWW_ROOT . 'themed' . DS . $this->theme)) {
-				$this->themeWeb = 'themed/'. $this->theme .'/';
-			}
-		}
 	}
 
 /**
@@ -58,19 +51,23 @@ class ThemeView extends View {
  */
 	function _paths($plugin = null, $cached = true) {
 		$paths = parent::_paths($plugin, $cached);
+		$themePaths = array();
 
 		if (!empty($this->theme)) {
 			$count = count($paths);
 			for ($i = 0; $i < $count; $i++) {
-				$themePaths[] = $paths[$i] . 'themed'. DS . $this->theme . DS;
+				if (strpos($paths[$i], DS . 'plugins' . DS) === false
+					&& strpos($paths[$i], DS . 'libs' . DS . 'view') === false) {
+						if ($plugin) {
+							$themePaths[] = $paths[$i] . 'themed'. DS . $this->theme . DS . 'plugins' . DS . $plugin . DS;
+						}
+						$themePaths[] = $paths[$i] . 'themed'. DS . $this->theme . DS;
+					}
 			}
 			$paths = array_merge($themePaths, $paths);
 		}
-
-		if (empty($this->__paths)) {
-			$this->__paths = $paths;
-		}
-		return $paths;
+		$this->__paths = $paths;
+		return $this->__paths;
 	}
 }
 ?>

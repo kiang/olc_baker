@@ -2,8 +2,6 @@
 /**
  * FolderTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -222,7 +220,7 @@ class FolderTest extends CakeTestCase {
  * test Adding path elements to a path
  *
  * @return void
- **/
+ */
 	function testAddPathElement() {
 		$result = Folder::addPathElement(DS . 'some' . DS . 'dir', 'another_path');
 		$this->assertEqual($result, DS . 'some' . DS . 'dir' . DS . 'another_path');

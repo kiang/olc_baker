@@ -2,8 +2,6 @@
 /**
  * Short description for file.
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -35,6 +33,13 @@ class SessionFixture extends CakeTestFixture {
  * @access public
  */
 	var $name = 'Session';
+
+/**
+ * table property.
+ *
+ * @var string
+ */
+	// var $table = 'sessions';
 
 /**
  * fields property

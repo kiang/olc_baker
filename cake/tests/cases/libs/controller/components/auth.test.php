@@ -2,8 +2,6 @@
 /**
  * AuthComponentTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -239,7 +237,7 @@ class AuthTestController extends Controller {
  * @var array
  * @access public
  */
-	var $components = array('Auth', 'Acl');
+	var $components = array('Session', 'Auth', 'Acl');
 
 /**
  * testUrl property
@@ -384,7 +382,7 @@ class AjaxAuthController extends Controller {
  * @var array
  * @access public
  */
-	var $components = array('TestAuth');
+	var $components = array('Session', 'TestAuth');
 
 /**
  * uses property
@@ -516,6 +514,7 @@ class AuthTest extends CakeTestCase {
 		$_ENV = $this->_env;
 		Configure::write('Acl', $this->_acl);
 		Configure::write('Security.salt', $this->_securitySalt);
+
 		$this->Controller->Session->delete('Auth');
 		$this->Controller->Session->delete('Message.auth');
 		ClassRegistry::flush();
@@ -623,6 +622,31 @@ class AuthTest extends CakeTestCase {
 		));
 		$this->assertEqual($user, $expected);
 		$this->Controller->Session->delete('Auth');
+	}
+
+/**
+ * test that being redirected to the login page, with no post data does 
+ * not set the session value.  Saving the session value in this circumstance
+ * can cause the user to be redirected to an already public page.
+ *
+ * @return void
+ */
+	function testLoginActionNotSettingAuthRedirect() {
+		$_referer = $_SERVER['HTTP_REFERER'];
+		$_SERVER['HTTP_REFERER'] = '/pages/display/about';
+
+		$this->Controller->data = array();
+		$this->Controller->params = Router::parse('auth_test/login');
+		$this->Controller->params['url']['url'] = 'auth_test/login';
+		$this->Controller->Session->delete('Auth');
+
+		$this->Controller->Auth->loginRedirect = '/users/dashboard';
+		$this->Controller->Auth->loginAction = 'auth_test/login';
+		$this->Controller->Auth->userModel = 'AuthUser';
+
+		$this->Controller->Auth->startup($this->Controller);
+		$redirect = $this->Controller->Session->read('Auth.redirect');
+		$this->assertNull($redirect);
 	}
 
 /**
@@ -767,7 +791,7 @@ class AuthTest extends CakeTestCase {
  * test authorize = 'actions' setting.
  *
  * @return void
- **/
+ */
 	function testAuthorizeActions() {
 		$this->AuthUser =& new AuthUser();
 		$user = $this->AuthUser->find();
@@ -827,7 +851,7 @@ class AuthTest extends CakeTestCase {
  * test the action() method
  *
  * @return void
- **/
+ */
 	function testActionMethod() {
 		$this->Controller->params['controller'] = 'auth_test';
 		$this->Controller->params['action'] = 'add';
@@ -856,7 +880,7 @@ class AuthTest extends CakeTestCase {
  * test that deny() converts camel case inputs to lowercase.
  *
  * @return void
- **/
+ */
 	function testDenyWithCamelCaseMethods() {
 		$this->Controller->Auth->initialize($this->Controller);
 		$this->Controller->Auth->allow('*');
@@ -873,7 +897,7 @@ class AuthTest extends CakeTestCase {
  * test that allow() and allowedActions work with camelCase method names.
  *
  * @return void
- **/
+ */
 	function testAllowedActionsWithCamelCaseMethods() {
 		$url = '/auth_test/camelCase';
 		$this->Controller->params = Router::parse($url);
@@ -1099,7 +1123,7 @@ class AuthTest extends CakeTestCase {
  * And the user doesn't have a session.
  *
  * @return void
- **/
+ */
 	function testNoRedirectOn404() {
 		$this->Controller->Session->delete('Auth');
 		$this->Controller->Auth->initialize($this->Controller);
@@ -1201,7 +1225,7 @@ class AuthTest extends CakeTestCase {
  * test Hashing of passwords
  *
  * @return void
- **/
+ */
 	function testHashPasswords() {
 		$this->Controller->Auth->userModel = 'AuthUser';
 
@@ -1220,16 +1244,18 @@ class AuthTest extends CakeTestCase {
 		$expected['AuthUser']['password'] = Security::hash($expected['AuthUser']['password'], null, true);
 		$this->assertEqual($return, $expected);
 
-		$xml = array(
-			'User' => array(
-				'username' => 'batman@batcave.com',
-				'password' => 'bruceWayne',
-			)
-		);
-		$data = new Xml($xml);
-		$return = $this->Controller->Auth->hashPasswords($data);
-		$expected = $data;
-		$this->assertEqual($return, $expected);
+		if (PHP5) {
+			$xml = array(
+				'User' => array(
+					'username' => 'batman@batcave.com',
+					'password' => 'bruceWayne',
+				)
+			);
+			$data =& new Xml($xml);
+			$return = $this->Controller->Auth->hashPasswords($data);
+			$expected = $data;
+			$this->assertEqual($return, $expected);
+		}
 	}
 
 /**
@@ -1332,8 +1358,8 @@ class AuthTest extends CakeTestCase {
  * @return void
  */
 	function testAdminRoute() {
-		$admin = Configure::read('Routing.admin');
-		Configure::write('Routing.admin', 'admin');
+		$prefixes = Configure::read('Routing.prefixes');
+		Configure::write('Routing.prefixes', array('admin'));
 		Router::reload();
 
 		$url = '/admin/auth_test/add';
@@ -1360,7 +1386,7 @@ class AuthTest extends CakeTestCase {
 		$this->Controller->Auth->startup($this->Controller);
 		$this->assertEqual($this->Controller->testUrl, '/admin/auth_test/login');
 
-		Configure::write('Routing.admin', $admin);
+		Configure::write('Routing.prefixes', $prefixes);
 	}
 
 /**
@@ -1480,6 +1506,98 @@ class AuthTest extends CakeTestCase {
 		$this->Controller->Auth->_loggedIn = true;
 		$this->Controller->Auth->shutdown($this->Controller);
 		$this->assertFalse($this->Controller->Session->read('Auth.redirect'));
+	}
+
+/**
+ * test the initialize callback and its interactions with Router::prefixes()
+ *
+ * @return void
+ */
+	function testInitializeAndRoutingPrefixes() {
+		$restore = Configure::read('Routing');
+		Configure::write('Routing.prefixes', array('admin', 'super_user'));
+		Router::reload();
+		$this->Controller->Auth->initialize($this->Controller);
+
+		$this->assertTrue(isset($this->Controller->Auth->actionMap['delete']));
+		$this->assertTrue(isset($this->Controller->Auth->actionMap['view']));
+		$this->assertTrue(isset($this->Controller->Auth->actionMap['add']));
+		$this->assertTrue(isset($this->Controller->Auth->actionMap['admin_view']));
+		$this->assertTrue(isset($this->Controller->Auth->actionMap['super_user_delete']));
+
+		Configure::write('Routing', $restore);
+	}
+
+/**
+ * test $settings in Controller::$components
+ *
+ * @access public
+ * @return void
+ */
+	function testComponentSettings() {
+		$this->Controller =& new AuthTestController();
+		$this->Controller->components = array(
+			'Auth' => array(
+				'fields' => array('username' => 'email', 'password' => 'password'),
+				'loginAction' => array('controller' => 'people', 'action' => 'login'),
+				'userModel' => 'AuthUserCustomField',
+				'sessionKey' => 'AltAuth.AuthUserCustomField'
+			),
+			'Session'
+		);
+		$this->Controller->Component->init($this->Controller);
+		$this->Controller->Component->initialize($this->Controller);
+		Router::reload();
+
+		$this->AuthUserCustomField =& new AuthUserCustomField();
+		$user = array(
+			'id' => 1, 'email' => 'harking@example.com',
+			'password' => Security::hash(Configure::read('Security.salt') . 'cake'
+		));
+		$user = $this->AuthUserCustomField->save($user, false);
+
+		Router::connect('/', array('controller' => 'people', 'action' => 'login'));
+		$url = '/';
+		$this->Controller->params = Router::parse($url);
+		Router::setRequestInfo(array($this->Controller->passedArgs, array(
+			'base' => null, 'here' => $url, 'webroot' => '/', 'passedArgs' => array(),
+			'argSeparator' => ':', 'namedArgs' => array()
+		)));
+		$this->Controller->data['AuthUserCustomField'] = array('email' => 'harking@example.com', 'password' => 'cake');
+		$this->Controller->params['url']['url'] = substr($url, 1);
+		$this->Controller->Auth->startup($this->Controller);
+
+		$user = $this->Controller->Auth->user();
+		$this->assertTrue(!!$user);
+
+		$expected = array(
+			'fields' => array('username' => 'email', 'password' => 'password'),
+			'loginAction' => array('controller' => 'people', 'action' => 'login'),
+			'logoutRedirect' => array('controller' => 'people', 'action' => 'login'),
+			'userModel' => 'AuthUserCustomField',
+			'sessionKey' => 'AltAuth.AuthUserCustomField'
+		);
+		$this->assertEqual($expected['fields'], $this->Controller->Auth->fields);
+		$this->assertEqual($expected['loginAction'], $this->Controller->Auth->loginAction);
+		$this->assertEqual($expected['logoutRedirect'], $this->Controller->Auth->logoutRedirect);
+		$this->assertEqual($expected['userModel'], $this->Controller->Auth->userModel);
+		$this->assertEqual($expected['sessionKey'], $this->Controller->Auth->sessionKey);
+	}
+
+/**
+ * test that logout deletes the session variables. and returns the correct url
+ *
+ * @return void
+ */
+	function testLogout() {
+		$this->Controller->Session->write('Auth.User.id', '1');
+		$this->Controller->Session->write('Auth.redirect', '/users/login');
+		$this->Controller->Auth->logoutRedirect = '/';
+		$result = $this->Controller->Auth->logout();
+
+		$this->assertEqual($result, '/');
+		$this->assertNull($this->Controller->Session->read('Auth.AuthUser'));
+		$this->assertNull($this->Controller->Session->read('Auth.redirect'));
 	}
 }
 ?>

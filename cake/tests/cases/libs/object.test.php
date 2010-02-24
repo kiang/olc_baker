@@ -2,8 +2,6 @@
 /**
  * ObjectTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -109,7 +107,7 @@ class RequestActionController extends Controller {
  * post pass, testing post passing
  *
  * @return array
- **/
+ */
 	function post_pass() {
 		return $this->data;
 	}
@@ -152,7 +150,7 @@ class RequestActionPersistentController extends Controller {
  * post pass, testing post passing
  *
  * @return array
- **/
+ */
 	function index() {
 		return 'This is a test';
 	}
@@ -295,7 +293,7 @@ class TestObject extends Object {
  * testPersist
  *
  * @return void
- **/
+ */
 	function testPersist($name, $return = null, &$object, $type = null) {
 		return $this->_persist($name, $return, $object, $type);
 	}
@@ -324,7 +322,7 @@ class ObjectTest extends CakeTestCase {
  * fixtures
  *
  * @var string
- **/
+ */
 	var $fixtures = array('core.post', 'core.comment');
 
 /**
@@ -664,7 +662,9 @@ class ObjectTest extends CakeTestCase {
 			'models' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'models' . DS),
 			'views' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'views' . DS),
 			'controllers' => array(TEST_CAKE_CORE_INCLUDE_PATH . 'tests' . DS . 'test_app' . DS . 'controllers' . DS)
-		), true);
+		));
+		App::objects('plugin', null, false);
+		Router::reload();
 
 		$result = $this->object->requestAction('/tests_apps/index', array('return'));
 		$expected = 'This is the TestsAppsController index view';
@@ -718,6 +718,9 @@ class ObjectTest extends CakeTestCase {
 
 		$result = $this->object->requestAction(array('controller'=>'request_action', 'action'=>'paginate_request_action'), array('pass' => array(5), 'named' => array('param' => 'value')));
 		$this->assertTrue($result);
+
+		App::build();
+		App::objects('plugin', null, false);
 	}
 
 /**
@@ -774,7 +777,7 @@ class ObjectTest extends CakeTestCase {
  * testCakeError
  *
  * @return void
- **/
+ */
 	function testCakeError() {
 
 	}

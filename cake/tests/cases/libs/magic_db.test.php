@@ -113,6 +113,9 @@ class MagicDbTest extends UnitTestCase {
 		$r = $this->Db->toArray(array('yeah'));
 		$this->assertTrue($r === array('yeah'));
 
+		$r = $this->Db->toArray("# FILE_ID DB\r\n# Date:2009-10-10\r\n# Source:xxx.php");
+		$this->assertTrue($r === array());
+
 		$r = $this->Db->toArray('foo');
 		$this->assertTrue($r === array());
 
@@ -172,7 +175,7 @@ class MagicDbTestData extends Object {
  *
  * @param string $key
  * @access public
- **/
+ */
 	function get($key) {
 /**
  * data property

@@ -2,8 +2,6 @@
 /**
  * ModelReadTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -217,14 +215,14 @@ class ModelReadTest extends BaseModelTest {
 			array('Product' => array('type' => 'Toy'), array('price' => 3))
 		);
 		$result = $Product->find('all',array(
-			'fields'=>array('Product.type','MIN(Product.price) as price'),
+			'fields'=>array('Product.type', 'MIN(Product.price) as price'),
 			'group'=> 'Product.type',
 			'order' => 'Product.type ASC'
 			));
 		$this->assertEqual($result, $expected);
 
 		$result = $Product->find('all', array(
-			'fields'=>array('Product.type','MIN(Product.price) as price'),
+			'fields'=>array('Product.type', 'MIN(Product.price) as price'),
 			'group'=> array('Product.type'),
 			'order' => 'Product.type ASC'));
 		$this->assertEqual($result, $expected);
@@ -4734,7 +4732,7 @@ class ModelReadTest extends BaseModelTest {
  * test that bindModel behaves with Custom primary Key associations
  *
  * @return void
- **/
+ */
 	function bindWithCustomPrimaryKey() {
 		$this->loadFixtures('Story', 'StoriesTag', 'Tag');
 		$Model =& ClassRegistry::init('StoriesTag');
@@ -6400,7 +6398,7 @@ class ModelReadTest extends BaseModelTest {
  * test find with COUNT(DISTINCT field)
  *
  * @return void
- **/
+ */
 	function testFindCountDistinct() {
 		$skip = $this->skipIf(
 			$this->db->config['driver'] == 'sqlite',
@@ -7162,6 +7160,140 @@ class ModelReadTest extends BaseModelTest {
 		$this->assertEqual($comments[0]['Comment']['querytype'], 'all');
 		$comments = $Comment->find('first');
 		$this->assertEqual($comments['Comment']['querytype'], 'first');
+	}
+
+/**
+ * testVirtualFields()
+ *
+ * Test correct fetching of virtual fields
+ * currently is not possible to do Relation.virtualField
+ *
+ * @access public
+ * @return void
+ */
+	function testVirtualFields() {
+		$this->loadFixtures('Post', 'Author');
+		$Post =& ClassRegistry::init('Post');
+		$Post->virtualFields = array('two' => "1 + 1");
+		$result = $Post->find('first');
+		$this->assertEqual($result['Post']['two'], 2);
+
+		$Post->Author->virtualFields = array('false' => '1 = 2');
+		$result = $Post->find('first');
+		$this->assertEqual($result['Post']['two'], 2);
+		$this->assertEqual($result['Author']['false'], false);
+
+		$result = $Post->find('first',array('fields' => array('author_id')));
+		$this->assertFalse(isset($result['Post']['two']));
+		$this->assertFalse(isset($result['Author']['false']));
+
+		$result = $Post->find('first',array('fields' => array('author_id', 'two')));
+		$this->assertEqual($result['Post']['two'], 2);
+		$this->assertFalse(isset($result['Author']['false']));
+
+		$result = $Post->find('first',array('fields' => array('two')));
+		$this->assertEqual($result['Post']['two'], 2);
+
+		$Post->id = 1;
+		$result = $Post->field('two');
+		$this->assertEqual($result, 2);
+
+		$result = $Post->find('first',array(
+			'conditions' => array('two' => 2),
+			'limit' => 1
+		));
+		$this->assertEqual($result['Post']['two'], 2);
+
+		$result = $Post->find('first',array(
+			'conditions' => array('two <' => 3),
+			'limit' => 1
+		));
+		$this->assertEqual($result['Post']['two'], 2);
+
+		$result = $Post->find('first',array(
+			'conditions' => array('NOT' => array('two >' => 3)),
+			'limit' => 1
+		));
+		$this->assertEqual($result['Post']['two'], 2);
+
+		$dbo =& $Post->getDataSource();
+		$Post->virtualFields = array('other_field' => 'Post.id + 1');
+		$result = $Post->find('first',array(
+			'conditions' => array('other_field' => 3),
+			'limit' => 1
+		));
+		$this->assertEqual($result['Post']['id'], 2);
+
+		$Post->virtualFields = array('other_field' => 'Post.id + 1');
+		$result = $Post->find('all',array(
+			'fields' => array($dbo->calculate($Post, 'max',array('other_field')))
+		));
+		$this->assertEqual($result[0][0]['other_field'], 4);
+
+		ClassRegistry::flush();
+		$Writing =& ClassRegistry::init(array('class' => 'Post', 'alias' => 'Writing'), 'Model');
+		$Writing->virtualFields = array('two' => "1 + 1");
+		$result = $Writing->find('first');
+		$this->assertEqual($result['Writing']['two'], 2);
+
+		$Post->create();
+		$Post->virtualFields = array('other_field' => 'COUNT(Post.id) + 1');
+		$result = $Post->field('other_field');
+		$this->assertEqual($result, 4);
+
+		ClassRegistry::flush();
+		$Post =& ClassRegistry::init('Post');
+
+		$Post->create();
+		$Post->virtualFields = array(
+			'year' => 'YEAR(Post.created)',
+			'unique_test_field' => 'COUNT(Post.id)'
+		);
+
+		$expectation = array(
+			'Post' => array(
+				'year' => 2007,
+				'unique_test_field' => 3
+			)
+		);
+
+		$result = $Post->find('first', array(
+			'fields' => array_keys($Post->virtualFields),
+			'group' => array('year')
+		));
+
+		$this->assertEqual($result, $expectation);
+	}
+
+/**
+ * test that isVirtualField will accept both aliased and non aliased fieldnames
+ *
+ * @return void
+ */
+	function testIsVirtualField() {
+		$this->loadFixtures('Post');
+		$Post =& ClassRegistry::init('Post');
+		$Post->virtualFields = array('other_field' => 'COUNT(Post.id) + 1');
+
+		$this->assertTrue($Post->isVirtualField('other_field'));
+		$this->assertTrue($Post->isVirtualField('Post.other_field'));
+		$this->assertFalse($Post->isVirtualField('id'));
+		$this->assertFalse($Post->isVirtualField('Post.id'));
+		$this->assertFalse($Post->isVirtualField(array()));
+	}
+
+/**
+ * test that getting virtual fields works with and without model alias attached
+ *
+ * @return void
+ */
+	function testGetVirtualField() {
+		$this->loadFixtures('Post');
+		$Post =& ClassRegistry::init('Post');
+		$Post->virtualFields = array('other_field' => 'COUNT(Post.id) + 1');
+
+		$this->assertEqual($Post->getVirtualField('other_field'), $Post->virtualFields['other_field']);
+		$this->assertEqual($Post->getVirtualField('Post.other_field'), $Post->virtualFields['other_field']);
 	}
 }
 ?>

@@ -542,7 +542,7 @@ class ModifiedComment extends CakeTestModel {
  * afterFind callback
  *
  * @return void
- **/
+ */
 	function afterFind($results) {
 		if (isset($results[0])) {
 			$results[0]['Comment']['callback'] = 'Fire';
@@ -587,7 +587,7 @@ class AgainModifiedComment extends CakeTestModel {
  * afterFind callback
  *
  * @return void
- **/
+ */
 	function afterFind($results) {
 		if (isset($results[0])) {
 			$results[0]['Comment']['querytype'] = $this->findQueryType;
@@ -2057,7 +2057,7 @@ class CallbackPostTestModel extends CakeTestModel {
  * beforeSave callback
  *
  * @return void
- **/
+ */
 	function beforeSave($options) {
 		return $this->beforeSaveReturn;
 	}
@@ -2065,7 +2065,7 @@ class CallbackPostTestModel extends CakeTestModel {
  * beforeValidate callback
  *
  * @return void
- **/
+ */
 	function beforeValidate($options) {
 		return $this->beforeValidateReturn;
 	}
@@ -2073,7 +2073,7 @@ class CallbackPostTestModel extends CakeTestModel {
  * beforeDelete callback
  *
  * @return void
- **/
+ */
 	function beforeDelete($cascade = true) {
 		return $this->beforeDeleteReturn;
 	}
@@ -2217,6 +2217,16 @@ class ValidationTest1 extends CakeTestModel {
  */
 	function customValidatorWithMessage($data) {
 		return 'This field will *never* validate! Muhahaha!';
+	}
+/**
+ * Test validation with many parameters
+ *
+ * @return void
+ */
+	function customValidatorWithSixParams($data, $one = 1, $two = 2, $three = 3, $four = 4, $five = 5, $six = 6) {
+		$this->validatorParams = get_defined_vars();
+		unset($this->validatorParams['this']);
+		return true;
 	}
 }
 
@@ -3090,8 +3100,6 @@ class Uuiditem extends CakeTestModel {
  * @var array
  * @access public
  */
-	//var $hasAndBelongsToMany = array('Uuidportfolio' => array('unique' => true));
-//	var $hasAndBelongsToMany = array('Uuidportfolio' => array('with' => 'UuiditemsUuidportfolio'));
 	var $hasAndBelongsToMany = array('Uuidportfolio' => array('with' => 'UuiditemsUuidportfolioNumericid'));
 
 }

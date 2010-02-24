@@ -2,8 +2,6 @@
 /**
  * RequestHandlerComponentTest file
  *
- * Long description for file
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) Tests <https://trac.cakephp.org/wiki/Developement/TestSuite>
@@ -37,7 +35,7 @@ class RequestHandlerTestController extends Controller {
  *
  * @var string
  * @access public
- **/
+ */
 	var $name = 'RequestHandlerTest';
 
 /**
@@ -66,7 +64,7 @@ class RequestHandlerTestController extends Controller {
  * test method for ajax redirection
  *
  * @return void
- **/
+ */
 	function destination() {
 		$this->viewPath = 'posts';
 		$this->render('index');
@@ -188,6 +186,12 @@ class RequestHandlerComponentTest extends CakeTestCase {
 		$this->Controller->params['url']['ext'] = 'rss';
 		$this->RequestHandler->initialize($this->Controller);
 		$this->assertEqual($this->RequestHandler->ext, 'rss');
+
+		$settings = array(
+			'ajaxLayout' => 'test_ajax'
+		);
+		$this->RequestHandler->initialize($this->Controller, $settings);
+		$this->assertEqual($this->RequestHandler->ajaxLayout, 'test_ajax');
 	}
 
 /**
@@ -237,21 +241,21 @@ class RequestHandlerComponentTest extends CakeTestCase {
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 		$_SERVER['CONTENT_TYPE'] = 'application/xml';
 		$this->RequestHandler->startup($this->Controller);
-		$this->assertTrue(is_object($this->Controller->data));
-		$this->assertEqual(strtolower(get_class($this->Controller->data)), 'xml');
+		$this->assertTrue(is_array($this->Controller->data));
+		$this->assertFalse(is_object($this->Controller->data));
 	}
 
 /**
  * testStartupCallback with charset.
  *
  * @return void
- **/
+ */
 	function testStartupCallbackCharset() {
 		$_SERVER['REQUEST_METHOD'] = 'PUT';
 		$_SERVER['CONTENT_TYPE'] = 'application/xml; charset=UTF-8';
 		$this->RequestHandler->startup($this->Controller);
-		$this->assertTrue(is_object($this->Controller->data));
-		$this->assertEqual(strtolower(get_class($this->Controller->data)), 'xml');
+		$this->assertTrue(is_array($this->Controller->data));
+		$this->assertFalse(is_object($this->Controller->data));
 	}
 
 /**
@@ -287,7 +291,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
  *
  * @link #6466
  * @return void
- **/
+ */
 	function testRenderAsCalledTwice() {
 		$this->RequestHandler->renderAs($this->Controller, 'xml');
 		$this->assertEqual($this->Controller->viewPath, 'request_handler_test' . DS . 'xml');
@@ -526,10 +530,10 @@ class RequestHandlerComponentTest extends CakeTestCase {
  */
 	function testClientProperties() {
 		$_SERVER['HTTP_HOST'] = 'localhost:80';
-		$this->assertEqual($this->RequestHandler->getReferrer(), 'localhost');
+		$this->assertEqual($this->RequestHandler->getReferer(), 'localhost');
 		$_SERVER['HTTP_HOST'] = null;
 		$_SERVER['HTTP_X_FORWARDED_HOST'] = 'cakephp.org';
-		$this->assertEqual($this->RequestHandler->getReferrer(), 'cakephp.org');
+		$this->assertEqual($this->RequestHandler->getReferer(), 'cakephp.org');
 
 		$_SERVER['HTTP_X_FORWARDED_FOR'] = '192.168.1.5, 10.0.1.1, proxy.com';
 		$_SERVER['HTTP_CLIENT_IP'] = '192.168.1.2';
@@ -551,7 +555,7 @@ class RequestHandlerComponentTest extends CakeTestCase {
  * test that ajax requests involving redirects trigger requestAction instead.
  *
  * @return void
- **/
+ */
 	function testAjaxRedirectAsRequestAction() {
 		$_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
 		$this->_init();

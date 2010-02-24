@@ -4,19 +4,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view
  * @since         CakePHP(tm) v 0.10.0.1076
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
 /**
@@ -162,13 +161,13 @@ class View extends Object {
  * @var string
  */
 	var $subDir = null;
-
+	
 /**
  * Theme name.
  *
  * @var string
  */
-	var $themeWeb = null;
+	var $theme = null;
 
 /**
  * Used to define methods a controller that will be cached.
@@ -253,7 +252,7 @@ class View extends Object {
  * Holds View output.
  *
  * @var string
- **/
+ */
 	var $output = false;
 
 /**
@@ -421,8 +420,7 @@ class View extends Object {
 			$this->hasRendered = true;
 		} else {
 			$out = $this->_render($viewFileName, $this->viewVars);
-			$msg = __("Error in view %s, got: <blockquote>%s</blockquote>", true);
-			trigger_error(sprintf($msg, $viewFileName, $out), E_USER_ERROR);
+			trigger_error(sprintf(__("Error in view %s, got: <blockquote>%s</blockquote>", true), $viewFileName, $out), E_USER_ERROR);
 		}
 		return $out;
 	}
@@ -434,7 +432,6 @@ class View extends Object {
  * - `title_for_layout` - contains page title
  * - `content_for_layout` - contains rendered view file
  * - `scripts_for_layout` - contains scripts added to header
- * - `cakeDebug` - if debug is on, cake debug information is added.
  *
  * @param string $content_for_layout Content to render in a view, wrapped by the surrounding layout.
  * @return mixed Rendered output, or false on error
@@ -445,18 +442,9 @@ class View extends Object {
 			return $this->output;
 		}
 
-		$debug = '';
-
-		if (isset($this->viewVars['cakeDebug']) && Configure::read() > 2) {
-			$params = array('controller' => $this->viewVars['cakeDebug']);
-			$debug = View::element('dump', $params, false);
-			unset($this->viewVars['cakeDebug']);
-		}
-
 		$dataForLayout = array_merge($this->viewVars, array(
 			'content_for_layout' => $content_for_layout,
-			'scripts_for_layout' => join("\n\t", $this->__scripts),
-			'cakeDebug' => $debug
+			'scripts_for_layout' => implode("\n\t", $this->__scripts),
 		));
 
 		if (!isset($dataForLayout['title_for_layout'])) {
@@ -475,8 +463,7 @@ class View extends Object {
 
 		if ($this->output === false) {
 			$this->output = $this->_render($layoutFileName, $data_for_layout);
-			$msg = __("Error in layout %s, got: <blockquote>%s</blockquote>", true);
-			trigger_error(sprintf($msg, $layoutFileName, $this->output), E_USER_ERROR);
+			trigger_error(sprintf(__("Error in layout %s, got: <blockquote>%s</blockquote>", true), $layoutFileName, $this->output), E_USER_ERROR);
 			return false;
 		}
 
@@ -610,7 +597,7 @@ class View extends Object {
 	function entity() {
 		$assoc = ($this->association) ? $this->association : $this->model;
 		if (!empty($this->entityPath)) {
-			$path = explode('.',$this->entityPath);
+			$path = explode('.', $this->entityPath);
 			$count = count($path);
 			if (
 				($count == 1 && !empty($this->association)) ||
@@ -687,13 +674,16 @@ class View extends Object {
 
 			for ($i = count($helpers) - 1; $i >= 0; $i--) {
 				$name = $helperNames[$i];
+				$helper =& $loadedHelpers[$helpers[$i]];
 
-				${$name} =& $loadedHelpers[$helpers[$i]];
-				$this->loaded[$helperNames[$i]] =& ${$name};
-				$this->{$helpers[$i]} =& ${$name};
+				if (!isset($___dataForView[$name])) {
+					${$name} =& $helper;
+				}
+				$this->loaded[$helperNames[$i]] =& $helper;
+				$this->{$helpers[$i]} =& $helper;
 			}
 			$this->_triggerHelpers('beforeRender');
-			unset($name, $loadedHelpers, $helpers, $i, $helperNames);
+			unset($name, $loadedHelpers, $helpers, $i, $helperNames, $helper);
 		}
 
 		extract($___dataForView, EXTR_SKIP);
@@ -723,7 +713,7 @@ class View extends Object {
 				$cache->helpers = $this->helpers;
 				$cache->action = $this->action;
 				$cache->controllerName = $this->name;
-				$cache->layout	= $this->layout;
+				$cache->layout = $this->layout;
 				$cache->cacheAction = $this->cacheAction;
 				$cache->cache($___viewFn, $out, $cached);
 			}
@@ -740,10 +730,6 @@ class View extends Object {
  * @return array
  */
 	function &_loadHelpers(&$loaded, $helpers, $parent = null) {
-		if (empty($loaded)) {
-			$helpers[] = 'Session';
-		}
-
 		foreach ($helpers as $i => $helper) {
 			$options = array();
 
@@ -751,18 +737,14 @@ class View extends Object {
 				$options = $helper;
 				$helper = $i;
 			}
-			$plugin = $this->plugin;
-
-			if (strpos($helper, '.') !== false) {
-				list($plugin, $helper) = explode('.', $helper);
-			}
+			list($plugin, $helper) = pluginSplit($helper, true, $this->plugin);
 			$helperCn = $helper . 'Helper';
 
 			if (!isset($loaded[$helper])) {
 				if (!class_exists($helperCn)) {
 					$isLoaded = false;
 					if (!is_null($plugin)) {
-						$isLoaded = App::import('Helper', $plugin . '.' . $helper);
+						$isLoaded = App::import('Helper', $plugin . $helper);
 					}
 					if (!$isLoaded) {
 						if (!App::import('Helper', $helper)) {
@@ -784,9 +766,7 @@ class View extends Object {
 					}
 				}
 				$loaded[$helper] =& new $helperCn($options);
-				$vars = array(
-					'base', 'webroot', 'here', 'params', 'action', 'data', 'themeWeb', 'plugin'
-				);
+				$vars = array('base', 'webroot', 'here', 'params', 'action', 'data', 'theme', 'plugin');
 				$c = count($vars);
 
 				for ($j = 0; $j < $c; $j++) {
@@ -842,7 +822,6 @@ class View extends Object {
 				$name = $this->viewPath . DS . $subDir . $name;
 			}
 		}
-
 		$paths = $this->_paths(Inflector::underscore($this->plugin));
 		
 		$exts = array($this->ext);
@@ -952,12 +931,8 @@ class View extends Object {
 			}
 			$paths[] = App::pluginPath($plugin) . 'views' . DS;
 		}
-		$paths = array_merge($paths, $viewPaths);
-
-		if (empty($this->__paths)) {
-			$this->__paths = $paths;
-		}
-		return $paths;
+		$this->__paths = array_merge($paths, $viewPaths);
+		return $this->__paths;
 	}
 }
 

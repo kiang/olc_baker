@@ -4,19 +4,18 @@
  *
  * PHP versions 4 and 5
  *
- * CakePHP(tm) :  Rapid Development Framework (http://www.cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
+ * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @filesource
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://www.cakefoundation.org)
- * @link          http://www.cakefoundation.org/projects/info/cakephp CakePHP(tm) Project
+ * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.model
  * @since         CakePHP(tm) v 1.2.0.5550
- * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
+ * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Core', array('Model', 'ConnectionManager'));
 
@@ -64,7 +63,7 @@ class CakeSchema extends Object {
  * plugin name.
  *
  * @var string
- **/
+ */
 	var $plugin = null;
 
 /**
@@ -162,7 +161,7 @@ class CakeSchema extends Object {
  * @return array Set of name and tables
  * @access public
  */
-	function load($options = array()) {
+	function &load($options = array()) {
 		if (is_string($options)) {
 			$options = array('path' => $options);
 		}
@@ -184,8 +183,8 @@ class CakeSchema extends Object {
 			$Schema =& new $class($options);
 			return $Schema;
 		}
-
-		return false;
+		$false = false;
+		return $false;
 	}
 
 /**
@@ -246,7 +245,7 @@ class CakeSchema extends Object {
 
 				if (is_object($Object) && $Object->useTable !== false) {
 					$Object->setDataSource($connection);
-					$table = $db->fullTableName($Object->useTable, false);
+					$table = $db->fullTableName($Object, false);
 
 					if (in_array($table, $currentTables)) {
 						$key = array_search($table, $currentTables);
@@ -383,7 +382,7 @@ class CakeSchema extends Object {
  * @param string $table Table name you want returned.
  * @param array $fields Array of field information to generate the table with.
  * @return string Variable declaration for a schema class
- **/
+ */
 	function generateTable($table, $fields) {
 		$out = "\tvar \${$table} = array(\n";
 		if (is_array($fields)) {
@@ -486,11 +485,16 @@ class CakeSchema extends Object {
 
 			if (isset($old[$table]['indexes']) && isset($new[$table]['indexes'])) {
 				$diff = $this->_compareIndexes($new[$table]['indexes'], $old[$table]['indexes']);
-				if ($diff && isset($diff['drop'])) {
-					$tables[$table]['drop']['indexes'] = $diff['drop'];
-				}
-				if ($diff && isset($diff['add'])) {
-					$tables[$table]['add']['indexes'] = $diff['add'];
+				if ($diff) {
+					if (!isset($tables[$table])) {
+						$tables[$table] = array();
+					}
+					if (isset($diff['drop'])) {
+						$tables[$table]['drop']['indexes'] = $diff['drop'];
+					}
+					if ($diff && isset($diff['add'])) {
+						$tables[$table]['add']['indexes'] = $diff['add'];
+					}
 				}
 			}
 			if (isset($old[$table]['tableParameters']) && isset($new[$table]['tableParameters'])) {
@@ -515,7 +519,7 @@ class CakeSchema extends Object {
 		if (is_array($values)) {
 			foreach ($values as $key => $val) {
 				if (is_array($val)) {
-					$vals[] = "'{$key}' => array('" . join("', '",  $val) . "')";
+					$vals[] = "'{$key}' => array('" . implode("', '",  $val) . "')";
 				} else if (!is_numeric($key)) {
 					$val = var_export($val, true);
 					$vals[] = "'{$key}' => {$val}";
@@ -541,7 +545,7 @@ class CakeSchema extends Object {
 				$value['key'] = 'primary';
 			}
 			if (!isset($db->columns[$value['type']])) {
-				trigger_error('Schema generation error: invalid column type ' . $value['type'] . ' does not exist in DBO', E_USER_NOTICE);
+				trigger_error(sprintf(__('Schema generation error: invalid column type %s does not exist in DBO', true), $value['type']), E_USER_NOTICE);
 				continue;
 			} else {
 				$defaultCol = $db->columns[$value['type']];
@@ -574,7 +578,7 @@ class CakeSchema extends Object {
  * @param array $new New indexes
  * @param array $old Old indexes
  * @return mixed False on failure, or an array of parameters to add & drop.
- **/
+ */
 	function _compareTableParameters($new, $old) {
 		if (!is_array($new) || !is_array($old)) {
 			return false;
