@@ -92,7 +92,7 @@ class MembersController extends AppController {
 	        }
 	    }
 	    if(empty($log)) {
-	        $this->Session->setFlash('系統所需的 ACOs 都已經存在了！');
+	        $this->Session->setFlash(__('All the necessary ACOs are already exists', true));
 	    } else {
 	        $this->Session->setFlash(implode('<br />', $log));
 	    }
@@ -158,7 +158,7 @@ class MembersController extends AppController {
 
 	function setup() {
 	    if($this->Member->hasAny(array('user_status' => 'Y'))) {
-	        $this->Session->setFlash('資料庫已經有會員資料，如果希望重新設定，請先清空！');
+	        $this->Session->setFlash(__('There already had members in database. If you want to reset, please remove them first.', true));
 	        $this->redirect('/members/login');
 	    } else if(!empty($this->data)) {
 	        $this->loadModel('Group');
@@ -174,13 +174,13 @@ class MembersController extends AppController {
 	            $this->Member->create();
 	            if($this->Member->save($this->data)) {
 	                $this->Acl->Aro->saveField('alias', 'Member/' . $this->Member->getInsertID());
-	                $this->Session->setFlash('管理者已經建立，請透過剛剛產生的帳號、密碼登入！');
+	                $this->Session->setFlash(__('The administrator created, please login with the id/password you entered.', true));
 	                $this->redirect('/members/login');
 	            } else {
-	                $this->Session->setFlash('資料建立失敗！');
+	            	$this->Session->setFlash(__('Administrator created failed.', true));
 	            }
 	        } else {
-	            $this->Session->setFlash('資料建立失敗！');
+	            $this->Session->setFlash(__('Administrator created failed.', true));
 	        }
 	    }
 	}
@@ -193,7 +193,7 @@ class MembersController extends AppController {
 
 	function admin_view($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請依照網頁指示操作！');
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		$this->set('member', $this->Member->read(null, $id));
@@ -204,10 +204,10 @@ class MembersController extends AppController {
 			$this->Member->create();
 			if ($this->Member->save($this->data)) {
 			    $this->Acl->Aro->saveField('alias', 'Member/' . $this->Member->getInsertID());
-				$this->Session->setFlash('資料已經儲存！');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash('資料無法儲存，請重試！');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		$this->set('groups', $this->Member->Group->find('list'));
@@ -215,7 +215,7 @@ class MembersController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('請依照網頁指示操作！');
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if (!empty($this->data)) {
@@ -228,10 +228,10 @@ class MembersController extends AppController {
 			        $aro->id = $member['Aro']['id'];
 			        $aro->save(array('parent_id' => $group['Aro']['id']));
 			    }
-				$this->Session->setFlash('資料已經儲存！');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index'));
 			} else {
-				$this->Session->setFlash('資料無法儲存，請重試！');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -242,11 +242,11 @@ class MembersController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請依照網頁指示操作！');
+			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
 		if ($this->Member->del($id)) {
-			$this->Session->setFlash('資料刪除了！');
+			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('action'=>'index'));
 		}
 	}
@@ -269,7 +269,7 @@ class MembersController extends AppController {
 	            }
 	        }
 	    }
-	    $this->Session->setFlash('資料已經產生！');
+	    $this->Session->setFlash(__('Testing members generated.', true));
 	    $this->redirect($this->referer());
 	}
 

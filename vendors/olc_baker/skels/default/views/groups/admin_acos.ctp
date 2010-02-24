@@ -1,9 +1,9 @@
 <div id="GroupsAdminAcos">
-<h2>設定權限</h2>
+<h2><?php echo __('Permission Settings', true); ?></h2>
 <p>
 <?php
 $urlArray = array('url' => array($groupId));
-echo $paginator->counter(array('format' => '第 %page% 頁 / 共 %pages% 頁'));
+echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
 ?>
 </p>
 <div class="paging"><?php echo $this->element('paginator', $urlArray); ?></div>
@@ -42,7 +42,7 @@ foreach ($acos as $aco):
 <?php
 echo $form->create('Group', array('url' => array('action' => 'acos', $groupId)));
 echo '<ul id="permissionStack"></ul>';
-echo $form->end('更新');
+echo $form->end(__('Update', true));
 echo $html->scriptBlock('
 $(document).ready(function() {
 	$(\'input.acoPermitted\').click(function() {

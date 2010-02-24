@@ -29,7 +29,7 @@ class Member extends AppModel {
 	        $this->data['Member']['password'] == Security::hash('', null, true)
 	    ) {
 	        if(!$this->id) {
-	            $this->validationErrors['password'] = '密碼不能空白';
+	            $this->validationErrors['password'] = __('Password can\'t not be empty.', true);
 	            return false;
 	        } else {
 	            unset($this->data['Member']['password']);

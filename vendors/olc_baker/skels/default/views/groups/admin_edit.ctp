@@ -1,10 +1,10 @@
 <div class="groups form">
 <?php echo $form->create('Group');?>
 	<fieldset>
- 		<legend>編輯群組</legend>
+ 		<legend><?php echo __('Edit group', true); ?></legend>
 	<?php
 		echo $form->input('id');
-		echo $form->input('name', array('label' => '名稱：'));
+		echo $form->input('name', array('label' => __('Name', true)));
 	?>
 	</fieldset>
 <?php echo $form->end(__('Submit', true));?>

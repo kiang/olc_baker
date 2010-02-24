@@ -18,10 +18,10 @@ class GroupsController extends AppController {
         $this->set('upperLevelId', $upperLevelId);
         if(!$groups = $this->paginate($this->Group, array('parent_id' => $parentId))) {
             if(isset($this->params['named']['page']) && $this->params['named']['page'] > 1) {
-                $this->Session->setFlash('指定的頁數不存在！');
+                $this->Session->setFlash(__('The page doesn\'t exists', true));
                 $this->redirect($this->referer());
             } else {
-                $this->Session->setFlash('指定的項目沒有子群組，您可以透過下面表單新增！');
+                $this->Session->setFlash(__('It doesn\'t have sub groups. You could try to add one through the following form.', true));
                 $this->redirect(array('action' => 'add', $parentId));
             }
         } else {
@@ -35,10 +35,10 @@ class GroupsController extends AppController {
 			$this->data['Group']['parent_id'] = $parentId;
 			if ($this->Group->save($this->data)) {
 			    $this->Acl->Aro->saveField('alias', 'Group/' . $this->Group->getInsertID());
-				$this->Session->setFlash('資料已經儲存！');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index', $parentId));
 			} else {
-				$this->Session->setFlash('資料儲存失敗！');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		$this->set('parentId', $parentId);
@@ -46,15 +46,15 @@ class GroupsController extends AppController {
 
 	function admin_edit($id = null) {
 		if (!$id && empty($this->data)) {
-			$this->Session->setFlash('請先選擇群組！');
+			$this->Session->setFlash(__('Please select a group first!', true));
 			$this->redirect($this->referer());
 		}
 		if (!empty($this->data)) {
 			if ($this->Group->save($this->data)) {
-				$this->Session->setFlash('資料已經儲存！');
+				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index', $this->Group->field('parent_id')));
 			} else {
-				$this->Session->setFlash('資料儲存失敗！');
+				$this->Session->setFlash(__('Something was wrong during saving, please try again', true));
 			}
 		}
 		if (empty($this->data)) {
@@ -64,12 +64,12 @@ class GroupsController extends AppController {
 
 	function admin_delete($id = null) {
 		if (!$id) {
-			$this->Session->setFlash('請先選擇群組！');
+			$this->Session->setFlash(__('Please select a group first!', true));
 			$this->redirect($this->referer());
 		}
 		$parentId = $this->Group->field('parent_id', array('Group.parent_id' => $id));
 		if ($this->Group->del($id)) {
-			$this->Session->setFlash('群組已經刪除！');
+			$this->Session->setFlash(__('The group has been removed', true));
 			$this->redirect(array('action'=>'index', $parentId));
 		}
 	}
@@ -82,7 +82,7 @@ class GroupsController extends AppController {
 	            'Group.id' => $groupId,
 	        ),
 	    ))) {
-	        $this->Session->setFlash('請先選擇群組！');
+	        $this->Session->setFlash(__('Please select a group first!', true));
 	        $this->redirect(array('action' => 'index'));
 	    }
 	    unset($aroGroup['Aco']);
@@ -101,7 +101,7 @@ class GroupsController extends AppController {
 	            }
 	        }
 	        if($count > 0) {
-	            $this->Session->setFlash('更新了 ' . $count . ' 個項目！');
+	            $this->Session->setFlash(sprintf(__('%d items updated successfully!', true), $count));
 	        }
 	    }
 	    $this->set('groupId', $groupId);

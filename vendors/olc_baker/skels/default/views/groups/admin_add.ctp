@@ -1,9 +1,9 @@
 <div class="groups form">
 <?php echo $form->create('Group', array('url' => array($parentId)));?>
 	<fieldset>
- 		<legend>新增群組</legend>
+ 		<legend><?php echo __('Add group', true); ?></legend>
 	<?php
-		echo $form->input('name', array('label' => '名稱：'));
+		echo $form->input('name', array('label' => __('Name', true)));
 	?>
 	</fieldset>
 <?php echo $form->end(__('Submit', true));?>
