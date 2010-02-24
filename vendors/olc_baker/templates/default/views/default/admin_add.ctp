@@ -24,7 +24,7 @@ echo $form->create('<{$modelName}>', array('type' => 'file', 'url' => $url));
 <?php echo $form->end(__('Submit', true)); ?>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link('列表', array('action'=>'index'));?></li>
+        <li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
     </ul>
 </div>
 <?php

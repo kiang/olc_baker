@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>AdminView">
-<h3>檢視<{$formLabel}></h3><hr />
+<h3><?php echo __('View <{$formLabel}>', true); ?></h3><hr />
 <div class="span-12">
 <{if isset($relationships.belongsTo)}>
 <{foreach from=$relationships.belongsTo key=rModel item=rOption}>
@@ -44,21 +44,21 @@
 <div class="actions">
     <ul>
         <li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('<{$modelName}>.id')), null, __('Delete the item, sure?', true)); ?></li>
-        <li><?php echo $html->link('<{$formLabel}>列表', array('action'=>'index')); ?> </li>
+        <li><?php echo $html->link(__('<{$formLabel}> List', true), array('action'=>'index')); ?> </li>
 <{if isset($relationships.hasOne)}>
 <{foreach from=$relationships.hasOne key=rModel item=rOption}>
-        <li><?php echo $html->link('檢視相關<{$models[$rOption.className].label}>', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['<{$rOption.className}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
+        <li><?php echo $html->link(__('View Related <{$models[$rOption.className].label}>', true), array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['<{$rOption.className}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
 <{/foreach}>
 <{/if}>
 <{if isset($relationships.hasMany)}>
 <{foreach from=$relationships.hasMany key=rModel item=rOption}>
-        <li><?php echo $html->link('檢視相關<{$models[$rOption.className].label}>', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
+        <li><?php echo $html->link(__('View Related <{$models[$rOption.className].label}>', true), array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
 <{/foreach}>
 <{/if}>
 <{if isset($relationships.hasAndBelongsToMany)}>
 <{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
-        <li><?php echo $html->link('檢視相關<{$models[$rOption.className].label}>', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
-        <li><?php echo $html->link('設定相關<{$models[$rOption.className].label}>', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id'], 'set'), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
+        <li><?php echo $html->link(__('View Related <{$models[$rOption.className].label}>', true), array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
+        <li><?php echo $html->link(__('Set Related <{$models[$rOption.className].label}>', true), array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'index', '<{$modelName}>', $this->data['<{$modelName}>']['id'], 'set'), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>
 <{/foreach}>
 <{/if}>
     </ul>

@@ -12,7 +12,7 @@
 <div class="actions">
     <ul>
         <li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $id), null, __('Delete the item, sure?', true)); ?></li>
-        <li><?php echo $html->link('列表', array('action'=>'index'));?></li>
+        <li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
     </ul>
 </div>
 <?php

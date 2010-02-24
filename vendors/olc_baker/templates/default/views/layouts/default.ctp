@@ -29,11 +29,11 @@
 				<{foreach from=$controllers key=key item=item}>
 				<li><?php echo $html->link('<{$item}>', '/admin/<{$key}>'); ?></li>
 				<{/foreach}>
-				<li><?php echo $html->link('使用者', '/admin/members'); ?></li>
-				<li><?php echo $html->link('群組', '/admin/groups'); ?></li>
-				<li><?php echo $html->link('登出', '/members/logout'); ?></li>
+				<li><?php echo $html->link('Members', '/admin/members'); ?></li>
+				<li><?php echo $html->link('Groups', '/admin/groups'); ?></li>
+				<li><?php echo $html->link('Logout', '/members/logout'); ?></li>
 				<?php else: ?>
-				<li><?php echo $html->link('登入', '/members/login'); ?></li>
+				<li><?php echo $html->link('Login', '/members/login'); ?></li>
 				<?php endif; ?>
 			</ul>
 		</div>
@@ -42,12 +42,13 @@
 		</div>
 		<div id="footer">
 			<?php echo $html->link(
-					$html->image('cake.power.gif', array('alt'=> __("CakePHP: the rapid development php framework", true), 'border'=>"0")),
-					'http://www.cakephp.org/',
-					array('target'=>'_blank'), null, false
+					$html->image('cake.power.gif', array(
+						'alt'=> __("CakePHP: the rapid development php framework", true), 'border'=>"0")
+					), 'http://www.cakephp.org/',
+					array('target'=>'_blank', 'escape' => false)
 				);
 			?>
-			系統提供：<?php echo $html->link('就這間電腦工作室', 'http://olc.tw/', array('target'=>'_blank')); ?>
+			& <?php echo $html->link('Just This Computer Studio', 'http://olc.tw/', array('target'=>'_blank')); ?>
 		</div>
 	</div>
 	<?php echo $cakeDebug; ?>

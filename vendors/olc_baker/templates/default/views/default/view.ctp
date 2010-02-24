@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>View">
-<h3>檢視<{$formLabel}></h3><hr />
+<h3><?php echo __('View <{$formLabel}>', true); ?></h3><hr />
 <div class="span-12">
 <{if isset($relationships.belongsTo)}>
 <{foreach from=$relationships.belongsTo key=rModel item=rOption}>

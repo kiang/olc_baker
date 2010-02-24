@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>AdminIndex">
-<h2><{$formLabel}>管理</h2><hr />
+<h2><?php echo __('<{$formLabel}> Manage', true); ?></h2><hr />
 <?php
 if(!isset($url)) {
     $url = array();
@@ -17,7 +17,7 @@ echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %
 <?php
 echo $form->create('<{$modelName}>', array('type' => 'get', 'url' => array_merge($url, array('action' => 'index'))));
 echo $form->text('keyword', array('class' => 'span-10', 'value' => $keyword));
-echo $form->submit('查詢', array('div' => false));
+echo $form->submit(__('Find', true), array('div' => false));
 echo $form->end();
 ?>
 </div>
