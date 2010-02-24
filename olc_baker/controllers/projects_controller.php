@@ -103,8 +103,8 @@ class ProjectsController extends AppController {
 		        DS . '.htaccess',
 		        DS . 'webroot' . DS . '.htaccess',
 		        DS . 'config' . DS . 'database.php',
+		        DS . 'webroot' . DS . 'index.php',
 		    );
-		    $files[] = DS . 'webroot' . DS . 'index.php';
 		    
 		    $operactions = array();
 		    foreach($files AS $file) {
@@ -621,6 +621,10 @@ class ProjectsController extends AppController {
 		        'members',
 		        'groups',
 		    );
+		    foreach($aResult['UP']['create_table'] AS $table => $tableSchema) {
+		    	$sqlContent .= $migrations->drop_table($table) . "\n";
+		        $sqlContent .= $migrations->create_table($table, $tableSchema) . "\n";
+		    }
 		    foreach( $tables as $table => $tableSchema ){
 		        $aResult['UP']['create_table'][$table] = $tableSchema;
 		        $aResult['DOWN']['drop_table'][] = $table;
