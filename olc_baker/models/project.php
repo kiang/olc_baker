@@ -78,7 +78,7 @@ class Project extends AppModel {
 		$fh->copy(array(
 			'to' => $appPath,
 			'from' => VENDORS . 'olc_baker' . DS . 'skels' . DS . 'default',
-			'chmod' => 777,
+			'mode' => 0777,
 		));
 		$errors = $fh->errors();
 		if(!empty($errors)) {

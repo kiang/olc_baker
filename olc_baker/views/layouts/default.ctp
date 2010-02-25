@@ -19,7 +19,7 @@
 			<h1><?php echo $html->link('olc_baker', '/'); ?></h1>
 		</div>
 		<div id="content">
-			<?php $session->flash(); ?>
+			<?php echo $session->flash(); ?>
 			<?php echo $content_for_layout; ?>
 		</div>
 		<div id="footer">
@@ -33,6 +33,6 @@
 		?>
 		</div>
 	</div>
-	<?php echo $cakeDebug; ?>
+	<?php echo $this->element('sql_dump'); ?>
 </body>
 </html>

@@ -109,6 +109,7 @@ class ProjectsController extends AppController {
 		    $operactions = array();
 		    foreach($files AS $file) {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
+		        chmod($project['Project']['app_path'] . $file, 0777);
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $this->Project->tasks[] = array(
@@ -291,6 +292,7 @@ class ProjectsController extends AppController {
 		                $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php',
 		                $this->Project->smarty->fetch('default' . DS . 'models' . DS . 'default.php')
 		            );
+		            chmod($project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php', 0777);
 		            $operactions[] = $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php created';
 
 		            $viewPath = $project['Project']['app_path'] . DS . 'views' . DS . $table_name . DS;
@@ -322,6 +324,7 @@ class ProjectsController extends AppController {
 		                    $viewPath . $action,
 		                    $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action)
 		                );
+		                chmod($viewPath . $action, 0777);
 		                $operactions[] = $viewPath . $action . ' created';
 		            }
 		            $actions = array();
@@ -370,6 +373,7 @@ class ProjectsController extends AppController {
 		                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp'
 		                    )
 		                );
+		                chmod($viewPath . $action['action'] . '.ctp', 0777);
 		                $this->Project->smarty->assign('actionName', $action['action']);
 		                $customMethods .= $this->Project->smarty->fetch(
 		                    VENDORS . 'olc_baker' . DS . 'actions' . DS . 'methods' . DS .
@@ -383,6 +387,7 @@ class ProjectsController extends AppController {
 		                $viewPath . 'index.ctp',
 		                $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . 'index.ctp')
 		            );
+		            chmod($viewPath . 'index.ctp', 0777);
 		            $operactions[] = $viewPath . 'index.ctp created';
 
 		            $this->Project->smarty->assign('customMethods', $customMethods);
@@ -390,6 +395,7 @@ class ProjectsController extends AppController {
 		                $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php',
 		                $this->Project->smarty->fetch('default' . DS . 'controllers' . DS . 'default.php')
 		            );
+		            chmod($project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php', 0777);
 		            $operactions[] = $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php created';
 		        }
 		    }
@@ -403,9 +409,11 @@ class ProjectsController extends AppController {
 		    $operactions = array();
 		    $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
+		    chmod($project['Project']['app_path'] . $file, 0777);
 		    
 		    foreach($files AS $file) {
 		        file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
+		        chmod($project['Project']['app_path'] . $file, 0777);
 		        $operactions[] = $project['Project']['app_path'] . $file . ' created';
 		    }
 		    $this->Project->tasks[] = array(
@@ -632,7 +640,9 @@ class ProjectsController extends AppController {
 		        $sqlContent .= $migrations->create_table($table, $tableSchema) . "\n";
 		    }
 		    file_put_contents($sqlPath . DS . 'schema.yaml', Spyc::YAMLDump($aResult));
+		    chmod($sqlPath . DS . 'schema.yaml', 0777);
 		    file_put_contents($sqlPath . DS . 'schema.sql', $sqlContent);
+		    chmod($sqlPath . DS . 'schema.sql', 0777);
 		    $this->Project->tasks[] = array(
 		    	'title' => __('Generate the database schema', true),
 		    	'operactions' => array(
