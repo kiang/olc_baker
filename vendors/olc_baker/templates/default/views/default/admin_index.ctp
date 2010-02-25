@@ -10,17 +10,9 @@ if(!empty($foreignId) && !empty($foreignModel)) {
 }
 <{/if}>
 ?>
-<div class="span-6"><?php
+<div><?php
 echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
 ?></div>
-<div class="span-18 last">
-<?php
-echo $form->create('<{$modelName}>', array('type' => 'get', 'url' => array_merge($url, array('action' => 'index'))));
-echo $form->text('keyword', array('class' => 'span-10', 'value' => $keyword));
-echo $form->submit(__('Find', true), array('div' => false));
-echo $form->end();
-?>
-</div>
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
 <table cellpadding="0" cellspacing="0" id="<{$controllerName}>AdminIndexTable">
 <thead>

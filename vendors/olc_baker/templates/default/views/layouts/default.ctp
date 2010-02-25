@@ -51,6 +51,6 @@
 			& <?php echo $html->link('Just This Computer Studio', 'http://olc.tw/', array('target'=>'_blank')); ?>
 		</div>
 	</div>
-	<?php echo $cakeDebug; ?>
+	<?php echo $this->element('sql_dump'); ?>
 </body>
 </html>
