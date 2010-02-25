@@ -1,14 +1,16 @@
 <div id="MembersAdminIndex">
-<h2>會員管理</h2>
+<h2><?php echo __('Member management', true); ?></h2>
 <p>
-<?php echo $paginator->counter(array('format' => '第 %page% 頁 / 共 %pages% 頁')); ?>
+<?php
+echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
+?>
 </p>
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
 <table cellpadding="0" cellspacing="0" id="MembersAdminIndexTable">
 <tr>
-	<th><?php echo $paginator->sort('編號', 'id');?></th>
-	<th><?php echo $paginator->sort('帳號', 'username');?></th>
-	<th><?php echo $paginator->sort('狀態', 'user_status');?></th>
+	<th><?php echo $paginator->sort(__('Id', true), 'id');?></th>
+	<th><?php echo $paginator->sort(__('Account', true), 'username');?></th>
+	<th><?php echo $paginator->sort(__('Status', true), 'user_status');?></th>
 	<th><?php echo $paginator->sort(__('Created time', true), 'created');?></th>
 	<th><?php echo $paginator->sort(__('Modified time', true), 'modified');?></th>
 	<th class="actions"><?php echo __('Action', true); ?></th>
@@ -49,9 +51,9 @@ foreach ($members as $member):
 <div class="actions">
 	<ul>
 		<li><?php echo $html->link(__('Add', true), array('action'=>'add'), array('class' => 'MembersAdminIndexControl')); ?></li>
-        <li><?php echo $html->link('群組', array('controller'=>'groups')); ?></li>
-		<li><?php echo $html->link('產生測試資料', array('action'=>'test')); ?></li>
-        <li><?php echo $html->link('產生ACOs', array('action'=>'acos')); ?></li>
+        <li><?php echo $html->link(__('Groups', true), array('controller'=>'groups')); ?></li>
+		<li><?php echo $html->link(__('Generate testing members', true), array('action'=>'test')); ?></li>
+        <li><?php echo $html->link(__('Generate ACOs', true), array('action'=>'acos')); ?></li>
 	</ul>
 </div>
 <div id="MembersAdminIndexPanel"></div>
