@@ -125,7 +125,7 @@ if($item['<{$className}>']['<{$key}>']) {
 $scripts = '
 $(document).ready(function() {
     $(\'#<{$controllerName}>AdminIndexTable th a, #<{$controllerName}>AdminIndex div.paging a\').click(function() {
-        $(\'#<{$controllerName}>AdminIndex\').load(this.href);
+        $(\'#<{$controllerName}>AdminIndex\').parent().load(this.href);
         return false;
     });
     $(\'a.<{$controllerName}>AdminIndexControl\').click(function() {
