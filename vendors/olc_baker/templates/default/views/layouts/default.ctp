@@ -37,7 +37,7 @@
 				<?php endif; ?>
 			</ul>
 		</div>
-			<?php $session->flash(); ?>
+			<?php echo $session->flash(); ?>
 			<div id="viewContent"><?php echo $content_for_layout; ?></div>
 		</div>
 		<div id="footer">
