@@ -311,7 +311,7 @@ class MembersController extends AppController {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect(array('action'=>'index'));
 		}
-		if ($this->Member->del($id)) {
+		if ($this->Member->delete($id)) {
 			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('action'=>'index'));
 		}

@@ -68,7 +68,7 @@ class GroupsController extends AppController {
 			$this->redirect($this->referer());
 		}
 		$parentId = $this->Group->field('parent_id', array('Group.parent_id' => $id));
-		if ($this->Group->del($id)) {
+		if ($this->Group->delete($id)) {
 			$this->Session->setFlash(__('The group has been removed', true));
 			$this->redirect(array('action'=>'index', $parentId));
 		}

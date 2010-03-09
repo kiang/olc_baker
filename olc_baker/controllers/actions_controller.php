@@ -41,7 +41,7 @@ class ActionsController extends AppController {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
 		}
-		if ($this->Action->del($id)) {
+		if ($this->Action->delete($id)) {
 			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('controller' => 'forms', 'action'=>'view', $formId));
 		}

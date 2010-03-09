@@ -63,7 +63,7 @@ class FormsController extends AppController {
 		if (!$id || !$projectId = $this->Form->field('project_id', array('Form.id' => $id))) {
 			$this->Session->setFlash(__('Please do following links in the page', true));
 			$this->redirect($this->referer());
-		} else if ($this->Form->del($id)) {
+		} else if ($this->Form->delete($id)) {
 			$this->Session->setFlash(__('The data has been deleted', true));
 			$this->redirect(array('controller' => 'projects', 'action'=>'view', $projectId));
 		}

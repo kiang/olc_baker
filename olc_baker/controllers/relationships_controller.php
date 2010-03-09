@@ -55,7 +55,7 @@ class RelationshipsController extends AppController {
 	function delete($id = null) {
 		if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
 			$this->Session->setFlash(__('Please do following links in the page', true));
-		} else if ($this->Relationship->del($id) && $this->Relationship->del($parentId)) {
+		} else if ($this->Relationship->delete($id) && $this->Relationship->delete($parentId)) {
 			$this->Session->setFlash(__('Data has been deleted', true));
 		}
 		$this->redirect($this->referer());
