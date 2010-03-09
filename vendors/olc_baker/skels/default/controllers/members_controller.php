@@ -29,10 +29,7 @@ class MembersController extends AppController {
 	 * @link          http://book.cakephp.org/view/647/An-Automated-tool-for-creating-ACOs
 	 * @return void
 	 */
-	function build_acl() {
-		if (!Configure::read('debug')) {
-			return $this->_stop();
-		}
+	private function build_acl() {
 		$log = array();
 
 		$aco =& $this->Acl->Aco;
@@ -108,9 +105,6 @@ class MembersController extends AppController {
 					$log[] = 'Created Aco node for '. $method;
 				}
 			}
-		}
-		if(count($log)>0) {
-			debug($log);
 		}
 	}
 
