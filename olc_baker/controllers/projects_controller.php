@@ -673,7 +673,7 @@ class ProjectsController extends AppController {
 		        'persistent' => false,
 		    ));
 		    $dbn = $db->getDataSource('olc_baker-dev');
-		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'sql';
+		    $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'schema';
 		    $dbn->execute('CREATE DATABASE IF NOT EXISTS `' . $project['Project']['db_name'] . '`
 		    DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
 		    $dbn->execute('USE `' . $project['Project']['db_name'] . '`;');
