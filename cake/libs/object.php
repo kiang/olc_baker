@@ -8,12 +8,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -67,12 +67,14 @@ class Object {
 	}
 
 /**
- * Calls a controller's method from any location.
+ * Calls a controller's method from any location. Can be used to connect controllers together
+ * or tie plugins into a main application. requestAction can be used to return rendered views
+ * or fetch the return value from controller actions.
  *
  * @param mixed $url String or array-based url.
  * @param array $extra if array includes the key "return" it sets the AutoRender to true.
  * @return mixed Boolean true or false on success/failure, or contents
- *               of rendered action if 'return' is set in $extra.
+ *    of rendered action if 'return' is set in $extra.
  * @access public
  */
 	function requestAction($url, $extra = array()) {
@@ -95,8 +97,7 @@ class Object {
 
 /**
  * Calls a method on this object with the given parameters. Provides an OO wrapper
- * for call_user_func_array, and improves performance by using straight method calls
- * in most cases.
+ * for `call_user_func_array`
  *
  * @param string $method  Name of the method to call
  * @param array $params  Parameter list to use when calling $method
@@ -124,7 +125,8 @@ class Object {
 	}
 
 /**
- * Stop execution of the current script
+ * Stop execution of the current script.  Wraps exit() making 
+ * testing easier.
  *
  * @param $status see http://php.net/exit for values
  * @return void
@@ -135,7 +137,8 @@ class Object {
 	}
 
 /**
- * API for logging events.
+ * Convience method to write a message to CakeLog.  See CakeLog::write()
+ * for more information on writing to logs.
  *
  * @param string $msg Log message
  * @param integer $type Error type constant. Defined in app/config/core.php.
@@ -153,7 +156,8 @@ class Object {
 	}
 
 /**
- * Allows setting of multiple properties of the object in a single line of code.
+ * Allows setting of multiple properties of the object in a single line of code.  Will only set 
+ * properties that are part of a class declaration.
  *
  * @param array $properties An associative array containing properties and corresponding values.
  * @return void
@@ -272,7 +276,7 @@ class Object {
 					if (strpos($key, '_behavior') !== false) {
 						App::import('Behavior', Inflector::classify(substr($key, 0, -9)));
 					} else {
-						App::import('Model', Inflector::classify($key));
+						App::import('Model', Inflector::camelize($key));
 					}
 					unset ($value);
 				}

@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
@@ -30,6 +30,7 @@ App::import('Core', 'Security');
  *
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
+ * @link http://book.cakephp.org/view/1280/Cookies
  *
  */
 class CookieComponent extends Object {
@@ -257,14 +258,6 @@ class CookieComponent extends Object {
 			return Set::extract($this->__values[$key], $names[1]);
 		}
 		return $this->__values[$key];
-	}
-
-/**
- * @deprecated use delete()
- */
-	function del($key) {
-		trigger_error(__('Deprecated method, use CookieComponent::delete instead', true), E_USER_WARNING);
-		return $this->delete($key);
 	}
 
 /**

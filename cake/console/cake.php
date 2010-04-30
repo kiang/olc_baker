@@ -8,12 +8,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009,	Cake Software Foundation, Inc.
+ * Copyright 2005-2010, Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console
@@ -244,6 +244,9 @@ class ShellDispatcher {
 		define('APP_DIR', $this->params['app']);
 		define('APP_PATH', $this->params['working'] . DS);
 		define('WWW_ROOT', APP_PATH . $this->params['webroot'] . DS);
+		if (!is_dir(ROOT . DS . APP_DIR . DS . 'tmp')) {
+			define('TMP', CORE_PATH . 'cake' . DS . 'console' . DS . 'templates' . DS . 'skel' . DS . 'tmp' . DS);
+		}
 
 		$includes = array(
 			CORE_PATH . 'cake' . DS . 'config' . DS . 'paths.php',
@@ -271,7 +274,6 @@ class ShellDispatcher {
 			App::build();
 		}
 
-		Configure::write('debug', 1);
 		return true;
 	}
 
@@ -623,14 +625,14 @@ class ShellDispatcher {
 			$columns = max(1, floor($width / 30));
 			$rows = ceil(count($shellList) / $columns);
 
-			foreach($shellList as $shell => $types) {
+			foreach ($shellList as $shell => $types) {
 				sort($types);
 				$shellList[$shell] = str_pad($shell . ' [' . implode ($types, ', ') . ']', $width / $columns);
 			}
 			$out = array_chunk($shellList, $rows);
-			for($i = 0; $i < $rows; $i++) {
+			for ($i = 0; $i < $rows; $i++) {
 				$row = '';
-				for($j = 0; $j < $columns; $j++) {
+				for ($j = 0; $j < $columns; $j++) {
 					if (!isset($out[$j][$i])) {
 						continue;
  					}

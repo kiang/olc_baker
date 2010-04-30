@@ -2,17 +2,16 @@
 /**
  * String handling methods.
  *
- *
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
  * @since         CakePHP(tm) v 1.2.0.5551
@@ -108,8 +107,10 @@ class String {
  * $leftBound and $rightBound
  *
  * @param string $data The data to tokenize
- * @param string $separator The token to split the data on
- * @return array
+ * @param string $separator The token to split the data on.
+ * @param string $leftBound The left boundary to ignore separators in.
+ * @param string $rightBound The right boundary to ignore separators in.
+ * @return array Array of tokens in $data.
  * @access public
  * @static
  */
@@ -259,17 +260,17 @@ class String {
 	}
 
 /**
- * Cleans up a Set::insert formated string with given $options depending on the 'clean' key in
+ * Cleans up a String::insert() formated string with given $options depending on the 'clean' key in
  * $options. The default method used is text but html is also available. The goal of this function
  * is to replace all whitespace and uneeded markup around placeholders that did not get replaced
- * by Set::insert.
+ * by String::insert().
  *
  * @param string $str
  * @param string $options
  * @return string
  * @access public
  * @static
- * @see Set::insert()
+ * @see String::insert()
  */
 	function cleanInsert($str, $options) {
 		$clean = $options['clean'];

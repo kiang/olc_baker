@@ -8,12 +8,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake
@@ -82,7 +82,8 @@ class Dispatcher extends Object {
 	}
 
 /**
- * Dispatches and invokes given URL, handing over control to the involved controllers, and then renders the results (if autoRender is set).
+ * Dispatches and invokes given URL, handing over control to the involved controllers, and then renders the 
+ * results (if autoRender is set).
  *
  * If no controller of given name can be found, invoke() shows error messages in
  * the form of Missing Controllers information. It does the same with Actions (methods of Controllers are called
@@ -171,8 +172,9 @@ class Dispatcher extends Object {
 	}
 
 /**
- * Invokes given controller's render action if autoRender option is set. Otherwise the
- * contents of the operation are returned as a string.
+ * Initializes the components and models a controller will be using.
+ * Triggers the controller action, and invokes the rendering if Controller::$autoRender is true and echo's the output.
+ * Otherwise the return value of the controller action are returned.
  *
  * @param object $controller Controller to invoke
  * @param array $params Parameters with at least the 'action' to invoke
@@ -182,9 +184,7 @@ class Dispatcher extends Object {
  */
 	function _invoke(&$controller, $params) {
 		$controller->constructClasses();
-		$controller->Component->initialize($controller);
-		$controller->beforeFilter();
-		$controller->Component->startup($controller);
+		$controller->startupProcess();
 
 		$methods = array_flip($controller->methods);
 
@@ -201,15 +201,14 @@ class Dispatcher extends Object {
 				'base' => $this->base
 			)));
 		}
-		$output = $controller->dispatchMethod($params['action'], $params['pass']);
+		$output = call_user_func_array(array(&$controller, $params['action']), $params['pass']);
 
 		if ($controller->autoRender) {
 			$controller->output = $controller->render();
 		} elseif (empty($controller->output)) {
 			$controller->output = $output;
 		}
-		$controller->Component->shutdown($controller);
-		$controller->afterFilter();
+		$controller->shutdownProcess();
 
 		if (isset($params['return'])) {
 			return $controller->output;
@@ -219,10 +218,11 @@ class Dispatcher extends Object {
 
 /**
  * Sets the params when $url is passed as an array to Object::requestAction();
+ * Merges the $url and $additionalParams and creates a string url.
  *
- * @param array $url
- * @param array $additionalParams
- * @return string $url
+ * @param array $url Array or request parameters
+ * @param array $additionalParams Array of additional parameters.
+ * @return string $url The generated url string.
  * @access private
  */
 	function __extractParams($url, $additionalParams = array()) {
@@ -347,44 +347,24 @@ class Dispatcher extends Object {
 			$this->webroot = $base .'/';
 			return $base;
 		}
+
 		$file = '/' . basename($baseUrl);
 		$base = dirname($baseUrl);
-		
+
 		if ($base === DS || $base === '.') {
 			$base = '';
 		}
 		$this->webroot = $base .'/';
 
-		if (strpos($this->webroot, $dir) === false) {
-			$this->webroot .= $dir . '/' ;
-		}
-		if (strpos($this->webroot, $webroot) === false) {
-			$this->webroot .= $webroot . '/';
+		if (!empty($base)) {
+			if (strpos($this->webroot, $dir) === false) {
+				$this->webroot .= $dir . '/' ;
+			}
+			if (strpos($this->webroot, $webroot) === false) {
+				$this->webroot .= $webroot . '/';
+			}
 		}
 		return $base . $file;
-	}
-
-/**
- * Restructure params in case we're serving a plugin.
- *
- * @param array $params Array on where to re-set 'controller', 'action', and 'pass' indexes
- * @param boolean $reverse
- * @return array Restructured array
- * @access protected
- */
-	function _restructureParams($params, $reverse = false) {
-		if ($reverse === true) {
-			extract(Router::getArgs($params['action']));
-			$params = array_merge($params, array(
-				'controller'=> $params['plugin'],
-				'action'=> $params['controller'],
-				'pass' => array_merge($pass, $params['pass']),
-				'named' => array_merge($named, $params['named'])
-			));
-		} else {
-			$params['plugin'] = $params['controller'];
-		}
-		return $params;
 	}
 
 /**
@@ -395,36 +375,20 @@ class Dispatcher extends Object {
  * @access private
  */
 	function &__getController() {
-		$original = $params = $this->params;
-
 		$controller = false;
-		$ctrlClass = $this->__loadController($params);
+		$ctrlClass = $this->__loadController($this->params);
 		if (!$ctrlClass) {
-			if (!isset($params['plugin'])) {
-				$params = $this->_restructureParams($params);
-			} else {
-				$params = $this->_restructureParams($params, true);
-			}
-			$ctrlClass = $this->__loadController($params);
-			if (!$ctrlClass) {
-				$this->params = $original;
-				return $controller;
-			}
+			return $controller;
 		}
-		$name = $ctrlClass;
 		$ctrlClass .= 'Controller';
 		if (class_exists($ctrlClass)) {
-			if (empty($params['plugin']) && strtolower(get_parent_class($ctrlClass)) === strtolower($name . 'AppController')) {
-				$params = $this->_restructureParams($params);
-			}
-			$this->params = $params;
 			$controller =& new $ctrlClass();
 		}
 		return $controller;
 	}
 
 /**
- * Load controller and return controller class
+ * Load controller and return controller classname
  *
  * @param array $params Array of parameters
  * @return string|bool Name of controller class name
@@ -433,13 +397,10 @@ class Dispatcher extends Object {
 	function __loadController($params) {
 		$pluginName = $pluginPath = $controller = null;
 		if (!empty($params['plugin'])) {
-			$pluginName = Inflector::camelize($params['plugin']);
+			$pluginName = $controller = Inflector::camelize($params['plugin']);
 			$pluginPath = $pluginName . '.';
-			$this->params['controller'] = $params['plugin'];
-			$controller = $pluginName;
 		}
 		if (!empty($params['controller'])) {
-			$this->params['controller'] = $params['controller'];
 			$controller = Inflector::camelize($params['controller']);
 		}
 		if ($pluginPath . $controller) {
@@ -580,7 +541,6 @@ class Dispatcher extends Object {
 				return $return;
 			}
 		}
-
 		return false;
 	}
 
@@ -595,56 +555,45 @@ class Dispatcher extends Object {
 		if (strpos($url, '..') !== false || strpos($url, '.') === false) {
 			return false;
 		}
+		$filters = Configure::read('Asset.filter');
+		$isCss = strpos($url, 'ccss/') === 0;
+		$isJs = strpos($url, 'cjs/') === 0;
 
-		if (strpos($url, 'ccss/') === 0) {
-			include WWW_ROOT . DS . Configure::read('Asset.filter.css');
+		if (($isCss && empty($filters['css'])) || ($isJs && empty($filters['js']))) {
+			header('HTTP/1.1 404 Not Found');
+			return $this->_stop();
+		} elseif ($isCss) {
+			include WWW_ROOT . DS . $filters['css'];
 			$this->_stop();
-		} elseif (strpos($url, 'cjs/') === 0) {
-			include WWW_ROOT . DS . Configure::read('Asset.filter.js');
+		} elseif ($isJs) {
+			include WWW_ROOT . DS . $filters['js'];
 			$this->_stop();
 		}
 		$controller = null;
 		$ext = array_pop(explode('.', $url));
-		$pos = 0;
 		$parts = explode('/', $url);
+		$assetFile = null;
 
 		if ($parts[0] === 'theme') {
-			$pos = strlen($parts[0] . $parts[1]) + 1;
-		} elseif (count($parts) > 2) {
-			$pos = strlen($parts[0]);
-		}
-		$assetFile = null;
-		$paths = array();
-		$matched = false;
+			$themeName = $parts[1];
+			unset($parts[0], $parts[1]);
+			$fileFragment = implode('/', $parts);
 
-		if ($pos > 0) {
-			$plugin = substr($url, 0, $pos);
-			$url = preg_replace('/^' . preg_quote($plugin, '/') . '\//i', '', $url);
-
-			if (strpos($plugin, '/') !== false) {
-				list($plugin, $theme) = explode('/', $plugin);
-				$themePaths = App::path('views');
-
-				foreach ($themePaths as $viewPath) {
-					$path = $viewPath . 'themed' . DS . $theme . DS . 'webroot' . DS;
-					if ($plugin === 'theme' && (is_file($path . $url) && file_exists($path . $url))) {
-						$assetFile = $path . $url;
-						break;
-					}
-				}
-			}
-
-			if ($matched === false) {
-				$paths[] = App::pluginPath($plugin) . 'webroot' . DS;
-			}
-		}
-
-		if ($matched === false) {
-			foreach ($paths as $path) {
-				if (is_file($path . $url) && file_exists($path . $url)) {
-					$assetFile = $path . $url;
+			$viewPaths = App::path('views');
+			foreach ($viewPaths as $viewPath) {
+				$path = $viewPath . 'themed' . DS . $themeName . DS . 'webroot' . DS;
+				if (file_exists($path . $fileFragment)) {
+					$assetFile = $path . $fileFragment;
 					break;
 				}
+			}
+		} else {
+			$plugin = $parts[0];
+			unset($parts[0]);
+			$fileFragment = implode('/', $parts);
+			$pluginWebroot = App::pluginPath($plugin) . 'webroot' . DS;
+			if (file_exists($pluginWebroot . $fileFragment)) {
+				$assetFile = $pluginWebroot . $fileFragment;
 			}
 		}
 

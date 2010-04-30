@@ -10,12 +10,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -115,6 +115,22 @@ class CakeSession extends Object {
 	var $id = null;
 
 /**
+ * Session Started
+ *
+ * @var boolean
+ * @access protected
+ */
+	var $_started = false;
+
+/**
+ * Hostname
+ *
+ * @var string
+ * @access public
+ */
+	var $host = null;
+
+/**
  * Constructor.
  *
  * @param string $base The base path for the Session
@@ -138,17 +154,19 @@ class CakeSession extends Object {
 			if (empty($database)) {
 				$database = 'default';
 			}
-			if (empty($modelName)) {
-				ClassRegistry::init(array(
-					'class' => Inflector::classify($table),
-					'alias' => 'Session'
-				));
-			} else {
-				ClassRegistry::init(array(
-					'class' => $modelName,
-					'alias' => 'Session'
-				));
+			$settings = array(
+				'class' => 'Session',
+				'alias' => 'Session',
+				'table' => 'cake_sessions',
+				'ds' => $database
+			);
+			if (!empty($modelName)) {
+				$settings['class'] = $modelName;
 			}
+			if (!empty($table)) {
+				$settings['table'] = $table;
+			}
+			ClassRegistry::init($settings);
 		}
 		if ($start === true) {
 			if (!empty($base)) {
@@ -179,16 +197,19 @@ class CakeSession extends Object {
 /**
  * Starts the Session.
  *
- * @param string $name Variable name to check for
- * @return boolean True if variable is there
+ * @return boolean True if session was started
  * @access public
  */
 	function start() {
+		if ($this->started()) {
+			return true;
+		}
 		if (function_exists('session_write_close')) {
 			session_write_close();
 		}
 		$this->__initSession();
-		return $this->__startSession();
+		$this->_started = $this->__startSession();
+		return $this->started();
 	}
 
 /**
@@ -198,7 +219,7 @@ class CakeSession extends Object {
  * @return boolean True if session has been started.
  */
 	function started() {
-		if (isset($_SESSION)) {
+		if (isset($_SESSION) && $this->_started) {
 			return true;
 		}
 		return false;
@@ -231,22 +252,11 @@ class CakeSession extends Object {
 			$this->id = $id;
 			session_id($this->id);
 		}
-		if (isset($_SESSION)) {
+		if ($this->started()) {
 			return session_id();
 		} else {
 			return $this->id;
 		}
-	}
-
-/**
- * Remove a variable from the session
- *
- * @return boolean
- * @deprecated Use CakeSession::delete instead
- */
-	function del($name) {
-		trigger_error(__('CakeSession::del() is deprecated, use CakeSession::delete() instead.', true), E_USER_WARNING);
-		return $this->delete($name);
 	}
 
 /**
@@ -492,11 +502,9 @@ class CakeSession extends Object {
 			break;
 			case 'database':
 				if (empty($_SESSION)) {
-					if (Configure::read('Session.table') === null) {
+					if (Configure::read('Session.model') === null) {
 						trigger_error(__("You must set the all Configure::write('Session.*') in core.php to use database storage"), E_USER_WARNING);
-						exit();
-					} elseif (Configure::read('Session.database') === null) {
-						Configure::write('Session.database', 'default');
+						$this->_stop();
 					}
 					if ($iniSet) {
 						ini_set('session.use_trans_sid', 0);
@@ -575,7 +583,7 @@ class CakeSession extends Object {
 			if (empty($_SESSION)) {
 				$_SESSION = array();
 			}
-			return false;
+			return true;
 		} elseif (!isset($_SESSION)) {
 			session_cache_limiter ("must-revalidate");
 			session_start();
@@ -763,7 +771,6 @@ class CakeSession extends Object {
 
 		$model =& ClassRegistry::getObject('Session');
 		$return = $model->save(compact('id', 'data', 'expires'));
-
 		return $return;
 	}
 

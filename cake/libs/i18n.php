@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -24,7 +24,7 @@
 App::import('Core', 'l10n');
 
 /**
- * Short description for file.
+ * I18n handles translation of Text and time format strings.
  *
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -120,10 +120,10 @@ class I18n extends Object {
  *
  * @param string $singular String to translate
  * @param string $plural Plural string (if any)
- * @param string $domain Domain
- * @param string $category Category
- * @param integer $count Count
- * @return string translated strings.
+ * @param string $domain Domain The domain of the translation.  Domains are often used by plugin translations
+ * @param string $category Category The integer value of the category to use.
+ * @param integer $count Count Count is used with $plural to choose the correct plural form.
+ * @return string translated string.
  * @access public
  */
 	function translate($singular, $plural = null, $domain = null, $category = 6, $count = null) {
@@ -189,16 +189,15 @@ class I18n extends Object {
 					}
 				}
 				if (strlen($trans)) {
-					$singular = $trans;
-					return $singular;
+					return $trans;
 				}
 			}
 		}
 
 		if (!empty($plurals)) {
-			return($plural);
+			return $plural;
 		}
-		return($singular);
+		return $singular;
 	}
 
 /**
@@ -317,7 +316,7 @@ class I18n extends Object {
 
 		if (empty($this->__domains[$this->category][$this->__lang][$domain])) {
 			$this->__domains[$this->category][$this->__lang][$domain] = array();
-			return($domain);
+			return $domain;
 		}
 
 		if ($head = $this->__domains[$this->category][$this->__lang][$domain][""]) {
@@ -338,7 +337,7 @@ class I18n extends Object {
 				unset($this->__domains[$this->category][$this->__lang][$domain][null]);
 			}
 		}
-		return($domain);
+		return $domain;
 	}
 
 /**
@@ -461,7 +460,6 @@ class I18n extends Object {
  * @access private
  */
 	function __loadLocaleDefinition($file, $domain = null) {
-		$_this =& I18N::getInstance();
 		$comment = '#';
 		$escape = '\\';
 		$currentToken = false;
@@ -492,7 +490,7 @@ class I18n extends Object {
 
 			$len = strlen($value) - 1;
 			if ($value[$len] === $escape) {
-				$value = substr($value,0,$len);
+				$value = substr($value, 0, $len);
 				continue;
 			}
 
@@ -500,7 +498,7 @@ class I18n extends Object {
 			$replacements = array_map('crc32', $mustEscape);
 			$value = str_replace($mustEscape, $replacements, $value);
 			$value = explode(';', $value);
-			$_this->__escape = $escape;
+			$this->__escape = $escape;
 			foreach ($value as $i => $val) {
 				$val = trim($val, '"');
 				$val = preg_replace_callback('/(?:<)?(.[^>]*)(?:>)?/', array(&$this, '__parseLiteralValue'), $val);
@@ -539,6 +537,9 @@ class I18n extends Object {
 		if (substr($string, 0, 3) === 'U00') {
 			$delimiter = 'U00';
 			return join('', array_map('chr', array_map('hexdec', array_filter(explode($delimiter, $string)))));
+		}
+		if (preg_match('/U([0-9a-fA-F]{4})/', $string, $match)) {
+			return Multibyte::ascii(array(hexdec($match[1])));
 		}
 		return $string;
 	}

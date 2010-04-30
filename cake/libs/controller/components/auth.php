@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
@@ -29,6 +29,7 @@ App::import('Core', array('Router', 'Security'), false);
  *
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
+ * @link http://book.cakephp.org/view/1250/Authentication
  */
 class AuthComponent extends Object {
 
@@ -53,6 +54,7 @@ class AuthComponent extends Object {
  *
  * @var object
  * @access public
+ * @link http://book.cakephp.org/view/1278/authenticate
  */
 	var $authenticate = null;
 
@@ -66,6 +68,7 @@ class AuthComponent extends Object {
  *
  * @var mixed
  * @access public
+ * @link http://book.cakephp.org/view/1275/authorize
  */
 	var $authorize = false;
 
@@ -75,6 +78,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1277/ajaxLogin
  */
 	var $ajaxLogin = null;
 
@@ -91,6 +95,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1266/userModel
  */
 	var $userModel = 'User';
 
@@ -100,6 +105,7 @@ class AuthComponent extends Object {
  *
  * @var array
  * @access public
+ * @link http://book.cakephp.org/view/1268/userScope
  */
 	var $userScope = array();
 
@@ -109,6 +115,7 @@ class AuthComponent extends Object {
  *
  * @var array
  * @access public
+ * @link http://book.cakephp.org/view/1267/fields
  */
 	var $fields = array('username' => 'username', 'password' => 'password');
 
@@ -118,6 +125,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1276/sessionKey
  */
 	var $sessionKey = null;
 
@@ -129,6 +137,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1279/actionPath
  */
 	var $actionPath = null;
 
@@ -138,6 +147,7 @@ class AuthComponent extends Object {
  *
  * @var mixed
  * @access public
+ * @link http://book.cakephp.org/view/1269/loginAction
  */
 	var $loginAction = null;
 
@@ -149,6 +159,7 @@ class AuthComponent extends Object {
  *
  * @var mixed
  * @access public
+ * @link http://book.cakephp.org/view/1270/loginRedirect
  */
 	var $loginRedirect = null;
 
@@ -161,6 +172,7 @@ class AuthComponent extends Object {
  * @access public
  * @see AuthComponent::$loginAction
  * @see AuthComponent::logout()
+ * @link http://book.cakephp.org/view/1271/logoutRedirect
  */
 	var $logoutRedirect = null;
 
@@ -178,6 +190,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1272/loginError
  */
 	var $loginError = null;
 
@@ -187,6 +200,7 @@ class AuthComponent extends Object {
  *
  * @var string
  * @access public
+ * @link http://book.cakephp.org/view/1273/authError
  */
 	var $authError = null;
 
@@ -195,6 +209,7 @@ class AuthComponent extends Object {
  *
  * @var boolean
  * @access public
+ * @link http://book.cakephp.org/view/1274/autoRedirect
  */
 	var $autoRedirect = true;
 
@@ -204,6 +219,7 @@ class AuthComponent extends Object {
  * @var array
  * @access public
  * @see AuthComponent::allow()
+ * @link http://book.cakephp.org/view/1251/Setting-Auth-Component-Variables
  */
 	var $allowedActions = array();
 
@@ -291,10 +307,6 @@ class AuthComponent extends Object {
  * @access public
  */
 	function startup(&$controller) {
-		$methods = array_flip($controller->methods);
-		$action = strtolower($controller->params['action']);
-		$allowedActions = array_map('strtolower', $this->allowedActions);
-
 		$isErrorOrTests = (
 			strtolower($controller->name) == 'cakeerror' ||
 			(strtolower($controller->name) == 'tests' && Configure::read() > 0)
@@ -303,6 +315,8 @@ class AuthComponent extends Object {
 			return true;
 		}
 
+		$methods = array_flip($controller->methods);
+		$action = strtolower($controller->params['action']);
 		$isMissingAction = (
 			$controller->scaffold === false &&
 			!isset($methods[$action])
@@ -325,6 +339,7 @@ class AuthComponent extends Object {
 		$url = Router::normalize($url);
 		$loginAction = Router::normalize($this->loginAction);
 
+		$allowedActions = array_map('strtolower', $this->allowedActions);
 		$isAllowed = (
 			$this->allowedActions == array('*') ||
 			in_array($action, $allowedActions)
@@ -449,12 +464,14 @@ class AuthComponent extends Object {
 			trigger_error(__("Could not find \$userModel. Please set AuthComponent::\$userModel in beforeFilter().", true), E_USER_WARNING);
 			return false;
 		}
+		list($plugin, $model) = pluginSplit($this->userModel);
 		$defaults = array(
 			'loginAction' => array(
-				'controller' => Inflector::underscore(Inflector::pluralize($this->userModel)),
-				'action' => 'login'
+				'controller' => Inflector::underscore(Inflector::pluralize($model)),
+				'action' => 'login',
+				'plugin' => $plugin,
 			),
-			'sessionKey' => 'Auth.' . $this->userModel,
+			'sessionKey' => 'Auth.' . $model,
 			'logoutRedirect' => $this->loginAction,
 			'loginError' => __('Login failed. Invalid username or password.', true),
 			'authError' => __('You are not authorized to access that location.', true)
@@ -589,6 +606,7 @@ class AuthComponent extends Object {
  * @param string ... etc.
  * @return void
  * @access public
+ * @link http://book.cakephp.org/view/1257/allow
  */
 	function allow() {
 		$args = func_get_args();
@@ -611,6 +629,7 @@ class AuthComponent extends Object {
  * @return void
  * @see AuthComponent::allow()
  * @access public
+ * @link http://book.cakephp.org/view/1258/deny
  */
 	function deny() {
 		$args = func_get_args();
@@ -632,6 +651,7 @@ class AuthComponent extends Object {
  * @param array $map Actions to map
  * @return void
  * @access public
+ * @link http://book.cakephp.org/view/1260/mapActions
  */
 	function mapActions($map = array()) {
 		$crud = array('create', 'read', 'update', 'delete');
@@ -657,6 +677,7 @@ class AuthComponent extends Object {
  * @param mixed $data User object
  * @return boolean True on login success, false on failure
  * @access public
+ * @link http://book.cakephp.org/view/1261/login
  */
 	function login($data = null) {
 		$this->__setDefaults();
@@ -680,6 +701,7 @@ class AuthComponent extends Object {
  * @return string AuthComponent::$loginAction
  * @see AuthComponent::$loginAction
  * @access public
+ * @link http://book.cakephp.org/view/1262/logout
  */
 	function logout() {
 		$this->__setDefaults();
@@ -695,6 +717,7 @@ class AuthComponent extends Object {
  * @param string $key field to retrive.  Leave null to get entire User record
  * @return mixed User record. or null if no user is logged in.
  * @access public
+ * @link http://book.cakephp.org/view/1264/user
  */
 	function user($key = null) {
 		$this->__setDefaults();
@@ -769,6 +792,7 @@ class AuthComponent extends Object {
  *                        none is specified.
  * @return boolean ACO node path
  * @access public
+ * @link http://book.cakephp.org/view/1256/action
  */
 	function action($action = ':plugin/:controller/:action') {
 		$plugin = empty($this->params['plugin']) ? null : Inflector::camelize($this->params['plugin']) . '/';
@@ -891,16 +915,20 @@ class AuthComponent extends Object {
  * @param array $data Set of data to look for passwords
  * @return array Data with passwords hashed
  * @access public
+ * @link http://book.cakephp.org/view/1259/hashPasswords
  */
 	function hashPasswords($data) {
 		if (is_object($this->authenticate) && method_exists($this->authenticate, 'hashPasswords')) {
 			return $this->authenticate->hashPasswords($data);
 		}
 
-		$model =& $this->getModel();
-		if (is_array($data) && isset($data[$model->alias])) {
-			if (isset($data[$model->alias][$this->fields['username']]) && isset($data[$model->alias][$this->fields['password']])) {
-				$data[$model->alias][$this->fields['password']] = $this->password($data[$model->alias][$this->fields['password']]);
+		if (is_array($data)) {
+			$model =& $this->getModel();
+			
+			if(isset($data[$model->alias])) {
+				if (isset($data[$model->alias][$this->fields['username']]) && isset($data[$model->alias][$this->fields['password']])) {
+					$data[$model->alias][$this->fields['password']] = $this->password($data[$model->alias][$this->fields['password']]);
+				}
 			}
 		}
 		return $data;
@@ -912,6 +940,7 @@ class AuthComponent extends Object {
  * @param string $password Password to hash
  * @return string Hashed password
  * @access public
+ * @link http://book.cakephp.org/view/1263/password
  */
 	function password($password) {
 		return Security::hash($password, null, true);

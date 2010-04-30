@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -21,23 +21,16 @@
 /**
  * Class used for manipulation of arrays.
  *
- * Long description for class
- *
  * @package       cake
  * @subpackage    cake.cake.libs
  */
 class Set {
 
 /**
- * Deprecated
- *
- */
-	var $value = array();
-
-/**
  * This function can be thought of as a hybrid between PHP's array_merge and array_merge_recursive. The difference
  * to the two is that if an array key contains another array then the function behaves recursive (unlike array_merge)
- * but does not do if for keys containing strings (unlike array_merge_recursive). See the unit test for more information.
+ * but does not do if for keys containing strings (unlike array_merge_recursive).
+ * See the unit test for more information.
  *
  * Note: This function will work with an unlimited amount of arguments and typecasts non-array parameters into arrays.
  *
@@ -289,10 +282,10 @@ class Set {
 /**
  * Returns a series of values extracted from an array, formatted in a format string.
  *
- * @param array		$data Source array from which to extract the data
- * @param string	$format Format string into which values will be inserted, see sprintf()
- * @param array		$keys An array containing one or more Set::extract()-style key paths
- * @return array	An array of strings extracted from $keys and formatted with $format
+ * @param array $data Source array from which to extract the data
+ * @param string $format Format string into which values will be inserted, see sprintf()
+ * @param array $keys An array containing one or more Set::extract()-style key paths
+ * @return array An array of strings extracted from $keys and formatted with $format
  * @access public
  * @static
  */
@@ -345,7 +338,7 @@ class Set {
 	}
 
 /**
- * Implements partial support for XPath 2.0. If $path is an array or $data is empty it the call 
+ * Implements partial support for XPath 2.0. If $path is an array or $data is empty it the call
  * is delegated to Set::classicExtract.
  *
  * #### Currently implemented selectors:
@@ -366,8 +359,8 @@ class Set {
  *
  * - Only absolute paths starting with a single '/' are supported right now
  *
- * **Warning**: Even so it has plenty of unit tests the XPath support has not gone through a lot of 
- * real-world testing. Please report Bugs as you find them. Suggestions for additional features to 
+ * **Warning**: Even so it has plenty of unit tests the XPath support has not gone through a lot of
+ * real-world testing. Please report Bugs as you find them. Suggestions for additional features to
  * implement are also very welcome!
  *
  * @param string $path An absolute XPath 2.0 path
@@ -444,7 +437,8 @@ class Set {
 						$items = array($items);
 					} elseif (!isset($items[0])) {
 						$current = current($items);
-						if ((is_array($current) && count($items) <= 1) || !is_array($current)) {
+						$currentKey = key($items);
+						if (!is_array($current) || (is_array($current) && count($items) <= 1 && !is_numeric($currentKey))) {
 							$items = array($items);
 						}
 					}
@@ -453,18 +447,18 @@ class Set {
 						$ctext = array($context['key']);
 						if (!is_numeric($key)) {
 							$ctext[] = $token;
-							$token = array_shift($tokens);
-							if (isset($items[$token])) {
-								$ctext[] = $token;
-								$item = $items[$token];
+							$tok = array_shift($tokens);
+							if (isset($items[$tok])) {
+								$ctext[] = $tok;
+								$item = $items[$tok];
 								$matches[] = array(
 									'trace' => array_merge($context['trace'], $ctext),
-									'key' => $token,
+									'key' => $tok,
 									'item' => $item,
 								);
 								break;
-							} else {
-								array_unshift($tokens, $token);
+							} elseif ($tok !== null) {
+								array_unshift($tokens, $tok);
 							}
 						} else {
 							$key = $token;
@@ -491,7 +485,7 @@ class Set {
 					$length = count($matches);
 					foreach ($matches as $i => $match) {
 						if (Set::matches(array($condition), $match['item'], $i + 1, $length)) {
-							$filtered[] = $match;
+							$filtered[$i] = $match;
 						}
 					}
 					$matches = $filtered;
@@ -784,7 +778,8 @@ class Set {
  *
  * @param mixed $val1 First value
  * @param mixed $val2 Second value
- * @return array Computed difference
+ * @return array Returns the key => value pairs that are not common in $val1 and $val2
+ * The expression for this function is ($val1 - $val2) + ($val2 - ($val1 - $val2))
  * @access public
  * @static
  */
@@ -795,41 +790,16 @@ class Set {
 		if (empty($val2)) {
 			return (array)$val1;
 		}
-		$out = array();
-
-		foreach ($val1 as $key => $val) {
-			$exists = array_key_exists($key, $val2);
-
-			if ($exists && $val2[$key] != $val) {
-				$out[$key] = $val;
-			} elseif (!$exists) {
-				$out[$key] = $val;
+		$intersection = array_intersect_key($val1, $val2);
+		while (($key = key($intersection)) !== null) {
+			if ($val1[$key] == $val2[$key]) {
+				unset($val1[$key]);
+				unset($val2[$key]);
 			}
-			unset($val2[$key]);
+			next($intersection);
 		}
 
-		foreach ($val2 as $key => $val) {
-			if (!array_key_exists($key, $out)) {
-				$out[$key] = $val;
-			}
-		}
-		return $out;
-	}
-
-/**
- * Determines if two Sets or arrays are equal
- * This method is deprecated, and will be removed in a future release.
- *
- * @param array $val1 First value
- * @param array $val2 Second value
- * @return boolean true if they are equal, false otherwise
- * @access public
- * @static
- * @deprecated
- */
-	function isEqual($val1, $val2 = null) {
-		trigger_error(__('Set::isEqual() is deprecated. Please use standard comparison operators instead.', true), E_USER_WARNING);
-		return ($val1 == $val2);
+		return $val1 + $val2;
 	}
 
 /**
@@ -967,6 +937,9 @@ class Set {
 		} else {
 			$keys = Set::extract($data, $path1);
 		}
+		if (empty($keys)) {
+			return array();
+		}
 
 		if (!empty($path2) && is_array($path2)) {
 			$format = array_shift($path2);
@@ -998,7 +971,9 @@ class Set {
 				return $out;
 			}
 		}
-
+		if (empty($vals)) {
+			return array();
+		}
 		return array_combine($keys, $vals);
 	}
 

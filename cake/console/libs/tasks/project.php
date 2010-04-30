@@ -6,12 +6,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.bake
@@ -88,6 +88,12 @@ class ProjectTask extends Shell {
 				$this->out(__('Random hash key created for \'Security.salt\'', true));
 			} else {
 				$this->err(sprintf(__('Unable to generate random hash for \'Security.salt\', you should change it in %s', true), CONFIGS . 'core.php'));
+			}
+
+			if ($this->securityCipherSeed($path) === true ) {
+				$this->out(__('Random seed created for \'Security.cipherSeed\'', true));
+			} else {
+				$this->err(sprintf(__('Unable to generate random seed for \'Security.cipherSeed\', you should change it in %s', true), CONFIGS . 'core.php'));
 			}
 
 			$corePath = $this->corePath($path);
@@ -215,6 +221,30 @@ class ProjectTask extends Shell {
 		return false;
 	}
 
+	/**
+	 * Generates and writes 'Security.cipherSeed'
+	 *
+	 * @param string $path Project path
+	 * @return boolean Success
+	 * @access public
+	 */
+		function securityCipherSeed($path) {
+			$File =& new File($path . 'config' . DS . 'core.php');
+			$contents = $File->read();
+			if (preg_match('/([\\t\\x20]*Configure::write\\(\\\'Security.cipherSeed\\\',[\\t\\x20\'A-z0-9]*\\);)/', $contents, $match)) {
+				if (!class_exists('Security')) {
+					require LIBS . 'security.php';
+				}
+				$string = substr(bin2hex(Security::generateAuthKey()), 0, 30);
+				$result = str_replace($match[0], "\t" . 'Configure::write(\'Security.cipherSeed\', \''.$string.'\');', $contents);
+				if ($File->write($result)) {
+					return true;
+				}
+				return false;
+			}
+			return false;
+		}
+
 /**
  * Generates and writes CAKE_CORE_INCLUDE_PATH
  *
@@ -284,12 +314,12 @@ class ProjectTask extends Shell {
 		$admin = '';
 		$prefixes = Configure::read('Routing.prefixes');
 		if (!empty($prefixes)) {
+			if (count($prefixes) == 1) {
+				return $prefixes[0] . '_';
+			}
 			if ($this->interactive) {
 				$this->out();
 				$this->out(__('You have more than one routing prefix configured', true));
-			}
-			if (count($prefixes) == 1) {
-				return $prefixes[0] . '_';
 			}
 			$options = array();
 			foreach ($prefixes as $i => $prefix) {

@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -25,6 +25,7 @@
  *
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
+ * @link http://book.cakephp.org/view/1450/Javascript
  */
 class JavascriptHelper extends AppHelper {
 
@@ -264,7 +265,7 @@ class JavascriptHelper extends AppHelper {
 					$url .= '.js';
 				}
 			}
-			$url = $this->webroot($this->assetTimestamp($url));
+			$url = $this->assetTimestamp($this->webroot($url));
 
 			if (Configure::read('Asset.filter.js')) {
 				$pos = strpos($url, JS_URL);
@@ -639,7 +640,10 @@ class JavascriptHelper extends AppHelper {
 
 			foreach ($data as $key => $val) {
 				if (is_array($val) || is_object($val)) {
-					$val = $this->object($val, array_merge($options, array('block' => false)));
+					$val = $this->object(
+						$val,
+						array_merge($options, array('block' => false, 'prefix' => '', 'postfix' => ''))
+					);
 				} else {
 					$quoteStrings = (
 						!count($options['stringKeys']) ||

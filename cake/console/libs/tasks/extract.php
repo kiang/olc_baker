@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs
@@ -174,6 +174,12 @@ class ExtractTask extends Shell {
 		$this->out(__('Output Directory: ', true) . $this->__output);
 		$this->hr();
 		$this->__extractTokens();
+		$this->__buildFiles();
+		$this->__writeFiles();
+		$this->__paths = $this->__files = $this->__storage = array();
+		$this->__strings = $this->__tokens = array();
+		$this->out();
+		$this->out(__('Done.', true));
 	}
 
 /**
@@ -244,10 +250,6 @@ class ExtractTask extends Shell {
 			$this->__parse('__dn', array('domain', 'singular', 'plural'));
 			$this->__parse('__dcn', array('domain', 'singular', 'plural'));
 		}
-		$this->__buildFiles();
-		$this->__writeFiles();
-		$this->out();
-		$this->out(__('Done.', true));
 	}
 
 /**
@@ -262,7 +264,7 @@ class ExtractTask extends Shell {
 		$count = 0;
 		$tokenCount = count($this->__tokens);
 
-		while (($tokenCount - $count) > 7) {
+		while (($tokenCount - $count) > 1) {
 			list($countToken, $firstParenthesis) = array($this->__tokens[$count], $this->__tokens[$count + 1]);
 			if (!is_array($countToken)) {
 				$count++;
@@ -319,12 +321,12 @@ class ExtractTask extends Shell {
 	function __buildFiles() {
 		foreach ($this->__strings as $domain => $strings) {
 			foreach ($strings as $string => $files) {
-				$occurances = array();
+				$occurrences = array();
 				foreach ($files as $file => $lines) {
-					$occurances[] = $file . ':' . implode(';', $lines);
+					$occurrences[] = $file . ':' . implode(';', $lines);
 				}
-				$occurances = implode("\n#: ", $occurances);
-				$header = '#: ' . str_replace($this->__paths, '', $occurances) . "\n";
+				$occurrences = implode("\n#: ", $occurrences);
+				$header = '#: ' . str_replace($this->__paths, '', $occurrences) . "\n";
 
 				if (strpos($string, "\0") === false) {
 					$sentence = "msgid \"{$string}\"\n";
@@ -369,6 +371,7 @@ class ExtractTask extends Shell {
  * @access private
  */
 	function __writeFiles() {
+		$overwriteAll = false;
 		foreach ($this->__storage as $domain => $sentences) {
 			$output = $this->__writeHeader();
 			foreach ($sentences as $sentence => $header) {
@@ -377,18 +380,19 @@ class ExtractTask extends Shell {
 
 			$filename = $domain . '.pot';
 			$File = new File($this->__output . $filename);
-			if ($File->exists()) {
-				$response = '';
-				while ($response == '') {
-					$this->out();
-					$response = $this->in(sprintf(__('Error: %s already exists in this location. Overwrite?', true), $filename), array('y', 'n'), 'y');
-					if (strtoupper($response) === 'N') {
-						$response = '';
-						while ($response == '') {
-							$response = $this->in(sprintf(__("What would you like to name this file?\nExample: %s", true), 'new_' . $filename), null, 'new_' . $filename);
-							$File = new File($this->__output . $response);
-						}
+			$response = '';
+			while ($overwriteAll === false && $File->exists() && strtoupper($response) !== 'Y') {
+				$this->out();
+				$response = $this->in(sprintf(__('Error: %s already exists in this location. Overwrite? [Y]es, [N]o, [A]ll', true), $filename), array('y', 'n', 'a'), 'y');
+				if (strtoupper($response) === 'N') {
+					$response = '';
+					while ($response == '') {
+						$response = $this->in(sprintf(__("What would you like to name this file?\nExample: %s", true), 'new_' . $filename), null, 'new_' . $filename);
+						$File = new File($this->__output . $response);
+						$filename = $response;
 					}
+				} elseif (strtoupper($response) === 'A') {
+					$overwriteAll = true;
 				}
 			}
 			$File->write($output);

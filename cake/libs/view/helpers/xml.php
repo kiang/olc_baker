@@ -5,12 +5,12 @@
  * Simplifies the output of XML documents.
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -26,6 +26,7 @@ App::import('Core', array('Xml', 'Set'));
  *
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
+ * @link http://book.cakephp.org/view/1473/XML
  */
 class XmlHelper extends AppHelper {
 
@@ -39,6 +40,7 @@ class XmlHelper extends AppHelper {
 
 /**
  * Constructor
+ *
  * @return void
  */
 	function __construct() {
@@ -50,8 +52,10 @@ class XmlHelper extends AppHelper {
 /**
  * Returns an XML document header
  *
- * @param  array $attrib Header tag attributes
+ * @param array $attrib Header tag attributes
  * @return string XML header
+ * @access public
+ * @link http://book.cakephp.org/view/1476/header
  */
 	function header($attrib = array()) {
 		if (Configure::read('App.encoding') !== null) {
@@ -71,10 +75,10 @@ class XmlHelper extends AppHelper {
 /**
  * Adds a namespace to any documents generated
  *
- * @param  string  $name The namespace name
- * @param  string  $url  The namespace URI; can be empty if in the default namespace map
+ * @param string $name The namespace name
+ * @param string $url The namespace URI; can be empty if in the default namespace map
  * @return boolean False if no URL is specified, and the namespace does not exist
- *                 default namespace map, otherwise true
+ *     default namespace map, otherwise true
  * @deprecated
  * @see Xml::addNs()
  */
@@ -88,6 +92,7 @@ class XmlHelper extends AppHelper {
  * @param  string  $name The namespace name or URI
  * @deprecated
  * @see Xml::removeNs()
+ * @access public
  */
 	function removeNs($name) {
 		return $this->Xml->removeGlobalNamespace($name);
@@ -96,11 +101,13 @@ class XmlHelper extends AppHelper {
 /**
  * Generates an XML element
  *
- * @param  string   $name The name of the XML element
- * @param  array    $attrib The attributes of the XML element
- * @param  mixed    $content XML element content
- * @param  boolean  $endTag Whether the end tag of the element should be printed
+ * @param string $name The name of the XML element
+ * @param array $attrib The attributes of the XML element
+ * @param mixed $content XML element content
+ * @param boolean $endTag Whether the end tag of the element should be printed
  * @return string XML
+ * @access public
+ * @link http://book.cakephp.org/view/1475/elem
  */
 	function elem($name, $attrib = array(), $content = null, $endTag = true) {
 		$namespace = null;
@@ -138,6 +145,7 @@ class XmlHelper extends AppHelper {
  * Create closing tag for current element
  *
  * @return string
+ * @access public
  */
 	function closeElem() {
 		$name = $this->Xml->name();
@@ -150,11 +158,13 @@ class XmlHelper extends AppHelper {
 /**
  * Serializes a model resultset into XML
  *
- * @param  mixed  $data The content to be converted to XML
- * @param  array  $options The data formatting options.  For a list of valid options, see
- *                         XmlNode::__construct().
+ * @param mixed $data The content to be converted to XML
+ * @param array $options The data formatting options.  For a list of valid options, see
+ *     Xml::__construct().
  * @return string A copy of $data in XML format
- * @see XmlNode
+ * @see Xml::__construct()
+ * @access public
+ * @link http://book.cakephp.org/view/1474/serialize
  */
 	function serialize($data, $options = array()) {
 		$options += array('attributes' => false, 'format' => 'attributes');

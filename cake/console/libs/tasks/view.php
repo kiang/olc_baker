@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
@@ -18,6 +18,7 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Controller', 'Controller', false);
+include_once dirname(__FILE__) . DS . 'bake.php';
 
 /**
  * Task class for creating and updating view files.
@@ -25,15 +26,7 @@ App::import('Controller', 'Controller', false);
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
  */
-class ViewTask extends Shell {
-
-/**
- * Name of plugin
- *
- * @var string
- * @access public
- */
-	var $plugin = null;
+class ViewTask extends BakeTask {
 
 /**
  * Tasks to be loaded by this Task
@@ -84,6 +77,15 @@ class ViewTask extends Shell {
 	var $scaffoldActions = array('index', 'view', 'add', 'edit');
 
 /**
+ * An array of action names that don't require templates.  These
+ * actions will not emit errors when doing bakeActions()
+ *
+ * @var array
+ * @access public
+ */
+	var $noTemplateActions = array('delete');
+
+/**
  * Override initialize
  *
  * @access public
@@ -107,8 +109,8 @@ class ViewTask extends Shell {
 			$this->connection = 'default';
 		}
 		$controller = $action = $alias = null;
-		$this->controllerName = Inflector::camelize($this->args[0]);
-		$this->controllerPath = Inflector::underscore($this->controllerName);
+		$this->controllerName = $this->_controllerName($this->args[0]);
+		$this->controllerPath = $this->_controllerPath($this->controllerName);
 
 		$this->Project->interactive = false;
 		if (strtolower($this->args[0]) == 'all') {
@@ -180,6 +182,10 @@ class ViewTask extends Shell {
 		$this->Controller->interactive = false;
 		$tables = $this->Controller->listAll($this->connection, false);
 
+		$actions = null;
+		if (isset($this->args[1])) {
+			$actions = array($this->args[1]);
+		}
 		$this->interactive = false;
 		foreach ($tables as $table) {
 			$model = $this->_modelName($table);
@@ -187,7 +193,9 @@ class ViewTask extends Shell {
 			$this->controllerPath = Inflector::underscore($this->controllerName);
 			if (App::import('Model', $model)) {
 				$vars = $this->__loadController();
-				$actions = $this->_methodsToBake();
+				if (!$actions) {
+					$actions = $this->_methodsToBake();
+				}
 				$this->bakeActions($actions, $vars);
 			}
 		}
@@ -202,6 +210,8 @@ class ViewTask extends Shell {
 		$this->hr();
 		$this->out(sprintf("Bake View\nPath: %s", $this->path));
 		$this->hr();
+
+		$this->DbConfig->interactive = $this->Controller->interactive = $this->interactive = true;
 
 		if (empty($this->connection)) {
 			$this->connection = $this->DbConfig->getConfig();
@@ -274,9 +284,10 @@ class ViewTask extends Shell {
 		}
 		$controllerClassName = $this->controllerName . 'Controller';
 		$controllerObj =& new $controllerClassName();
+		$controllerObj->plugin = $this->plugin;
 		$controllerObj->constructClasses();
 		$modelClass = $controllerObj->modelClass;
-		$modelObj =& ClassRegistry::getObject($controllerObj->modelKey);
+		$modelObj =& $controllerObj->{$controllerObj->modelClass};
 
 		if ($modelObj) {
 			$primaryKey = $modelObj->primaryKey;
@@ -287,13 +298,10 @@ class ViewTask extends Shell {
 			$fields = array_keys($schema);
 			$associations = $this->__associations($modelObj);
 		} else {
-			$primaryKey = null;
-			$displayField = null;
+			$primaryKey = $displayField = null;
 			$singularVar = Inflector::variable(Inflector::singularize($this->controllerName));
 			$singularHumanName = $this->_singularHumanName($this->controllerName);
-			$fields = array();
-			$schema = array();
-			$associations = array();
+			$fields = $schema = $associations = array();
 		}
 		$pluralVar = Inflector::variable($this->controllerName);
 		$pluralHumanName = $this->_pluralHumanName($this->controllerName);
@@ -357,10 +365,7 @@ class ViewTask extends Shell {
 		if ($content === true) {
 			$content = $this->getContent($action);
 		}
-		$path = $this->path;
-		if (isset($this->plugin)) {
-			$path = $this->_pluginPath($this->plugin) . 'views' . DS;
-		}
+		$path = $this->getPath();
 		$filename = $path . $this->controllerPath . DS . Inflector::underscore($action) . '.ctp';
 		return $this->createFile($filename, $content);
 	}
@@ -381,10 +386,9 @@ class ViewTask extends Shell {
 		$this->Template->set('action', $action);
 		$this->Template->set('plugin', $this->plugin);
 		$this->Template->set($vars);
-		$output = $this->Template->generate('views', $this->getTemplate($action));
-
-		if (!empty($output)) {
-			return $output;
+		$template = $this->getTemplate($action);
+		if ($template) {
+			return $this->Template->generate('views', $template);
 		}
 		return false;
 	}
@@ -397,6 +401,9 @@ class ViewTask extends Shell {
  * @access public
  */
 	function getTemplate($action) {
+		if ($action != $this->template && in_array($action, $this->noTemplateActions)) {
+			return false;
+		}
 		if (!empty($this->template) && $action != $this->template) {
 			return $this->template;
 		} 
@@ -429,6 +436,9 @@ class ViewTask extends Shell {
 		$this->out("<controller>");
 		$this->out("\tName of the controller views to bake. Can use Plugin.name");
 		$this->out("\tas a shortcut for plugin baking.");
+		$this->out();
+		$this->out("<action>");
+		$this->out("\tName of the action view to bake");
 		$this->out();
 		$this->out('Commands:');
 		$this->out();

@@ -4,12 +4,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.templates.pages
@@ -20,10 +20,9 @@ if (Configure::read() == 0):
 	$this->cakeError('error404');
 endif;
 ?>
-<h2><?php printf(__('Release Notes for CakePHP %s.', true), Configure::version()); ?></h2>
+<h2><?php echo sprintf(__('Release Notes for CakePHP %s.', true), Configure::version()); ?></h2>
+<a href="http://cakephp.lighthouseapp.com/projects/42648/changelog-1-3-0"><?php __('Read the changelog'); ?> </a>
 <?php
-echo $this->Html->link(__('Read the changelog', true), 'http://code.cakephp.org/wiki/changelog/1_3_0-alpha');
-
 if (Configure::read() > 0):
 	Debugger::checkSecurityKeys();
 endif;
@@ -132,7 +131,7 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 </p>
 
 <ul>
-	<li><a href="http://www.cakefoundation.org/"><?php __('Cake Software Foundation'); ?> </a>
+	<li><a href="http://cakefoundation.org/"><?php __('Cake Software Foundation'); ?> </a>
 	<ul><li><?php __('Promoting development related to CakePHP'); ?></li></ul></li>
 	<li><a href="http://www.cakephp.org"><?php __('CakePHP'); ?> </a>
 	<ul><li><?php __('The Rapid Development Framework'); ?></li></ul></li>
@@ -148,8 +147,10 @@ You can also add some CSS styles for your pages at: APP/webroot/css.');
 	<ul><li><?php __('Community mailing list'); ?></li></ul></li>
 	<li><a href="irc://irc.freenode.net/cakephp">irc.freenode.net #cakephp</a>
 	<ul><li><?php __('Live chat about CakePHP'); ?></li></ul></li>
-	<li><a href="http://code.cakephp.org/"><?php __('CakePHP Code'); ?> </a>
-	<ul><li><?php __('For the Development of CakePHP (Tickets, Git browser, Roadmap, Changelogs)'); ?></li></ul></li>
+	<li><a href="http://github.com/cakephp/"><?php __('CakePHP Code'); ?> </a>
+	<ul><li><?php __('For the Development of CakePHP Git repository, Downloads'); ?></li></ul></li>
+	<li><a href="http://cakephp.lighthouseapp.com/"><?php __('CakePHP Lighthouse'); ?> </a>
+	<ul><li><?php __('CakePHP Tickets, Wiki pages, Roadmap'); ?></li></ul></li>
 	<li><a href="http://www.cakeforge.org"><?php __('CakeForge'); ?> </a>
 	<ul><li><?php __('Open Development for CakePHP'); ?></li></ul></li>
 	<li><a href="http://astore.amazon.com/cakesoftwaref-20/"><?php __('Book Store'); ?> </a>

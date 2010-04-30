@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -19,7 +19,7 @@
  */
 
 /**
- * Short description for file.
+ * Security Library contains utility methods related to security
  *
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -105,7 +105,7 @@ class Security extends Object {
  * @param string $string String to hash
  * @param string $type Method to use (sha1/sha256/md5)
  * @param boolean $salt If true, automatically appends the application's salt
- * 				  value to $string (Security.salt)
+ *     value to $string (Security.salt)
  * @return string Hash
  * @access public
  * @static
@@ -176,15 +176,15 @@ class Security extends Object {
 
 		srand(Configure::read('Security.cipherSeed'));
 		$out = '';
-
-		for ($i = 0; $i < strlen($text); $i++) {
-			for ($j = 0; $j < ord(substr($key, $i % strlen($key), 1)); $j++) {
-				$toss = rand(0, 255);
+		$keyLength = strlen($key);
+		for ($i = 0, $textLength = strlen($text); $i < $textLength; $i++) {
+			$j = ord(substr($key, $i % $keyLength, 1));
+			while ($j--) {
+				rand(0, 255);
 			}
 			$mask = rand(0, 255);
 			$out .= chr(ord(substr($text, $i, 1)) ^ $mask);
 		}
-
 		srand();
 		return $out;
 	}

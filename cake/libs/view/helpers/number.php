@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -27,6 +27,7 @@
  *
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
+ * @link http://book.cakephp.org/view/1452/Number
  */
 class NumberHelper extends AppHelper {
 
@@ -66,9 +67,11 @@ class NumberHelper extends AppHelper {
 /**
  * Formats a number with a level of precision.
  *
- * @param  float	$number	A floating point number.
- * @param  integer $precision The precision of the returned number.
+ * @param float $number	A floating point number.
+ * @param integer $precision The precision of the returned number.
  * @return float Enter description here...
+ * @access public
+ * @link http://book.cakephp.org/view/1454/precision
  */
 	function precision($number, $precision = 3) {
 		return sprintf("%01.{$precision}f", $number);
@@ -79,6 +82,8 @@ class NumberHelper extends AppHelper {
  *
  * @param integer $length Size in bytes
  * @return string Human readable size
+ * @access public
+ * @link http://book.cakephp.org/view/1456/toReadableSize
  */
 	function toReadableSize($size) {
 		switch (true) {
@@ -101,6 +106,8 @@ class NumberHelper extends AppHelper {
  * @param float $number A floating point number
  * @param integer $precision The precision of the returned number
  * @return string Percentage string
+ * @access public
+ * @link http://book.cakephp.org/view/1455/toPercentage
  */
 	function toPercentage($number, $precision = 2) {
 		return $this->precision($number, $precision) . '%';
@@ -113,6 +120,8 @@ class NumberHelper extends AppHelper {
  * @param integer $options if int then places, if string then before, if (,.-) then use it
  *   or array with places and before keys
  * @return string formatted number
+ * @access public
+ * @link http://book.cakephp.org/view/1457/format
  */
 	function format($number, $options = false) {
 		$places = 0;
@@ -169,6 +178,8 @@ class NumberHelper extends AppHelper {
  *   set at least 'before' and 'after' options.
  * @param array $options
  * @return string Number formatted as a currency.
+ * @access public
+ * @link http://book.cakephp.org/view/1453/currency
  */
 	function currency($number, $currency = 'USD', $options = array()) {
 		$default = $this->_currencyDefaults;
@@ -237,6 +248,7 @@ class NumberHelper extends AppHelper {
  * @param array $options The array of options for this format.
  * @return void
  * @see NumberHelper::currency()
+ * @access public
  */
 	function addFormat($formatName, $options) {
 		$this->_currencies[$formatName] = $options + $this->_currencyDefaults;

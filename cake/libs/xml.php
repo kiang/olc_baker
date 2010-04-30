@@ -7,12 +7,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -715,7 +715,7 @@ class XmlNode extends Object {
 				if (isset($out[$key]) || isset($multi[$key])) {
 					if (!isset($multi[$key])) {
 						$multi[$key] = array($out[$key]);
-						unset($out[$key]);
+						//unset($out[$key]);
 					}
 					$multi[$key][] = $value;
 				} elseif (!empty($value)) {
@@ -872,7 +872,7 @@ class Xml extends XmlNode {
 		parent::__construct('#document');
 
 		if ($options['root'] !== '#document') {
-			$Root = $this->createNode($options['root']);
+			$Root =& $this->createNode($options['root']);
 		} else {
 			$Root =& $this;
 		}
@@ -954,6 +954,8 @@ class Xml extends XmlNode {
 				break;
 			}
 		}
+		xml_parser_free($this->__parser);
+		$this->__parser = null;
 		return true;
 	}
 
@@ -1131,9 +1133,6 @@ class Xml extends XmlNode {
  * @access private
  */
 	function __destruct() {
-		if (is_resource($this->__parser)) {
-			xml_parser_free($this->__parser);
-		}
 		$this->_killParent(true);
 	}
 

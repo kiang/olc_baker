@@ -7,12 +7,12 @@
  * should respond to the different needs of a handheld computer and a desktop machine.
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
@@ -20,15 +20,12 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-if (!defined('REQUEST_MOBILE_UA')) {
-	define('REQUEST_MOBILE_UA', '(iPhone|MIDP|AvantGo|BlackBerry|J2ME|Opera Mini|DoCoMo|NetFront|Nokia|PalmOS|PalmSource|portalmmm|Plucker|ReqwirelessWeb|SonyEricsson|Symbian|UP\.Browser|Windows CE|Xiino)');
-}
-
 /**
  * Request object for handling HTTP requests
  *
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
+ * @link http://book.cakephp.org/view/1291/Request-Handling
  *
  */
 class RequestHandlerComponent extends Object {
@@ -103,6 +100,37 @@ class RequestHandlerComponent extends Object {
 		'pdf'			=> 'application/pdf',
 		'zip'			=> 'application/x-zip',
 		'tar'			=> 'application/x-tar'
+	);
+
+/**
+ * List of regular expressions for matching mobile device's user agent string
+ *
+ * @var array
+ * @access public
+ */
+	var $mobileUA = array(
+		'Android',
+		'AvantGo',
+		'BlackBerry',
+		'DoCoMo',
+		'iPod',
+		'iPhone',
+		'J2ME',
+		'MIDP',
+		'NetFront',
+		'Nokia',
+		'Opera Mini',
+		'PalmOS',
+		'PalmSource',
+		'portalmmm',
+		'Plucker',
+		'ReqwirelessWeb',
+		'SonyEricsson',
+		'Symbian',
+		'UP\.Browser',
+		'webOS',
+		'Windows CE',
+		'Xiino'
 	);
 
 /**
@@ -241,6 +269,9 @@ class RequestHandlerComponent extends Object {
 		foreach ($_POST as $key => $val) {
 			unset($_POST[$key]);
 		}
+		if (is_array($url)) {
+			$url = Router::url($url + array('base' => false));
+		}
 		echo $this->requestAction($url, array('return'));
 		$this->_stop();
 	}
@@ -311,10 +342,16 @@ class RequestHandlerComponent extends Object {
  *
  * @return boolean True if user agent is a mobile web browser
  * @access public
+ * @deprecated Use of constant REQUEST_MOBILE_UA is deprecated and will be removed in future versions
  */
 	function isMobile() {
-		preg_match('/' . REQUEST_MOBILE_UA . '/i', env('HTTP_USER_AGENT'), $match);
-		if (!empty($match) || $this->accepts('wap')) {
+		if (defined('REQUEST_MOBILE_UA')) {
+			$regex = '/' . REQUEST_MOBILE_UA . '/i';
+		} else {
+			$regex = '/' . implode('|', $this->mobileUA) . '/i';
+		}
+
+		if (preg_match($regex, env('HTTP_USER_AGENT')) || $this->accepts('wap')) {
 			return true;
 		}
 		return false;
@@ -419,14 +456,6 @@ class RequestHandlerComponent extends Object {
 			$sessHost = env('HTTP_X_FORWARDED_HOST');
 		}
 		return trim(preg_replace('/(?:\:.*)/', '', $sessHost));
-	}
-
-/**
- * @deprecated use getReferer()
- */
-	function getReferrer() {
-		trigger_error(__('Deprecated method, use RequestHandlerComponent::getReferer instead', true), E_USER_WARNING);
-		return $this->getReferer();
 	}
 
 /**

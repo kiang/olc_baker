@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -304,7 +304,7 @@ class L10n extends Object {
 										'sq' => array('language' => 'Albanian', 'locale' => 'alb', 'localeFallback' => 'alb', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'sr' => array('language' => 'Serbian', 'locale' => 'scc', 'localeFallback' => 'scc', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'sv' => array('language' => 'Swedish', 'locale' => 'swe', 'localeFallback' => 'swe', 'charset' => 'utf-8', 'direction' => 'ltr'),
-										'sv-fi' => array('language' => 'Swedish (Findland)', 'locale' => 'sv_fi', 'localeFallback' => 'swe', 'charset' => 'utf-8', 'direction' => 'ltr'),
+										'sv-fi' => array('language' => 'Swedish (Finland)', 'locale' => 'sv_fi', 'localeFallback' => 'swe', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'sx' => array('language' => 'Sutu', 'locale' => 'sx', 'localeFallback' => 'sx', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'sz' => array('language' => 'Sami (Lappish)', 'locale' => 'smi', 'localeFallback' => 'smi', 'charset' => 'utf-8', 'direction' => 'ltr'),
 										'th' => array('language' => 'Thai', 'locale' => 'tha', 'localeFallback' => 'tha', 'charset' => 'utf-8', 'direction' => 'ltr'),
@@ -336,8 +336,8 @@ class L10n extends Object {
 
 /**
  * Gets the settings for $language.
- * If $language is null it attempt to get settings from I10n::__autoLanguage(); if this fails
- * the method will get the settings from I10n::__setLanguage();
+ * If $language is null it attempt to get settings from L10n::__autoLanguage(); if this fails
+ * the method will get the settings from L10n::__setLanguage();
  *
  * @param string $language Language (if null will use DEFAULT_LANGUAGE if defined)
  * @access public
@@ -364,7 +364,7 @@ class L10n extends Object {
 		} else if ($language !== null && isset($this->__l10nCatalog[$language])) {
 			$langKey = $language;
 		} else if (defined('DEFAULT_LANGUAGE')) {
-			$langKey = DEFAULT_LANGUAGE;
+			$langKey = $language = DEFAULT_LANGUAGE;
 		}
 
 		if ($langKey !== null && isset($this->__l10nCatalog[$langKey])) {
@@ -432,7 +432,8 @@ class L10n extends Object {
  * Attempts to find locale for language, or language for locale
  *
  * @param mixed $mixed 2/3 char string (language/locale), array of those strings, or null
- * @return mixed string language/locale, array of those values, whole map as an array, or false when language/locale doesn't exist
+ * @return mixed string language/locale, array of those values, whole map as an array, 
+ *    or false when language/locale doesn't exist
  * @access public
  */
 	function map($mixed = null) {
@@ -459,7 +460,9 @@ class L10n extends Object {
  * Attempts to find catalog record for requested language
  *
  * @param mixed $language string requested language, array of requested languages, or null for whole catalog
- * @return mixed array catalog record for requested language, array of catalog records, whole catalog, or false when language doesn't exist
+ * @return mixed array catalog record for requested language, array of catalog records, whole catalog, 
+ *    or false when language doesn't exist
+ * @access public
  */
 	function catalog($language = null) {
 		if (is_array($language)) {

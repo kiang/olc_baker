@@ -9,12 +9,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs
@@ -27,7 +27,7 @@
  *
  * @package       cake
  * @subpackage    cake.cake.console.libs
- * @link          http://book.cakephp.org/view/113/Code-Generation-with-Bake
+ * @link          http://book.cakephp.org/view/1522/Code-Generation-with-Bake
  */
 class BakeShell extends Shell {
 
@@ -48,10 +48,6 @@ class BakeShell extends Shell {
 		parent::loadTasks();
 		$task = Inflector::classify($this->command);
 		if (isset($this->{$task}) && !in_array($task, array('Project', 'DbConfig'))) {
-			if (empty($this->{$task}->path)) {
-				$path = Inflector::underscore(Inflector::pluralize($this->command));
-				$this->{$task}->path = $this->params['working'] . DS . $path . DS;
-			}
 			if (isset($this->params['connection'])) {
 				$this->{$task}->connection = $this->params['connection'];
 			}
@@ -63,10 +59,6 @@ class BakeShell extends Shell {
 			}
 			if (isset($this->params['plugin'])) {
 				$this->{$task}->plugin = $this->params['plugin'];
-			}
-			if (!is_dir($this->{$task}->path)) {
-				$this->err(sprintf(__("%s directory could not be found.\nBe sure you have created %s", true), $task, $this->{$task}->path));
-				$this->_stop();
 			}
 		}
 	}

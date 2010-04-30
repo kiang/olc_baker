@@ -7,13 +7,13 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller
  * @since         Cake v 0.10.0.1076
@@ -584,11 +584,13 @@ class ScaffoldView extends ThemeView {
 		$names[] = 'scaffolds' . DS . $subDir . $name;
 
 		$paths = $this->_paths($this->plugin);
-
-		$exts = array($this->ext, '.ctp', '.thtml');
-		foreach ($paths as $path) {
-			foreach ($names as $name) {
-				foreach ($exts as $ext) {
+		$exts = array($this->ext);
+		if ($this->ext !== '.ctp') {
+			array_push($exts, '.ctp');
+		}
+		foreach ($exts as $ext) {
+			foreach ($paths as $path) {
+				foreach ($names as $name) {
 					if (file_exists($path . $name . $ext)) {
 						return $path . $name . $ext;
 					}

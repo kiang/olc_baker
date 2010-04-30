@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc.
+ * Copyright 2005-2010, Cake Software Foundation, Inc.
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
@@ -18,21 +18,15 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+include_once dirname(__FILE__) . DS . 'bake.php';
+
 /**
  * Task class for creating and updating controller files.
  *
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
  */
-class ControllerTask extends Shell {
-
-/**
- * Name of plugin
- *
- * @var string
- * @access public
- */
-	var $plugin = null;
+class ControllerTask extends BakeTask {
 
 /**
  * Tasks to be loaded by this Task
@@ -76,7 +70,7 @@ class ControllerTask extends Shell {
 				return $this->all();
 			}
 
-			$controller = Inflector::camelize($this->args[0]);
+			$controller = $this->_controllerName($this->args[0]);
 			$actions = 'scaffold';
 
 			if (!empty($this->args[1]) && ($this->args[1] == 'public' || $this->args[1] == 'scaffold')) {
@@ -318,10 +312,7 @@ class ControllerTask extends Shell {
 		$this->Template->set(compact('controllerName', 'actions', 'helpers', 'components', 'isScaffold'));
 		$contents = $this->Template->generate('classes', 'controller');
 
-		$path = $this->path;
-		if (isset($this->plugin)) {
-			$path = $this->_pluginPath($this->plugin) . 'controllers' . DS;
-		}
+		$path = $this->getPath();
 		$filename = $path . $this->_controllerPath($controllerName) . '_controller.php';
 		if ($this->createFile($filename, $contents)) {
 			return $contents;
@@ -339,6 +330,7 @@ class ControllerTask extends Shell {
 	function bakeTest($className) {
 		$this->Test->plugin = $this->plugin;
 		$this->Test->connection = $this->connection;
+		$this->Test->interactive = $this->interactive;
 		return $this->Test->bake('Controller', $className);
 	}
 

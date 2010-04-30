@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
@@ -18,21 +18,15 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
+include_once dirname(__FILE__) . DS . 'bake.php';
+
 /**
  * Task class for creating and updating test files.
  *
  * @package       cake
  * @subpackage    cake.cake.console.libs.tasks
  */
-class TestTask extends Shell {
-
-/**
- * Name of plugin
- *
- * @var string
- * @access public
- */
-	var $plugin = null;
+class TestTask extends BakeTask {
 
 /**
  * path to TESTS directory
@@ -66,12 +60,6 @@ class TestTask extends Shell {
  */
 	var $_fixtures = array();
 
-/**
- * Flag for interactive mode
- *
- * @var boolean
- */
-	var $interactive = false;
 
 /**
  * Execution method always used for tasks
@@ -421,7 +409,7 @@ class TestTask extends Shell {
 			$className = substr($fullClassName, 0, strlen($fullClassName) - 10);
 			return "new Test$fullClassName();\n\t\t\$this->{$className}->constructClasses();\n";
 		}
-		return "new $fullClassName()\n";
+		return "new $fullClassName();\n";
 	}
 
 /**
@@ -434,11 +422,8 @@ class TestTask extends Shell {
  * @access public
  */
 	function testCaseFileName($type, $className) {
-		$path = $this->path;
-		if (isset($this->plugin)) {
-			$path = $this->_pluginPath($this->plugin) . 'tests' . DS;
-		}
-		$path .= 'cases' . DS . Inflector::tableize($type) . DS;
+		$path = $this->getPath();;
+		$path .= 'cases' . DS . strtolower($type) . 's' . DS;
 		if (strtolower($type) == 'controller') {
 			$className = $this->getRealClassName($type, $className);
 		}

@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -23,14 +23,14 @@
  *
  * @package       cake
  * @subpackage    cake.cake.libs
- * @link          http://book.cakephp.org/view/42/The-Configuration-Class
+ * @link          http://book.cakephp.org/view/924/The-Configuration-Class
  */
 class Configure extends Object {
 
 /**
  * Current debug level.
  *
- * @link          http://book.cakephp.org/view/44/CakePHP-Core-Configuration-Variables
+ * @link          http://book.cakephp.org/view/931/CakePHP-Core-Configuration-Variables
  * @var integer
  * @access public
  */
@@ -72,10 +72,10 @@ class Configure extends Object {
  * ));
  * }}}
  *
- * @link http://book.cakephp.org/view/412/write
+ * @link http://book.cakephp.org/view/926/write
  * @param array $config Name of var to write
  * @param mixed $value Value to set for var
- * @return void
+ * @return boolean True if write was successful
  * @access public
  */
 	function write($config, $value = null) {
@@ -133,6 +133,7 @@ class Configure extends Object {
 			}
 			error_reporting($reporting);
 		}
+		return true;
 	}
 
 /**
@@ -144,7 +145,7 @@ class Configure extends Object {
  * Configure::read('Name.key'); will return only the value of Configure::Name[key]
  * }}}
  *
- * @link http://book.cakephp.org/view/413/read
+ * @link http://book.cakephp.org/view/927/read
  * @param string $var Variable to obtain.  Use '.' to access array elements.
  * @return string value of Configure::$var
  * @access public
@@ -194,7 +195,7 @@ class Configure extends Object {
  * Configure::delete('Name.key'); will delete only the Configure::Name[key]
  * }}}
  *
- * @link http://book.cakephp.org/view/414/delete
+ * @link http://book.cakephp.org/view/928/delete
  * @param string $var the var to be deleted
  * @return void
  * @access public
@@ -221,7 +222,7 @@ class Configure extends Object {
  * - To load config files from app/config use `Configure::load('configure_file');`.
  * - To load config files from a plugin `Configure::load('plugin.configure_file');`.
  *
- * @link http://book.cakephp.org/view/415/load
+ * @link http://book.cakephp.org/view/929/load
  * @param string $fileName name of file to load, extension must be .php and only the name
  *     should be used, not the extenstion
  * @return mixed false if file not found, void if load successful
@@ -272,7 +273,7 @@ class Configure extends Object {
  *
  * Usage `Configure::version();`
  *
- * @link http://book.cakephp.org/view/416/version
+ * @link http://book.cakephp.org/view/930/version
  * @return string Current version of CakePHP
  * @access public
  */
@@ -384,8 +385,6 @@ class Configure extends Object {
  * @access private
  */
 	function __loadBootstrap($boot) {
-		$libPaths = $modelPaths = $behaviorPaths = $controllerPaths = $componentPaths = $viewPaths = $helperPaths = $pluginPaths = $vendorPaths = $localePaths = $shellPaths = null;
-
 		if ($boot) {
 			Configure::write('App', array('base' => false, 'baseUrl' => false, 'dir' => APP_DIR, 'webroot' => WEBROOT_DIR, 'www_root' => WWW_ROOT));
 
@@ -429,18 +428,9 @@ class Configure extends Object {
 				}
 				Cache::config('default');
 			}
-
+			App::build();
 			if (!include(CONFIGS . 'bootstrap.php')) {
 				trigger_error(sprintf(__("Can't find application bootstrap file. Please create %sbootstrap.php, and make sure it is readable by PHP.", true), CONFIGS), E_USER_ERROR);
-			}
-
-			if (App::path('controllers') == array()) {
-				App::build(array(
-					'models' => $modelPaths, 'views' => $viewPaths, 'controllers' => $controllerPaths,
-					'helpers' => $helperPaths, 'components' => $componentPaths, 'behaviors' => $behaviorPaths,
-					'plugins' => $pluginPaths, 'vendors' => $vendorPaths, 'locales' => $localePaths,
-					'shells' => $shellPaths, 'libs' => $libPaths
-				));
 			}
 		}
 	}
@@ -449,7 +439,7 @@ class Configure extends Object {
 /**
  * Class/file loader and path management.
  *
- * @link          http://book.cakephp.org/view/499/The-App-Class
+ * @link          http://book.cakephp.org/view/933/The-App-Class
  * @since         CakePHP(tm) v 1.2.0.6001
  * @package       cake
  * @subpackage    cake.cake.libs
@@ -693,15 +683,17 @@ class App extends Object {
 				$merge = array_merge($merge, (array)$core[$type]);
 			}
 
-			$_this->{$type} = $default;
+			if (empty($_this->{$type}) || empty($paths)) {
+				$_this->{$type} = $default;
+			}
 
 			if (!empty($paths[$type])) {
-				$path = array_flip(array_flip((array_merge(
-					$_this->{$type}, (array)$paths[$type], $merge
-				))));
+				$path = array_flip(array_flip(array_merge(
+					(array)$paths[$type], $_this->{$type}, $merge
+				)));
 				$_this->{$type} = array_values($path);
 			} else {
-				$path = array_flip(array_flip((array_merge($_this->{$type}, $merge))));
+				$path = array_flip(array_flip(array_merge($_this->{$type}, $merge)));
 				$_this->{$type} = array_values($path);
 			}
 		}
@@ -734,42 +726,29 @@ class App extends Object {
  * @access public
  */
 	function core($type = null) {
-		$paths = Cache::read('core_paths', '_cake_core_');
+		static $paths = false;
+		if ($paths === false) {
+			$paths = Cache::read('core_paths', '_cake_core_');
+		}
 		if (!$paths) {
 			$paths = array();
-			$openBasedir = ini_get('open_basedir');
-			if ($openBasedir) {
-				$all = explode(PATH_SEPARATOR, $openBasedir);
-				$all = array_flip(array_flip((array_merge(array(CAKE_CORE_INCLUDE_PATH), $all))));
-			} else {
-				$all = explode(PATH_SEPARATOR, ini_get('include_path'));
-				$all = array_flip(array_flip((array_merge(array(CAKE_CORE_INCLUDE_PATH), $all))));
-			}
-			foreach ($all as $path) {
-				if ($path !== DS) {
-					$path = rtrim($path, DS);
-				}
-				if (empty($path) || $path === '.') {
-					continue;
-				}
-				$cake = $path .  DS . 'cake' . DS;
-				$libs = $cake . 'libs' . DS;
-				if (is_dir($libs)) {
-					$paths['cake'][] = $cake;
-					$paths['libs'][] = $libs;
-					$paths['models'][] = $libs . 'model' . DS;
-					$paths['datasources'][] = $libs . 'model' . DS . 'datasources' . DS;
-					$paths['behaviors'][] = $libs . 'model' . DS . 'behaviors' . DS;
-					$paths['controllers'][] = $libs . 'controller' . DS;
-					$paths['components'][] = $libs . 'controller' . DS . 'components' . DS;
-					$paths['views'][] = $libs . 'view' . DS;
-					$paths['helpers'][] = $libs . 'view' . DS . 'helpers' . DS;
-					$paths['plugins'][] = $path . DS . 'plugins' . DS;
-					$paths['vendors'][] = $path . DS . 'vendors' . DS;
-					$paths['shells'][] = $cake . 'console' . DS . 'libs' . DS;
-					break;
-				}
-			}
+			$libs = dirname(__FILE__) . DS;
+			$cake = dirname($libs) . DS;
+			$path = dirname($cake) . DS;
+
+			$paths['cake'][] = $cake;
+			$paths['libs'][] = $libs;
+			$paths['models'][] = $libs . 'model' . DS;
+			$paths['datasources'][] = $libs . 'model' . DS . 'datasources' . DS;
+			$paths['behaviors'][] = $libs . 'model' . DS . 'behaviors' . DS;
+			$paths['controllers'][] = $libs . 'controller' . DS;
+			$paths['components'][] = $libs . 'controller' . DS . 'components' . DS;
+			$paths['views'][] = $libs . 'view' . DS;
+			$paths['helpers'][] = $libs . 'view' . DS . 'helpers' . DS;
+			$paths['plugins'][] = $path . 'plugins' . DS;
+			$paths['vendors'][] = $path . 'vendors' . DS;
+			$paths['shells'][] = $cake . 'console' . DS . 'libs' . DS;
+
 			Cache::write('core_paths', array_filter($paths), '_cake_core_');
 		}
 		if ($type && isset($paths[$type])) {
@@ -846,7 +825,7 @@ class App extends Object {
 /**
  * Finds classes based on $name or specific file(s) to search.
  *
- * @link          http://book.cakephp.org/view/529/Using-App-import
+ * @link          http://book.cakephp.org/view/934/Using-App-import
  * @param mixed $type The type of Class if passed as a string, or all params can be passed as
  *                    an single array to $type,
  * @param string $name Name of the Class or a unique name for the file
@@ -925,8 +904,7 @@ class App extends Object {
 					$_this->__overload($type, $name . $ext['class'], $parent);
 
 					if ($_this->return) {
-						$value = include $load;
-						return $value;
+						return include($load);
 					}
 					return true;
 				} else {
@@ -967,8 +945,7 @@ class App extends Object {
 				$_this->__overload($type, $name . $ext['class'], $parent);
 
 				if ($_this->return) {
-					$value = include $directory . $file;
-					return $value;
+					return include($directory . $file);
 				}
 				return true;
 			}
@@ -1001,6 +978,8 @@ class App extends Object {
  * @access private
  */
 	function __find($file, $recursive = true) {
+		static $appPath = false;
+
 		if (empty($this->search)) {
 			return null;
 		} elseif (is_string($this->search)) {
@@ -1012,9 +991,12 @@ class App extends Object {
 		}
 
 		foreach ($this->search as $path) {
+			if ($appPath === false) {
+				$appPath = rtrim(APP, DS);
+			}
 			$path = rtrim($path, DS);
 
-			if ($path === rtrim(APP, DS)) {
+			if ($path === $appPath) {
 				$recursive = false;
 			}
 			if ($recursive === false) {
@@ -1029,7 +1011,7 @@ class App extends Object {
 					require LIBS . 'folder.php';
 				}
 				$Folder =& new Folder();
-				$directories = $Folder->tree($path, array('.svn', 'tests', 'templates'), 'dir');
+				$directories = $Folder->tree($path, array('.svn', '.git', 'CVS', 'tests', 'templates'), 'dir');
 				sort($directories);
 				$this->__paths[$path] = $directories;
 			}
@@ -1133,7 +1115,7 @@ class App extends Object {
  */
 	function __settings($type, $plugin, $parent) {
 		if (!$parent) {
-			return null;
+			return array('class' => null, 'suffix' => null, 'path' => null);
 		}
 
 		if ($plugin) {
@@ -1164,6 +1146,11 @@ class App extends Object {
 				}
 				return array('class' => $type, 'suffix' => null, 'path' => $path);
 			break;
+			case 'datasource':
+				if ($plugin) {
+					$path = $pluginPath . DS . 'models' . DS . 'datasources' . DS;
+				}
+				return array('class' => $type, 'suffix' => null, 'path' => $path);
 			case 'controller':
 				App::import($type, 'AppController', false);
 				if ($plugin) {
@@ -1226,8 +1213,8 @@ class App extends Object {
 		if ($type === 'core') {
 			return App::core('libs');
 		}
-		if ($paths = App::path($type .'s')) {
-			return $paths;
+		if (isset($this->{$type . 's'})) {
+			return $this->{$type . 's'};
 		}
 		return $paths;
 	}

@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
@@ -26,6 +26,7 @@
  *
  * @package       cake
  * @subpackage    cake.cake.libs.view.helpers
+ * @link http://book.cakephp.org/view/1376/Cache
  */
 class CacheHelper extends AppHelper {
 
@@ -60,8 +61,8 @@ class CacheHelper extends AppHelper {
  *
  * @param string $file File to cache
  * @param string $out output to cache
- * @param boolean $cache
- * @return view ouput
+ * @param boolean $cache Whether or not a cache file should be written.
+ * @return string view ouput
  */
 	function cache($file, $out, $cache = false) {
 		$cacheTime = 0;
@@ -114,8 +115,8 @@ class CacheHelper extends AppHelper {
 /**
  * Parse file searching for no cache tags
  *
- * @param string $file
- * @param boolean $cache
+ * @param string $file The filename that needs to be parsed.
+ * @param string $cache The cached content
  * @access private
  */
 	function __parseFile($file, $cache) {
@@ -154,7 +155,7 @@ class CacheHelper extends AppHelper {
 /**
  * Parse the output and replace cache tags
  *
- * @param sting $cache
+ * @param string $cache Output to replace content in.
  * @return string with all replacements made to <cake:nocache><cake:nocache>
  * @access private
  */
@@ -187,9 +188,9 @@ class CacheHelper extends AppHelper {
 /**
  * Write a cached version of the file
  *
- * @param string $file
- * @param sting $timestamp
- * @return cached view
+ * @param string $content view content to write to a cache file.
+ * @param sting $timestamp Duration to set for cache file.
+ * @return boolean success of caching view.
  * @access private
  */
 	function __writeFile($content, $timestamp, $useCallbacks = false) {

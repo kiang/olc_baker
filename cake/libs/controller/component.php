@@ -4,12 +4,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller
@@ -84,7 +84,7 @@ class Component extends Object {
  * @param object $controller Controller with components to initialize
  * @return void
  * @access public
- * @link http://book.cakephp.org/view/65/MVC-Class-Access-Within-Components
+ * @link http://book.cakephp.org/view/998/MVC-Class-Access-Within-Components
  */
 	function initialize(&$controller) {
 		foreach (array_keys($this->_loaded) as $name) {
@@ -106,15 +106,11 @@ class Component extends Object {
  * @param object $controller Controller with components to startup
  * @return void
  * @access public
- * @link http://book.cakephp.org/view/65/MVC-Class-Access-Within-Components
+ * @link http://book.cakephp.org/view/998/MVC-Class-Access-Within-Components
+ * @deprecated See Component::triggerCallback()
  */
 	function startup(&$controller) {
-		foreach ($this->_primary as $name) {
-			$component =& $this->_loaded[$name];
-			if ($component->enabled === true && method_exists($component, 'startup')) {
-				$component->startup($controller);
-			}
-		}
+		$this->triggerCallback('startup', $controller);
 	}
 
 /**
@@ -124,14 +120,10 @@ class Component extends Object {
  * @param object $controller Controller with components to beforeRender
  * @return void
  * @access public
+ * @deprecated See Component::triggerCallback()
  */
 	function beforeRender(&$controller) {
-		foreach ($this->_primary as $name) {
-			$component =& $this->_loaded[$name];
-			if ($component->enabled === true && method_exists($component,'beforeRender')) {
-				$component->beforeRender($controller);
-			}
-		}
+		$this->triggerCallback('beforeRender', $controller);
 	}
 
 /**
@@ -164,12 +156,34 @@ class Component extends Object {
  * @param object $controller Controller with components to shutdown
  * @return void
  * @access public
+ * @deprecated See Component::triggerCallback()
  */
 	function shutdown(&$controller) {
+		$this->triggerCallback('shutdown', $controller);
+	}
+
+/**
+ * Trigger a callback on all primary components.  Will fire $callback on all components
+ * that have such a method.  You can implement and fire custom callbacks in addition to the
+ * standard ones.
+ *
+ * example use, from inside a controller:
+ *
+ * `$this->Component->triggerCallback('beforeFilter', $this);`
+ *
+ * will trigger the beforeFilter callback on all components that have implemented one. You
+ * can trigger any method in this fashion.
+ *
+ * @param Controller $controller Controller instance
+ * @param string $callback Callback to trigger.
+ * @return void
+ * @access public
+ */
+	function triggerCallback($callback, &$controller) {
 		foreach ($this->_primary as $name) {
 			$component =& $this->_loaded[$name];
-			if (method_exists($component,'shutdown') && $component->enabled === true) {
-				$component->shutdown($controller);
+			if (method_exists($component, $callback) && $component->enabled === true) {
+				$component->{$callback}($controller);
 			}
 		}
 	}
