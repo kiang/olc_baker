@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>AdminIndex">
-<h2><?php echo __('<{$formLabel}> Manage', true); ?></h2><hr />
+<h2><?php echo __('<{$this->FormLabel}> Manage', true); ?></h2><hr />
 <?php
 if(!isset($url)) {
     $url = array();
@@ -58,7 +58,7 @@ foreach ($items as $item):
 	    if($item['option'] == 1) {
 	        $options['checked'] = 'checked';
 	    }
-	    echo $form->checkbox('Set.' . $item['<{$modelName}>']['id'], $options);
+	    echo $this->Form->checkbox('Set.' . $item['<{$modelName}>']['id'], $options);
 	    echo '<div id="messageSet' . $item['<{$modelName}>']['id'] . '"></div></td>';
 	}
 	?>
@@ -70,7 +70,7 @@ foreach ($items as $item):
     if(empty($item['<{$rOption.className}>']['id'])) {
         echo '--';
     } else {
-        echo $html->link($item['<{$rOption.className}>']['id'],array(
+        echo $this->Html->link($item['<{$rOption.className}>']['id'],array(
             'controller' => '<{$models[$rOption.className].table_name}>',
             'action' => 'view',
             $item['<{$rOption.className}>']['id']
@@ -86,9 +86,9 @@ foreach ($items as $item):
     <td><?php
 if($item['<{$className}>']['<{$key}>']) {
 <{if isset($uploads.$key) && $uploads.$key eq 'file'}>
-    echo $html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
+    echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
 <{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
-    echo $html->link(
+    echo $this->Html->link(
         $upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
         FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
         array(), false, false
@@ -101,9 +101,9 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $html->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $html->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
+<?php echo $this->Html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $this->Html->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
     </td>
 </tr>
 <?php endforeach; ?>
@@ -114,9 +114,9 @@ if($item['<{$className}>']['<{$key}>']) {
     <ul>
 <{if isset($relationships.belongsTo)}>
 <?php $url = array_merge($url, array('action' => 'add')); ?>
-        <li><?php echo $html->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->Html->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{else}>
-        <li><?php echo $html->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->Html->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{/if}>
     </ul>
 </div>
@@ -141,7 +141,7 @@ $(document).ready(function() {
 ';
 <{if isset($relationships.hasAndBelongsToMany)}>
 if(!empty($op)) {
-    $remoteUrl = $html->url(array('action' => 'habtmSet', $foreignModel, $foreignId));
+    $remoteUrl = $this->Html->url(array('action' => 'habtmSet', $foreignModel, $foreignId));
     $scripts .= '
     $(\'#<{$controllerName}>AdminIndexTable input.habtmSet\').click(function() {
     	var remoteUrl = \'' . $remoteUrl . '/\' + this.value + \'/\';
@@ -156,6 +156,6 @@ if(!empty($op)) {
 }
 <{/if}>
 $scripts .= '});';
-echo $html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>

@@ -28,11 +28,11 @@ foreach ($projects as $project):
 		<td><?php echo $project['Project']['created']; ?></td>
 		<td><?php echo $project['Project']['modified']; ?></td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('action'=>'view', $project['Project']['id'])); ?>
-			<?php echo $html->link(__('Build project', true), array('action'=>'build', $project['Project']['id'])); ?>
-			<?php echo $html->link(__('Build database', true), array('action'=>'rebuild_db', $project['Project']['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('action'=>'edit', $project['Project']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('action'=>'delete', $project['Project']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->Html->link(__('View', true), array('action'=>'view', $project['Project']['id'])); ?>
+			<?php echo $this->Html->link(__('Build project', true), array('action'=>'build', $project['Project']['id'])); ?>
+			<?php echo $this->Html->link(__('Build database', true), array('action'=>'rebuild_db', $project['Project']['id'])); ?>
+			<?php echo $this->Html->link(__('Edit', true), array('action'=>'edit', $project['Project']['id'])); ?>
+			<?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $project['Project']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -45,6 +45,6 @@ foreach ($projects as $project):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Add', true), array('action'=>'add')); ?></li>
+		<li><?php echo $this->Html->link(__('Add', true), array('action'=>'add')); ?></li>
 	</ul>
 </div>

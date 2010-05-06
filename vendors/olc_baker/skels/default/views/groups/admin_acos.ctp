@@ -40,10 +40,10 @@ foreach ($acos as $aco):
 <?php endforeach; ?>
 </table>
 <?php
-echo $form->create('Group', array('url' => array('action' => 'acos', $groupId)));
+echo $this->Form->create('Group', array('url' => array('action' => 'acos', $groupId)));
 echo '<ul id="permissionStack"></ul>';
-echo $form->end(__('Update', true));
-echo $html->scriptBlock('
+echo $this->Form->end(__('Update', true));
+echo $this->Html->scriptBlock('
 $(document).ready(function() {
 	$(\'input.acoPermitted\').click(function() {
 		if($(\'#p\' + this.name).size() > 0) {
@@ -73,7 +73,7 @@ $(document).ready(function() {
 <div class="paging"><?php echo $this->element('paginator', $urlArray); ?></div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
+		<li><?php echo $this->Html->link(__('List', true), array('action'=>'index'));?></li>
 	</ul>
 </div>
 </div>

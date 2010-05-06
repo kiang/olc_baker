@@ -84,8 +84,8 @@ if(!empty($content)) {
                             'options' => $fields,
                             'div' => false,
                         ));
-                        echo '<br />' . $html->link(__('Add a field', true), '#', array('id' => 'duplicate' . $domId));
-                        echo $html->scriptBlock('
+                        echo '<br />' . $this->Html->link(__('Add a field', true), '#', array('id' => 'duplicate' . $domId));
+                        echo $this->Html->scriptBlock('
 $(\'#' . $domId . '\').attr(\'name\', $(\'#' . $domId . '\').attr(\'name\') + \'[]\');
 $(\'#duplicate' . $domId . '\').click(function() {
 	var target = $(\'#' . $domId . '\').clone();
@@ -98,7 +98,7 @@ $(\'#duplicate' . $domId . '\').click(function() {
                         ');
                         break;
                     default:
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), $formOptions);
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), $formOptions);
                         break;
                 }
             }

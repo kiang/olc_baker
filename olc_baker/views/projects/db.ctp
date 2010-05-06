@@ -3,18 +3,18 @@ if(!empty($tables)) {
     echo '<h2>' . __('Please select a table') . '</h2><table class="systable" cellpadding="0" cellspacing="0"><tr>';
     $count = 0;
     foreach($tables AS $table) {
-        echo '<td>' . $html->link($table, array('action' => 'db', $projectId, $table)) . '</td>';
+        echo '<td>' . $this->Html->link($table, array('action' => 'db', $projectId, $table)) . '</td>';
         if(++$count % 5 == 0) {
             echo '</tr><tr>';
         }
     }
     echo '</tr></table>';
 } else {
-    echo $form->create('Form', array('url' => array(
+    echo $this->Form->create('Form', array('url' => array(
     	'controller' => 'projects', 'action' => 'db', $projectId, $tableName
     )));
     echo '<h2>' . __('Table name:', true) . ' &nbsp; ' . $tableName . '</h2>';
-    echo $form->input('Form.label', array(
+    echo $this->Form->input('Form.label', array(
         'label' => __('Display name of the form', true)
     ));
     echo '<table class="systable" cellpadding="0" cellspacing="0">
@@ -33,18 +33,18 @@ if(!empty($tables)) {
         ++$fieldCount;
         echo '<tr>';
         echo '<td>' . $field . '</td>';
-        echo '<td>' . $form->text('Field.' . $field . '.label') . '</td>';
-        echo '<td>' . $form->select('Field.' . $field . '.type', $types, array(
+        echo '<td>' . $this->Form->text('Field.' . $field . '.label') . '</td>';
+        echo '<td>' . $this->Form->select('Field.' . $field . '.type', $types, array(
             'value' => 'text',
         )) . '</td>';
-        echo '<td>' . $form->text('Field.' . $field . '.sort', array(
+        echo '<td>' . $this->Form->text('Field.' . $field . '.sort', array(
             'size' => 3,
             'value' => $fieldCount,
         )) . '</td>';
-        echo '<td>' . $form->checkbox('Field.' . $field . '.is_required') . '</td>';
+        echo '<td>' . $this->Form->checkbox('Field.' . $field . '.is_required') . '</td>';
         echo '</tr>';
     }
     echo '</table>';
-    echo $form->end(__('Submit', true));
+    echo $this->Form->end(__('Submit', true));
 }
-echo $html->link(__('Back to the project', true), array('action'=>'view', $projectId));
+echo $this->Html->link(__('Back to the project', true), array('action'=>'view', $projectId));

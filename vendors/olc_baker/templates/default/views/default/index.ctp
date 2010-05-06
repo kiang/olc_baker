@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>Index">
-<h2><?php echo __('<{$formLabel}> List', true); ?></h2>
+<h2><?php echo __('<{$this->FormLabel}> List', true); ?></h2>
 <p>
 <?php
 $url = array();
@@ -49,7 +49,7 @@ foreach ($items as $item):
     if(empty($item['<{$rOption.className}>']['id'])) {
         echo '--';
     } else {
-        echo $html->link($item['<{$rOption.className}>']['id'],array(
+        echo $this->Html->link($item['<{$rOption.className}>']['id'],array(
             'controller' => '<{$models[$rOption.className].table_name}>',
             'action' => 'view',
             $item['<{$rOption.className}>']['id']
@@ -65,9 +65,9 @@ foreach ($items as $item):
     <td><?php
 if($item['<{$className}>']['<{$key}>']) {
 <{if isset($uploads.$key) && $uploads.$key eq 'file'}>
-    echo $html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
+    echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
 <{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
-    echo $html->link(
+    echo $this->Html->link(
         $upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
         FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
         array(), false, false
@@ -80,7 +80,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>IndexControl')); ?>
+<?php echo $this->Html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>IndexControl')); ?>
     </td>
 </tr>
 <?php endforeach; ?>
@@ -91,7 +91,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <div class="actions">
     <ul>
 <{foreach from=$actions key=linkPath item=linkItem}>
-        <li><?php echo $html->link('<{$linkItem.label}>', array('action'=>'<{$linkPath}>'), array('class' => '<{$linkItem.class}>')); ?></li>
+        <li><?php echo $this->Html->link('<{$linkItem.label}>', array('action'=>'<{$linkPath}>'), array('class' => '<{$linkItem.class}>')); ?></li>
 <{/foreach}>
     </ul>
 </div>
@@ -115,6 +115,6 @@ $(document).ready(function() {
         return false;
     });
 });';
-echo $html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>

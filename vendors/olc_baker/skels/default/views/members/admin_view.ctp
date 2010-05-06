@@ -35,9 +35,9 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Edit Member', true), array('action'=>'edit', $member['Member']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete Member', true), array('action'=>'delete', $member['Member']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $member['Member']['id'])); ?> </li>
-		<li><?php echo $html->link(__('List Members', true), array('action'=>'index')); ?> </li>
-		<li><?php echo $html->link(__('New Member', true), array('action'=>'add')); ?> </li>
+		<li><?php echo $this->Html->link(__('Edit Member', true), array('action'=>'edit', $member['Member']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Delete Member', true), array('action'=>'delete', $member['Member']['id']), null, sprintf(__('Are you sure you want to delete # %s?', true), $member['Member']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('List Members', true), array('action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('New Member', true), array('action'=>'add')); ?> </li>
 	</ul>
 </div>

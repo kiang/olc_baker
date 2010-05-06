@@ -37,7 +37,7 @@ foreach ($items as $item):
 <{foreach from=$classFields key=key item=label}>
 <{if isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'image'}>
     	<td><?php
-    	echo $html->link(
+    	echo $this->Html->link(
     	$upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
     	FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
     	array(), false, false
@@ -54,9 +54,9 @@ foreach ($items as $item):
     		<td><?php
 if($item['<{$className}>']['<{$key}>']) {
 <{if isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'file'}>
-    echo $html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
+    echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>')) . '<br />';
 <{elseif isset($models.$className.uploads.$key) && $models.$className.uploads.$key eq 'image'}>
-    echo $html->link(
+    echo $this->Html->link(
         $upload->image($item, '<{$className}>.<{$key}>', 'thumb'),
         FULL_BASE_URL . $upload->url($item, '<{$className}>.<{$key}>'),
         array(), false, false
@@ -71,7 +71,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 		</table>
 		<div class="actions">
-		<?php echo $html->link(__('View', true), array('action'=>'<{$parameters.links.view}>', $item['<{$modelName}>']['id']), array('class' => 'control')); ?>
+		<?php echo $this->Html->link(__('View', true), array('action'=>'<{$parameters.links.view}>', $item['<{$modelName}>']['id']), array('class' => 'control')); ?>
 		</div>
 		</td>
 	</tr>
@@ -84,7 +84,7 @@ if($item['<{$className}>']['<{$key}>']) {
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>
@@ -106,6 +106,6 @@ $(document).ready(function() {
         return false;
     });
 });';
-echo $html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>

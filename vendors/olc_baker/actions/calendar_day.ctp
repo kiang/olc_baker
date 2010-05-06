@@ -7,8 +7,8 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 <h2><{$actionLabel}>： <?php echo $day; ?></h2>
 <div class="actions">
     <ul>
-    	<li><?php echo $html->link(__('Yesterday', true), explode('/', $yesterday), array('class' => 'pageControl')); ?></li>
-    	<li><?php echo $html->link(__('Tomorrow', true), explode('/', $tomorrow), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $this->Html->link(__('Yesterday', true), explode('/', $yesterday), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $this->Html->link(__('Tomorrow', true), explode('/', $tomorrow), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <table cellpadding="0" cellspacing="0">
@@ -25,7 +25,7 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 	            echo '<li>';
 <{foreach from=$blocks.title key=className item=classFields}>
 <{foreach from=$classFields key=key item=label}>
-	            echo $html->link($event['<{$className}>']['<{$key}>'], array('action'=>'<{$parameters.links.view}>', $event['<{$modelName}>']['id']), array('class' => 'control'));
+	            echo $this->Html->link($event['<{$className}>']['<{$key}>'], array('action'=>'<{$parameters.links.view}>', $event['<{$modelName}>']['id']), array('class' => 'control'));
 <{/foreach}>
 <{/foreach}>
 	            echo '</li>';
@@ -38,7 +38,7 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 </table>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>
@@ -60,6 +60,6 @@ $(document).ready(function() {
         return false;
     });
 });';
-echo $html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>

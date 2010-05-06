@@ -28,10 +28,10 @@ $pageOption = array('url' => array($project['Project']['id']));
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Build project', true), array('action'=>'build', $project['Project']['id'])); ?></li>
-		<li><?php echo $html->link(__('Build database', true), array('action'=>'rebuild_db', $project['Project']['id'])); ?></li>
-		<li><?php echo $html->link(__('Import the table', true), array('action'=>'db', $project['Project']['id'])); ?></li>
-		<li><?php echo $html->link(__('Project list', true), array('action'=>'index')); ?> </li>
+		<li><?php echo $this->Html->link(__('Build project', true), array('action'=>'build', $project['Project']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Build database', true), array('action'=>'rebuild_db', $project['Project']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Import the table', true), array('action'=>'db', $project['Project']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Project list', true), array('action'=>'index')); ?> </li>
 	</ul>
 </div>
 <div class="forms index">
@@ -72,9 +72,9 @@ foreach ($forms as $form):
 			<?php echo $form['Form']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('View', true), array('controller' => 'forms', 'action'=>'view', $form['Form']['id'])); ?>
-			<?php echo $html->link(__('Edit', true), array('controller' => 'forms', 'action'=>'edit', $form['Form']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('controller' => 'forms', 'action'=>'delete', $form['Form']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->Html->link(__('View', true), array('controller' => 'forms', 'action'=>'view', $form['Form']['id'])); ?>
+			<?php echo $this->Html->link(__('Edit', true), array('controller' => 'forms', 'action'=>'edit', $form['Form']['id'])); ?>
+			<?php echo $this->Html->link(__('Delete', true), array('controller' => 'forms', 'action'=>'delete', $form['Form']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -87,6 +87,6 @@ foreach ($forms as $form):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Add', true), array('controller' => 'forms', 'action'=>'add', $project['Project']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Add', true), array('controller' => 'forms', 'action'=>'add', $project['Project']['id'])); ?></li>
 	</ul>
 </div>

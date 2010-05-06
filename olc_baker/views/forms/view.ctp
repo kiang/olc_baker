@@ -25,9 +25,9 @@
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Edit', true), array('action'=>'edit', $pForm['Form']['id'])); ?> </li>
-		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $pForm['Form']['id']), null, __('Delete the item, sure?', true)); ?> </li>
-		<li><?php echo $html->link(__('Back to the project', true), array('controller' => 'projects', 'action'=>'view', $pForm['Form']['project_id']));?></li>
+		<li><?php echo $this->Html->link(__('Edit', true), array('action'=>'edit', $pForm['Form']['id'])); ?> </li>
+		<li><?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $pForm['Form']['id']), null, __('Delete the item, sure?', true)); ?> </li>
+		<li><?php echo $this->Html->link(__('Back to the project', true), array('controller' => 'projects', 'action'=>'view', $pForm['Form']['project_id']));?></li>
 	</ul>
 </div>
 <div class="formFields index">
@@ -71,8 +71,8 @@ foreach ($formFields as $formField):
 			<?php echo $formField['FormField']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $html->link(__('Edit', true), array('controller' => 'form_fields', 'action'=>'edit', $formField['FormField']['id'])); ?>
-			<?php echo $html->link(__('Delete', true), array('controller' => 'form_fields', 'action'=>'delete', $formField['FormField']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->Html->link(__('Edit', true), array('controller' => 'form_fields', 'action'=>'edit', $formField['FormField']['id'])); ?>
+			<?php echo $this->Html->link(__('Delete', true), array('controller' => 'form_fields', 'action'=>'delete', $formField['FormField']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -80,7 +80,7 @@ foreach ($formFields as $formField):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Add', true), array('controller' => 'form_fields', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Add', true), array('controller' => 'form_fields', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>
 
@@ -107,11 +107,11 @@ foreach ($relationships as $relationship):
 			<?php echo $relationship['TargetForm']['label']; ?>
 			(<?php echo $relationship['TargetForm']['name']; ?>)
 		</td>
-		<td><?php echo $oaTool->relation_type($relationship['Relationship']['type']); ?></td>
+		<td><?php echo $this->OaTool->relation_type($relationship['Relationship']['type']); ?></td>
 		<td><?php echo $relationship['Relationship']['created']; ?></td>
 		<td><?php echo $relationship['Relationship']['modified']; ?></td>
 		<td class="actions">
-			<?php echo $html->link(__('Delete', true), array('controller' => 'relationships', 'action'=>'delete', $relationship['Relationship']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->Html->link(__('Delete', true), array('controller' => 'relationships', 'action'=>'delete', $relationship['Relationship']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -119,7 +119,7 @@ foreach ($relationships as $relationship):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Add', true), array('controller' => 'relationships', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Add', true), array('controller' => 'relationships', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>
 
@@ -150,8 +150,8 @@ foreach ($actions as $action):
 		<td><?php echo $action['Action']['created']; ?></td>
 		<td><?php echo $action['Action']['modified']; ?></td>
 		<td class="actions">
-			<?php echo $html->link(__('Parameters', true), '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
-			<?php echo $html->link(__('Delete', true), array('controller' => 'actions', 'action'=>'delete', $action['Action']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->Html->link(__('Parameters', true), '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
+			<?php echo $this->Html->link(__('Delete', true), array('controller' => 'actions', 'action'=>'delete', $action['Action']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 	<tr<?php echo $class;?> style="display:none;" id="parameters<?php echo $action['Action']['id']; ?>">
@@ -162,6 +162,6 @@ foreach ($actions as $action):
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Add', true), array('controller' => 'actions', 'action'=>'add', $pForm['Form']['id'])); ?></li>
+		<li><?php echo $this->Html->link(__('Add', true), array('controller' => 'actions', 'action'=>'add', $pForm['Form']['id'])); ?></li>
 	</ul>
 </div>

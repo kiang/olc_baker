@@ -8,8 +8,8 @@ $lastDay = date('j', $daysRange['end']);
 <h2><{$actionLabel}>： <?php echo $currentMonth; ?></h2>
 <div class="actions">
     <ul>
-    	<li><?php echo $html->link(__('Previous month', true), explode('/', $previousMonth), array('class' => 'pageControl')); ?></li>
-    	<li><?php echo $html->link(__('Next month', true), explode('/', $nextMonth), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $this->Html->link(__('Previous month', true), explode('/', $previousMonth), array('class' => 'pageControl')); ?></li>
+    	<li><?php echo $this->Html->link(__('Next month', true), explode('/', $nextMonth), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <table cellpadding="0" cellspacing="0">
@@ -40,7 +40,7 @@ $lastDay = date('j', $daysRange['end']);
 	            echo '<li>';
 <{foreach from=$blocks.title key=className item=classFields}>
 <{foreach from=$classFields key=key item=label}>
-	            echo $html->link($event['<{$className}>']['<{$key}>'], array('action'=>'<{$parameters.links.view}>', $event['<{$modelName}>']['id']), array('class' => 'control'));
+	            echo $this->Html->link($event['<{$className}>']['<{$key}>'], array('action'=>'<{$parameters.links.view}>', $event['<{$modelName}>']['id']), array('class' => 'control'));
 <{/foreach}>
 <{/foreach}>
 	            echo '</li>';
@@ -55,7 +55,7 @@ $lastDay = date('j', $daysRange['end']);
 </table>
 <div class="actions">
     <ul>
-        <li><?php echo $html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
+        <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
 <div id="<{$controllerName}>_control_panel"></div>
@@ -77,6 +77,6 @@ $(document).ready(function() {
         return false;
     });
 });';
-echo $html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>

@@ -1,20 +1,20 @@
 <div class="members form">
-<?php echo $form->create('Member');?>
+<?php echo $this->Form->create('Member');?>
 	<fieldset>
  		<legend><?php echo __('Edit Member', true); ?></legend>
 	<?php
-		echo $form->input('id');
-		echo $form->input('username');
-		echo $form->input('group_id');
-		echo $form->input('password', array('value' => ''));
-		echo $form->input('user_status');
+		echo $this->Form->input('id');
+		echo $this->Form->input('username');
+		echo $this->Form->input('group_id');
+		echo $this->Form->input('password', array('value' => ''));
+		echo $this->Form->input('user_status');
 	?>
 	</fieldset>
-<?php echo $form->end(__('Submit', true));?>
+<?php echo $this->Form->end(__('Submit', true));?>
 </div>
 <div class="actions">
 	<ul>
-		<li><?php echo $html->link(__('Delete', true), array('action'=>'delete', $form->value('Member.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $form->value('Member.id'))); ?></li>
-		<li><?php echo $html->link(__('List', true), array('action'=>'index'));?></li>
+		<li><?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $this->Form->value('Member.id')), null, sprintf(__('Are you sure you want to delete # %s?', true), $this->Form->value('Member.id'))); ?></li>
+		<li><?php echo $this->Html->link(__('List', true), array('action'=>'index'));?></li>
 	</ul>
 </div>
