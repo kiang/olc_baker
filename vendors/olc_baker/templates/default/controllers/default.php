@@ -306,7 +306,7 @@ class <{$controllerName}>Controller extends AppController {
         $id = intval($id);
         $switch = in_array($switch, array('on', 'off')) ? $switch : null;
         if(empty($foreignModel) || $foreignId <= 0 || $id <= 0 || empty($switch)) {
-            $this->set('habtmMessage', '參數有誤');
+            $this->set('habtmMessage', __('Wrong Parameters'));
         } else {
             $habtmModel = &$this-><{$modelName}>->$habtmKeys[$foreignModel]['alias'];
             $conditions = array(
@@ -317,19 +317,19 @@ class <{$controllerName}>Controller extends AppController {
                 'conditions' => $conditions,
             ))) ? 'on' : 'off';
             if($status == $switch) {
-                $this->set('habtmMessage', '操作重複');
+                $this->set('habtmMessage', __('Duplicated operactions', true));
             } else if($switch == 'on') {
                 $habtmModel->create();
                 if($habtmModel->save(array($habtmKeys[$foreignModel]['alias'] => $conditions))) {
-                    $this->set('habtmMessage', '已更新');
+                    $this->set('habtmMessage', __('Updated', true));
                 } else {
-                    $this->set('habtmMessage', '更新失敗');
+                    $this->set('habtmMessage', __('Update failed', true));
                 }
             } else {
                 if($habtmModel->deleteAll($conditions)) {
-                    $this->set('habtmMessage', '已更新');
+                    $this->set('habtmMessage', __('Updated', true));
                 } else {
-                    $this->set('habtmMessage', '更新失敗');
+                    $this->set('habtmMessage', __('Update failed', true));
                 }
             }
         }

@@ -1,0 +1,551 @@
+# LANGUAGE translation of CakePHP Application
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2010-05-06 20:23+0800\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: /controllers/actions_controller.php:8;41
+#: /controllers/form_fields_controller.php:8;31;54
+#: /controllers/forms_controller.php:8;28;46;64
+#: /controllers/projects_controller.php:13;38;60;75;662
+#: /controllers/relationships_controller.php:11;57
+msgid "Please do following links in the page"
+msgstr ""
+
+#: /controllers/actions_controller.php:19
+msgid "Method name is duplicated"
+msgstr ""
+
+#: /controllers/actions_controller.php:28
+#: /controllers/form_fields_controller.php:19;40
+#: /controllers/forms_controller.php:35;51
+#: /controllers/projects_controller.php:28;47
+msgid "The data has been saved"
+msgstr ""
+
+#: /controllers/actions_controller.php:31
+#: /controllers/form_fields_controller.php:22;43
+#: /controllers/forms_controller.php:38;54
+#: /controllers/projects_controller.php:31;50
+#: /controllers/relationships_controller.php:43
+msgid "Something was wrong during saving, please try again"
+msgstr ""
+
+#: /controllers/actions_controller.php:45
+#: /controllers/form_fields_controller.php:58
+#: /controllers/forms_controller.php:67
+#: /controllers/projects_controller.php:64
+msgid "The data has been deleted"
+msgstr ""
+
+#: /controllers/projects_controller.php:82
+msgid "The target path is not available for writing"
+msgstr ""
+
+#: /controllers/projects_controller.php:116
+msgid "Generate the files of settings"
+msgstr ""
+
+#: /controllers/projects_controller.php:403
+msgid "Generate the MVC files"
+msgstr ""
+
+#: /controllers/projects_controller.php:420
+msgid "Generate the application layout"
+msgstr ""
+
+#: /controllers/projects_controller.php:647
+msgid "Generate the database schema"
+msgstr ""
+
+#: /controllers/projects_controller.php:684
+msgid "Database was rebuilt"
+msgstr ""
+
+#: /controllers/projects_controller.php:739
+msgid "The form has been generated"
+msgstr ""
+
+#: /controllers/relationships_controller.php:19
+msgid "Data has been saved"
+msgstr ""
+
+#: /controllers/relationships_controller.php:59
+msgid "Data has been deleted"
+msgstr ""
+
+#: /models/project.php:64
+msgid "Target path exists. But the program could not delete the folder automatically"
+msgstr ""
+
+#: /models/project.php:68
+msgid "Target path exists. Delete the old folders."
+msgstr ""
+
+#: /models/project.php:85
+msgid "The program could not copy files to the folder automatically"
+msgstr ""
+
+#: /models/project.php:89
+msgid "Copy the skelecton of application to the target path"
+msgstr ""
+
+#: /views/actions/add.ctp:4
+msgid "Add a method"
+msgstr ""
+
+#: /views/actions/add.ctp:6
+#: /views/form_fields/add.ctp:6
+#: /views/form_fields/edit.ctp:7
+#: /views/forms/add.ctp:6
+#: /views/forms/edit.ctp:7
+#: /views/forms/view.ctp:4;132
+#: /views/projects/add.ctp:6
+#: /views/projects/edit.ctp:7
+#: /views/projects/index.ctp:11
+#: /views/projects/view.ctp:7;47
+msgid "System name"
+msgstr ""
+
+#: /views/actions/add.ctp:7
+#: /views/form_fields/add.ctp:7
+#: /views/form_fields/edit.ctp:8
+#: /views/forms/add.ctp:7
+#: /views/forms/edit.ctp:8
+#: /views/forms/view.ctp:9
+#: /views/projects/add.ctp:7
+#: /views/projects/db.ctp:23
+#: /views/projects/edit.ctp:8
+#: /views/projects/index.ctp:12
+#: /views/projects/view.ctp:12;48
+msgid "Display name"
+msgstr ""
+
+#: /views/actions/add.ctp:8
+#: /views/forms/view.ctp:133
+msgid "Method engine"
+msgstr ""
+
+#: /views/actions/add.ctp:12
+#: /views/form_fields/add.ctp:36
+#: /views/form_fields/edit.ctp:37
+#: /views/forms/add.ctp:10
+#: /views/forms/edit.ctp:11
+#: /views/projects/add.ctp:20
+#: /views/projects/db.ctp:48
+#: /views/projects/edit.ctp:21
+#: /views/relationships/add.ctp:18
+msgid "Submit"
+msgstr ""
+
+#: /views/actions/add.ctp:16
+#: /views/form_fields/add.ctp:40
+#: /views/form_fields/edit.ctp:42
+msgid "Back to the form"
+msgstr ""
+
+#: /views/actions/engine_form.ctp:47
+msgid "This method will need a datetime field"
+msgstr ""
+
+#: /views/actions/engine_form.ctp:58
+msgid "This method will need a file_image field"
+msgstr ""
+
+#: /views/actions/engine_form.ctp:69
+msgid "This method will need a file field"
+msgstr ""
+
+#: /views/actions/engine_form.ctp:87
+msgid "Add a field"
+msgstr ""
+
+#: /views/form_fields/add.ctp:4
+msgid "Add a form field"
+msgstr ""
+
+#: /views/form_fields/add.ctp:8
+#: /views/form_fields/edit.ctp:9
+#: /views/forms/view.ctp:38
+msgid "Field type"
+msgstr ""
+
+#: /views/form_fields/add.ctp:9
+#: /views/form_fields/edit.ctp:10
+#: /views/forms/view.ctp:39
+#: /views/projects/db.ctp:25
+msgid "Sort"
+msgstr ""
+
+#: /views/form_fields/add.ctp:10
+#: /views/form_fields/edit.ctp:11
+msgid "Required?"
+msgstr ""
+
+#: /views/form_fields/add.ctp:11
+#: /views/form_fields/edit.ctp:12
+msgid "Field function type"
+msgstr ""
+
+#: /views/form_fields/add.ctp:13
+#: /views/form_fields/edit.ctp:14
+msgid "Display the form field both when adding and editing"
+msgstr ""
+
+#: /views/form_fields/add.ctp:14
+#: /views/form_fields/edit.ctp:15
+msgid "Display the form field when adding, display the value when editing"
+msgstr ""
+
+#: /views/form_fields/add.ctp:15
+#: /views/form_fields/edit.ctp:16
+msgid "Generate the value when adding, display the value when editing"
+msgstr ""
+
+#: /views/form_fields/add.ctp:16
+#: /views/form_fields/edit.ctp:17
+msgid "Generate the value when adding, display the form field when editing"
+msgstr ""
+
+#: /views/form_fields/add.ctp:17
+#: /views/form_fields/edit.ctp:18
+msgid "Generate the value both when adding and editing"
+msgstr ""
+
+#: /views/form_fields/add.ctp:21
+#: /views/form_fields/edit.ctp:22
+msgid "Field function snippet"
+msgstr ""
+
+#: /views/form_fields/add.ctp:22
+#: /views/form_fields/edit.ctp:23
+msgid "Quick select for function snippet"
+msgstr ""
+
+#: /views/form_fields/add.ctp:25
+#: /views/form_fields/edit.ctp:26
+msgid "Date + time"
+msgstr ""
+
+#: /views/form_fields/add.ctp:26
+#: /views/form_fields/edit.ctp:27
+msgid "Date"
+msgstr ""
+
+#: /views/form_fields/add.ctp:27
+#: /views/form_fields/edit.ctp:28
+msgid "Time"
+msgstr ""
+
+#: /views/form_fields/add.ctp:28
+#: /views/form_fields/edit.ctp:29
+msgid "Unix time"
+msgstr ""
+
+#: /views/form_fields/add.ctp:29
+#: /views/form_fields/edit.ctp:30
+msgid "IP Address of the user"
+msgstr ""
+
+#: /views/form_fields/edit.ctp:4
+msgid "Edit the form field"
+msgstr ""
+
+#: /views/form_fields/edit.ctp:41
+#: /views/forms/edit.ctp:15
+#: /views/forms/view.ctp:29;75;114;154
+#: /views/projects/edit.ctp:25
+#: /views/projects/index.ctp:35
+#: /views/projects/view.ctp:77
+msgid "Delete"
+msgstr ""
+
+#: /views/form_fields/edit.ctp:41
+#: /views/forms/edit.ctp:15
+#: /views/forms/view.ctp:29;75;114;154
+#: /views/projects/edit.ctp:25
+#: /views/projects/index.ctp:35
+#: /views/projects/view.ctp:77
+msgid "Delete the item, sure?"
+msgstr ""
+
+#: /views/forms/add.ctp:4
+msgid "Add a form"
+msgstr ""
+
+#: /views/forms/add.ctp:14
+#: /views/forms/edit.ctp:16
+#: /views/forms/view.ctp:30
+#: /views/projects/db.ctp:50
+#: /views/relationships/add.ctp:22
+msgid "Back to the project"
+msgstr ""
+
+#: /views/forms/edit.ctp:4
+msgid "Edit the form"
+msgstr ""
+
+#: /views/forms/view.ctp:2
+msgid "View the form"
+msgstr ""
+
+#: /views/forms/view.ctp:14;41;93;134
+#: /views/projects/index.ctp:13
+#: /views/projects/view.ctp:17;49
+msgid "Created time"
+msgstr ""
+
+#: /views/forms/view.ctp:19;42;94;135
+#: /views/projects/index.ctp:14
+#: /views/projects/view.ctp:22;50
+msgid "Modified time"
+msgstr ""
+
+#: /views/forms/view.ctp:28;74
+#: /views/projects/index.ctp:34
+#: /views/projects/view.ctp:76
+msgid "Edit"
+msgstr ""
+
+#: /views/forms/view.ctp:34
+msgid "Form fields"
+msgstr ""
+
+#: /views/forms/view.ctp:37
+msgid "Field name"
+msgstr ""
+
+#: /views/forms/view.ctp:40;65
+#: /views/projects/db.ctp:26
+msgid "Required"
+msgstr ""
+
+#: /views/forms/view.ctp:43;95;136
+#: /views/projects/view.ctp:51
+msgid "Action"
+msgstr ""
+
+#: /views/forms/view.ctp:65
+msgid "Not required"
+msgstr ""
+
+#: /views/forms/view.ctp:83;122;165
+#: /views/projects/edit.ctp:4
+#: /views/projects/index.ctp:48
+#: /views/projects/view.ctp:90
+msgid "Add"
+msgstr ""
+
+#: /views/forms/view.ctp:88
+msgid "Form relationships"
+msgstr ""
+
+#: /views/forms/view.ctp:91
+#: /views/relationships/add.ctp:7
+msgid "Relationship target"
+msgstr ""
+
+#: /views/forms/view.ctp:92
+#: /views/relationships/add.ctp:12
+msgid "Relationship type"
+msgstr ""
+
+#: /views/forms/view.ctp:127
+msgid "Additional methods"
+msgstr ""
+
+#: /views/forms/view.ctp:128
+msgid "Reserved method names:"
+msgstr ""
+
+#: /views/forms/view.ctp:131
+msgid "Method name"
+msgstr ""
+
+#: /views/forms/view.ctp:153
+msgid "Parameters"
+msgstr ""
+
+#: /views/layouts/default.ctp:29
+msgid "CakePHP: the rapid development php framework"
+msgstr ""
+
+#: /views/pages/home.ctp:12
+msgid "Your tmp directory is writable."
+msgstr ""
+
+#: /views/pages/home.ctp:16
+msgid "Your tmp directory is NOT writable."
+msgstr ""
+
+#: /views/pages/home.ctp:26
+msgid "The %s is being used for caching. To change the config edit APP/config/core.php "
+msgstr ""
+
+#: /views/pages/home.ctp:30
+msgid "Your cache is NOT working. Please check the settings in APP/config/core.php"
+msgstr ""
+
+#: /views/pages/home.ctp:40
+msgid "Your database configuration file is present."
+msgstr ""
+
+#: /views/pages/home.ctp:45
+msgid "Your database configuration file is NOT present."
+msgstr ""
+
+#: /views/pages/home.ctp:47
+msgid "Rename config/database.php.default to config/database.php"
+msgstr ""
+
+#: /views/pages/home.ctp:62
+msgid "Cake is able to connect to the database."
+msgstr ""
+
+#: /views/pages/home.ctp:66
+msgid "Cake is NOT able to connect to the database."
+msgstr ""
+
+#: /views/pages/home.ctp:72
+msgid "Editing this Page"
+msgstr ""
+
+#: /views/pages/home.ctp:75
+msgid "To change the content of this page, edit: %s\n\t\tTo change its layout, edit: %s\n\t\tYou can also add some CSS styles for your pages at: %s"
+msgstr ""
+
+#: /views/projects/add.ctp:4
+msgid "Create a new project"
+msgstr ""
+
+#: /views/projects/add.ctp:8
+#: /views/projects/edit.ctp:9
+msgid "Relative path to the root of url. For example, fill in /~kiang/demo/ when the url is http://localhost/~kiang/demo/"
+msgstr ""
+
+#: /views/projects/add.ctp:9
+#: /views/projects/edit.ctp:10
+msgid "Absolute path to the application:"
+msgstr ""
+
+#: /views/projects/add.ctp:10
+#: /views/projects/edit.ctp:11
+msgid "Location of database:"
+msgstr ""
+
+#: /views/projects/add.ctp:11;14
+#: /views/projects/edit.ctp:12;15
+msgid "Username of database:"
+msgstr ""
+
+#: /views/projects/add.ctp:16
+#: /views/projects/edit.ctp:17
+msgid "Name of the database:"
+msgstr ""
+
+#: /views/projects/add.ctp:24
+#: /views/projects/build.ctp:3
+#: /views/projects/edit.ctp:26
+msgid "List"
+msgstr ""
+
+#: /views/projects/build.ctp:8
+msgid "Build operactions:"
+msgstr ""
+
+#: /views/projects/build.ctp:25
+msgid "Operaction Detail"
+msgstr ""
+
+#: /views/projects/db.ctp:3
+msgid "Please select a table"
+msgstr ""
+
+#: /views/projects/db.ctp:16
+msgid "Table name:"
+msgstr ""
+
+#: /views/projects/db.ctp:18
+msgid "Display name of the form"
+msgstr ""
+
+#: /views/projects/db.ctp:22
+msgid "Form field"
+msgstr ""
+
+#: /views/projects/db.ctp:24
+msgid "Type"
+msgstr ""
+
+#: /views/projects/index.ctp:2
+msgid "Projects"
+msgstr ""
+
+#: /views/projects/index.ctp:6
+#: /views/projects/view.ctp:42
+msgid "Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%"
+msgstr ""
+
+#: /views/projects/index.ctp:15
+msgid "Actions"
+msgstr ""
+
+#: /views/projects/index.ctp:31
+#: /views/projects/view.ctp:75
+msgid "View"
+msgstr ""
+
+#: /views/projects/index.ctp:32
+#: /views/projects/view.ctp:31
+msgid "Build project"
+msgstr ""
+
+#: /views/projects/index.ctp:33
+#: /views/projects/view.ctp:32
+msgid "Build database"
+msgstr ""
+
+#: /views/projects/index.ctp:42
+#: /views/projects/view.ctp:84
+msgid "previous"
+msgstr ""
+
+#: /views/projects/index.ctp:44
+#: /views/projects/view.ctp:86
+msgid "next"
+msgstr ""
+
+#: /views/projects/view.ctp:5
+msgid "Project detail"
+msgstr ""
+
+#: /views/projects/view.ctp:33
+msgid "Import the table"
+msgstr ""
+
+#: /views/projects/view.ctp:34
+msgid "Project list"
+msgstr ""
+
+#: /views/projects/view.ctp:38
+msgid "Project forms"
+msgstr ""
+
+#: /views/relationships/add.ctp:4
+msgid "Add a relationship"
+msgstr ""
+
+#: /webroot/test.php:99
+msgid "Debug setting does not allow access to this url."
+msgstr ""
+
