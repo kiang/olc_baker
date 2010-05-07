@@ -40,9 +40,9 @@ foreach ($members as $member):
 			<?php echo $member['Member']['modified']; ?>
 		</td>
 		<td class="actions">
-			<?php echo $this->Html->link(__('View', true), array('action'=>'view', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
-			<?php echo $this->Html->link(__('Edit', true), array('action'=>'edit', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
-			<?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $member['Member']['id']), null, __('Delete the item, sure?', true)); ?>
+			<?php echo $this->PHtml->link(__('View', true), array('action'=>'view', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
+			<?php echo $this->PHtml->link(__('Edit', true), array('action'=>'edit', $member['Member']['id']), array('class' => 'MembersAdminIndexControl')); ?>
+			<?php echo $this->PHtml->link(__('Delete', true), array('action'=>'delete', $member['Member']['id']), null, __('Delete the item, sure?', true)); ?>
 		</td>
 	</tr>
 <?php endforeach; ?>
@@ -50,10 +50,10 @@ foreach ($members as $member):
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
 <div class="actions">
 	<ul>
-		<li><?php echo $this->Html->link(__('Add', true), array('action'=>'add'), array('class' => 'MembersAdminIndexControl')); ?></li>
+		<li><?php echo $this->PHtml->link(__('Add', true), array('action'=>'add'), array('class' => 'MembersAdminIndexControl')); ?></li>
         <li><?php echo $this->Html->link(__('Groups', true), array('controller'=>'groups')); ?></li>
-		<li><?php echo $this->Html->link(__('Generate testing members', true), array('action'=>'test')); ?></li>
-        <li><?php echo $this->Html->link(__('Generate ACOs', true), array('action'=>'acos')); ?></li>
+		<li><?php echo $this->PHtml->link(__('Generate testing members', true), array('action'=>'test')); ?></li>
+        <li><?php echo $this->PHtml->link(__('Generate ACOs', true), array('action'=>'acos')); ?></li>
 	</ul>
 </div>
 <div id="MembersAdminIndexPanel"></div>

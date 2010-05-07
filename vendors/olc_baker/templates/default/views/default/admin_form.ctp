@@ -2,11 +2,11 @@
     <fieldset>
          <legend><?php
          if($id > 0) {
-             echo __('Edit', true);
+             echo __('Edit <{$formLabel}>', true);
          } else {
-             echo __('Add', true);
+             echo __('Add <{$formLabel}>', true);
          }
-         ?><{$this->FormLabel}></legend>
+         ?></legend>
     <?php
     if($id > 0) {
         echo $this->Form->input('<{$modelName}>.id');
