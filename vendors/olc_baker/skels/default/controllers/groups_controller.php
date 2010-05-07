@@ -34,7 +34,7 @@ class GroupsController extends AppController {
 			$this->Group->create();
 			$this->data['Group']['parent_id'] = $parentId;
 			if ($this->Group->save($this->data)) {
-			    $this->Acl->Aro->saveField('alias', 'Group/' . $this->Group->getInsertID());
+			    $this->Acl->Aro->saveField('alias', 'Group' . $this->Group->getInsertID());
 				$this->Session->setFlash(__('The data has been saved', true));
 				$this->redirect(array('action'=>'index', $parentId));
 			} else {
@@ -109,7 +109,8 @@ class GroupsController extends AppController {
 	     * Find the root node of ACOS
 	     */
 	    $aco =& $this->Acl->Aco;
-	    if($acoRoot = $aco->node('controllers')) {
+            $acoRoot = $aco->node('app');
+	    if(!empty($acoRoot)) {
 	        $acos = $this->paginate($this->Acl->Aco, array('Aco.parent_id' => $acoRoot[0]['Aco']['id']));
 	        foreach($acos AS $key => $controllerAco) {
 	            $actionAcos = $this->Acl->Aco->find('all', array(
@@ -119,11 +120,34 @@ class GroupsController extends AppController {
 	            ));
 	            if(!empty($actionAcos)) {
 	                foreach($actionAcos AS $actionAco) {
-	                    $actionAco['Aco']['permitted'] = $this->Acl->check(
-	                        $aroGroup,
-	                        $controllerAco['Aco']['alias'] . '/' . $actionAco['Aco']['alias']
-	                    );
-	                    $acos[$key]['Aco']['Aco'][] = $actionAco['Aco'];
+                            if(($actionAco['Aco']['rght'] - $actionAco['Aco']['lft']) != 1) {
+                                /*
+                                 * Controller in plugins
+                                 */
+                                $pluginAcos = $this->Acl->Aco->find('all', array(
+                                                     'conditions' => array(
+                                                         'Aco.parent_id' => $actionAco['Aco']['id'],
+                                                     ),
+                                 ));
+                                foreach($pluginAcos AS $pluginAco) {
+                                    $pluginAco['Aco']['permitted'] = $this->Acl->check(
+                                                    $aroGroup,
+                                                    $controllerAco['Aco']['alias']
+                                                    . '/' . $actionAco['Aco']['alias']
+                                                    . '/' . $pluginAco['Aco']['alias']
+                                    );
+                                    $pluginAco['Aco']['alias'] = $actionAco['Aco']['alias']
+                                                    . '/' . $pluginAco['Aco']['alias'];
+                                    $acos[$key]['Aco']['Aco'][] = $pluginAco['Aco'];
+                                }
+                            } else {
+                                $actionAco['Aco']['permitted'] = $this->Acl->check(
+                                                $aroGroup,
+                                                $controllerAco['Aco']['alias']
+                                                . '/' . $actionAco['Aco']['alias']
+                                );
+                                $acos[$key]['Aco']['Aco'][] = $actionAco['Aco'];
+                            }
 	                }
 	            }
 	        }
@@ -132,7 +156,7 @@ class GroupsController extends AppController {
 	        /*
 	         * Can't find the root node, forward to members/setup method
 	         */
-	        $this->redirect(array('controller' => 'members', 'action' => 'setup'));
+	        $this->redirect('/members/setup');
 	    }
 	}
 

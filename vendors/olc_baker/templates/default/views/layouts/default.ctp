@@ -35,6 +35,13 @@
 				<?php else: ?>
 				<li><?php echo $this->Html->link('Login', '/members/login'); ?></li>
 				<?php endif; ?>
+				<?php
+				if(!empty($actions_for_layout)) {
+				    foreach ($actions_for_layout as $title => $url) {
+				        echo '<li>' . $this->Html->link($title, $url) . '</li>';
+				    }
+				}
+				?>
 			</ul>
 		</div>
 			<?php echo $this->Session->flash(); ?>
