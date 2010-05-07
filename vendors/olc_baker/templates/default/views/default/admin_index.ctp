@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>AdminIndex">
-<h2><?php echo __('<{$this->FormLabel}> Manage', true); ?></h2><hr />
+<h2><?php echo __('<{$formLabel}> Manage', true); ?></h2><hr />
 <?php
 if(!isset($url)) {
     $url = array();

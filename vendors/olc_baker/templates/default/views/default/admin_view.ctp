@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>AdminView">
-<h3><?php echo __('View <{$this->FormLabel}>', true); ?></h3><hr />
+<h3><?php echo __('View <{$formLabel}>', true); ?></h3><hr />
 <div class="span-12">
 <{if isset($relationships.belongsTo)}>
 <{foreach from=$relationships.belongsTo key=rModel item=rOption}>
@@ -44,7 +44,7 @@
 <div class="actions">
     <ul>
         <li><?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $this->Form->value('<{$modelName}>.id')), null, __('Delete the item, sure?', true)); ?></li>
-        <li><?php echo $this->Html->link(__('<{$this->FormLabel}> List', true), array('action'=>'index')); ?> </li>
+        <li><?php echo $this->Html->link(__('<{$formLabel}> List', true), array('action'=>'index')); ?> </li>
 <{if isset($relationships.hasOne)}>
 <{foreach from=$relationships.hasOne key=rModel item=rOption}>
         <li><?php echo $this->Html->link(__('View Related <{$models[$rOption.className].label}>', true), array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['<{$rOption.className}>']['id']), array('class' => '<{$controllerName}>AdminViewControl')); ?></li>

@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>View">
-<h3><?php echo __('View <{$this->FormLabel}>', true); ?></h3><hr />
+<h3><?php echo __('View <{$formLabel}>', true); ?></h3><hr />
 <div class="span-12">
 <{if isset($relationships.belongsTo)}>
 <{foreach from=$relationships.belongsTo key=rModel item=rOption}>
@@ -43,7 +43,7 @@
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $this->Html->link('<{$this->FormLabel}>列表', array('action'=>'index')); ?> </li>
+        <li><?php echo $this->Html->link('<{$formLabel}>列表', array('action'=>'index')); ?> </li>
 <{if isset($relationships.hasOne)}>
 <{foreach from=$relationships.hasOne key=rModel item=rOption}>
         <li><?php echo $this->Html->link('檢視相關<{$models[$rOption.className].label}>', array('controller' => '<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['<{$rOption.className}>']['id']), array('class' => '<{$controllerName}>ViewControl')); ?></li>

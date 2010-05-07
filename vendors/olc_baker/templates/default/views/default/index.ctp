@@ -1,5 +1,5 @@
 <div id="<{$controllerName}>Index">
-<h2><?php echo __('<{$this->FormLabel}> List', true); ?></h2>
+<h2><?php echo __('<{$formLabel}> List', true); ?></h2>
 <p>
 <?php
 $url = array();
