@@ -158,7 +158,7 @@ class PermissibleAro extends PermissibleAppModel {
                 'PermissibleAro' => array(
                     'parent_id' => $model_id,
                     'model' => $groupName,
-                    'alias' => $group,
+                    'alias' => $groupName . $id,
                     'foreign_key' => $id
                 )
             ));
@@ -178,7 +178,7 @@ class PermissibleAro extends PermissibleAppModel {
                     'PermissibleAro' => array(
                         'parent_id' => $group_id,
                         'model' => $userName,
-                        'alias' => $user,
+                        'alias' => $userName . $id,
                         'foreign_key' => $id
                     )
                 ));

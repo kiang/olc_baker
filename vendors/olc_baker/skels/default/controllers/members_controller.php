@@ -25,7 +25,7 @@ class MembersController extends AppController {
 
 	function setup() {
 	    if($this->Member->hasAny(array('user_status' => 'Y'))) {
-	        $this->Session->setFlash(__('There already had members in database. If you want to reset, please remove them first.', true));
+	        $this->Session->setFlash(__('There are members in database. If you want to reset, please remove them first.', true));
 	        $this->redirect('/members/login');
 	    } else if(!empty($this->data)) {
                 $this->loadModel('Group');
@@ -42,7 +42,7 @@ class MembersController extends AppController {
                         $this->loadModel('Permissible.PermissibleAco');
                         if ($this->PermissibleAco->reset()) {
                             $this->Acl->deny('everyone', 'app');
-                            $this->Acl->allow('1', 'app');
+                            $this->Acl->allow('Group1', 'app');
                         }
 	                $this->Session->setFlash(__('The administrator created, please login with the id/password you entered.', true));
 	                $this->redirect('/members/login');
@@ -129,13 +129,13 @@ class MembersController extends AppController {
 	            $this->Member->create();
 	            if($this->Member->save(array('Member' => array(
 	                'username' => $uid,
-	                'password' => $uid,
+	                'password' => $this->Auth->password($uid),
 	                'group_id' => 1,
 	                'user_status' => 'Y',
 	                'nick' => $uid,
 	            	'email' => $uid . '@example.com',
 	            )))) {
-	                $this->Acl->Aro->saveField('alias', 'Member/' . $this->Member->getInsertID());
+	                $this->Acl->Aro->saveField('alias', 'Member' . $this->Member->getInsertID());
 	            }
 	        }
 	    }
