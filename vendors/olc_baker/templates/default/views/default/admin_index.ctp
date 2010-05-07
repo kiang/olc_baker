@@ -101,9 +101,9 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $this->Html->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $this->Html->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
+<?php echo $this->PHtml->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $this->PHtml->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $this->PHtml->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
     </td>
 </tr>
 <?php endforeach; ?>
@@ -114,9 +114,9 @@ if($item['<{$className}>']['<{$key}>']) {
     <ul>
 <{if isset($relationships.belongsTo)}>
 <?php $url = array_merge($url, array('action' => 'add')); ?>
-        <li><?php echo $this->Html->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->PHtml->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{else}>
-        <li><?php echo $this->Html->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->PHtml->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
 <{/if}>
     </ul>
 </div>

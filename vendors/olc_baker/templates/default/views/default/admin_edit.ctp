@@ -11,8 +11,8 @@
 <?php echo $this->Form->end(__('Submit', true)); ?>
 <div class="actions">
     <ul>
-        <li><?php echo $this->Html->link(__('Delete', true), array('action'=>'delete', $id), null, __('Delete the item, sure?', true)); ?></li>
-        <li><?php echo $this->Html->link(__('List', true), array('action'=>'index'));?></li>
+        <li><?php echo $this->PHtml->link(__('Delete', true), array('action'=>'delete', $id), null, __('Delete the item, sure?', true)); ?></li>
+        <li><?php echo $this->PHtml->link(__('List', true), array('action'=>'index'));?></li>
     </ul>
 </div>
 <?php

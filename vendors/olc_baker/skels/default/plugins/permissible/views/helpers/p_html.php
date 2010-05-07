@@ -52,6 +52,7 @@ class PHtmlHelper extends HtmlHelper {
  * @access protected
  */
     var $_cache = array();
+    var $baseUrlLength = 0;
 /**
  * Sets up various vars/classes required
  *
@@ -131,6 +132,10 @@ class PHtmlHelper extends HtmlHelper {
         } else {
             $url = $this->url($passTitle);
         }
+        if(empty($this->baseUrlLength)) {
+            $this->baseUrlLength = strlen($this->url('/')) - 1;
+        }
+        $url = substr($url, $this->baseUrlLength);
         $url = Router::parse($url);
         if (!isset($url['controller']) || !isset($url['action'])) {
             return str_replace('$1', parent::link($passTitle, $passUrl, $passOptions, $passConfirmMessage), $wrapper);
@@ -138,6 +143,9 @@ class PHtmlHelper extends HtmlHelper {
         $action = 'app/';
         if ($url['plugin'] !== null) {
             $action .= Inflector::camelize($url['plugin']) . '/';
+        }
+        if(!empty($url['prefix'])) {
+            $url['action'] = $url['prefix'] . '_' . $url['action'];
         }
         $action .= Inflector::camelize($url['controller']) . '/' . $url['action'];
         if ($this->check($action)) {

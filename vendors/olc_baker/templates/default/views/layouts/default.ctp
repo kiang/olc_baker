@@ -27,10 +27,10 @@
 			<ul>
 				<?php if($this->Session->read('Auth.Member.id')): ?>
 				<{foreach from=$controllers key=key item=item}>
-				<li><?php echo $this->Html->link('<{$item}>', '/admin/<{$key}>'); ?></li>
+				<li><?php echo $this->PHtml->link('<{$item}>', '/admin/<{$key}>'); ?></li>
 				<{/foreach}>
-				<li><?php echo $this->Html->link('Members', '/admin/members'); ?></li>
-				<li><?php echo $this->Html->link('Groups', '/admin/groups'); ?></li>
+				<li><?php echo $this->PHtml->link('Members', '/admin/members'); ?></li>
+				<li><?php echo $this->PHtml->link('Groups', '/admin/groups'); ?></li>
 				<li><?php echo $this->Html->link('Logout', '/members/logout'); ?></li>
 				<?php else: ?>
 				<li><?php echo $this->Html->link('Login', '/members/login'); ?></li>
