@@ -55,13 +55,7 @@ $(document).ready(function() {
         return false;
     });
     $(\'a.GroupsAdminIndexControl\').click(function() {
-        var target = $(\'#GroupsAdminIndexPanel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+        dialogFull(this);
         return false;
     });
 });

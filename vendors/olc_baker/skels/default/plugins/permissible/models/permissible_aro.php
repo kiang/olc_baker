@@ -233,12 +233,7 @@ class PermissibleAro extends PermissibleAppModel {
         $groupName = Configure::read('Permissible.GroupModelAlias');
         $userModel = ClassRegistry::init(Configure::read('Permissible.UserModel'));
         $userName = Configure::read('Permissible.UserModelAlias');
-        $groups = $groupModel->find('list', array(
-            'fields' => array(
-                $groupName . '.' . $groupModel->primaryKey,
-                $groupName . '.' . $groupModel->displayField
-            )
-        ));
+        $groups = $groupModel->find('list');
         foreach ($groups as $id => $group) {
             $aro = $this->find('first', array(
                 'conditions' => array(
@@ -250,19 +245,16 @@ class PermissibleAro extends PermissibleAppModel {
                 $this->create();
                 $this->save(array(
                     'PermissibleAro' => array(
+                        'parent_id' => $top_id,
                         'model' => $groupName,
                         'foreign_key' => $id,
-                        'parent_id' => $top_id
+                        'alias' => $groupName . $id,
                     )
                 ));
                 $aro = $this->read();
             }
-            $group_id = $aro['PermissibleAro']['foreign_id'];
+            $group_id = $aro['PermissibleAro']['foreign_key'];
             $users = $userModel->find('list', array(
-                'fields' => array(
-                    $userName . '.' . $userModel->primaryKey,
-                    $userName . '.' . $userModel->displayField
-                ),
                 'conditions' => array(
                     $userName . '.' . Configure::read('Permissible.GroupForeignKey') => $id
                 )
@@ -278,9 +270,10 @@ class PermissibleAro extends PermissibleAppModel {
                     $this->create();
                     $this->save(array(
                         'PermissibleAro' => array(
+                            'parent_id' => $group_id,
                             'model' => $userName,
                             'foreign_key' => $id,
-                            'parent_id' => $group_id
+                            'alias' => $userName . $id,
                         )
                     ));
                 }

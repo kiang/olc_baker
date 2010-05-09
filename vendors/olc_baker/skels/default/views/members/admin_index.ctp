@@ -65,13 +65,7 @@ $(document).ready(function() {
         return false;
     });
     $(\'a.MembersAdminIndexControl\').click(function() {
-        var target = $(\'#MembersAdminIndexPanel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+        dialogFull(this);
         return false;
     });
 });
