@@ -105,13 +105,7 @@ $(document).ready(function() {
         return false;
     });
     $(\'a.<{$controllerName}>Control\').click(function() {
-        var target = $(\'#<{$controllerName}>IndexPanel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+        dialogFull(this);
         return false;
     });
 });';

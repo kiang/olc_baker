@@ -12,8 +12,11 @@
 	echo '<!--[if IE]>';
 	echo $this->Html->css('ie', NULL, array('media' => 'screen, projection'));
 	echo '<![endif]-->';
+        echo $this->Html->css('jquery-ui', NULL, array('media' => 'screen, projection'));
 	echo $this->Html->css('default');
 	echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery-ui');
+        echo $this->Html->script('olc');
 	echo $scripts_for_layout;
 	?>
 </head>
