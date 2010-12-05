@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.console.libs.tasks
@@ -54,7 +54,8 @@ class TemplateTask extends Shell {
 	function _findThemes() {
 		$paths = App::path('shells');
 		$core = array_pop($paths);
-		$core = str_replace('libs' . DS, '', $core);
+		$separator = DS === '/' ? '/' : '\\\\';
+		$core = preg_replace('#libs' . $separator . '$#', '', $core);
 		$paths[] = $core;
 		$Folder =& new Folder($core . 'templates' . DS . 'default');
 		$contents = $Folder->read();
@@ -114,10 +115,7 @@ class TemplateTask extends Shell {
 		if ($data == null) {
 			return false;
 		}
-
-		foreach ($data as $name => $value) {
-			$this->templateVars[$name] = $value;
-		}
+		$this->templateVars = $data + $this->templateVars;
 	}
 
 /**
@@ -209,4 +207,3 @@ class TemplateTask extends Shell {
 		return false;
 	}
 }
-?>

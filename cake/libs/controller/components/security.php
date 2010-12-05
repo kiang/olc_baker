@@ -1,6 +1,6 @@
 <?php
 /**
- * Short description for file.
+ * Security Component
  *
  * PHP versions 4 and 5
  *
@@ -18,8 +18,9 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 App::import('Core', array('String', 'Security'));
+
 /**
- * Short description for file.
+ * SecurityComponent
  *
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
@@ -109,7 +110,6 @@ class SecurityComponent extends Object {
 
 /**
  * An associative array of usernames/passwords used for HTTP-authenticated logins.
- * If using digest authentication, passwords should be MD5-hashed.
  *
  * @var array
  * @access public
@@ -383,7 +383,7 @@ class SecurityComponent extends Object {
 		$keys = array();
 		$match = array();
 		$req = array('nonce' => 1, 'nc' => 1, 'cnonce' => 1, 'qop' => 1, 'username' => 1, 'uri' => 1, 'response' => 1);
-		preg_match_all('@(\w+)=([\'"]?)([a-zA-Z0-9=./\_-]+)\2@', $digest, $match, PREG_SET_ORDER);
+		preg_match_all('/(\w+)=([\'"]?)([a-zA-Z0-9@=.\/_-]+)\2/', $digest, $match, PREG_SET_ORDER);
 
 		foreach ($match as $i) {
 			$keys[$i[1]] = $i[3];
@@ -618,10 +618,15 @@ class SecurityComponent extends Object {
 		}
 		unset($check['_Token']);
 
+		$locked = str_rot13($locked);
+		if (preg_match('/(\A|;|{|})O\:[0-9]+/', $locked)) {
+			return false;
+		}
+
 		$lockedFields = array();
 		$fields = Set::flatten($check);
 		$fieldList = array_keys($fields);
-		$locked = unserialize(str_rot13($locked));
+		$locked = unserialize($locked);
 		$multi = array();
 
 		foreach ($fieldList as $i => $key) {
@@ -744,4 +749,3 @@ class SecurityComponent extends Object {
 		}
 	}
 }
-?>

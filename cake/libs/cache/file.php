@@ -209,7 +209,11 @@ class FileEngine extends CacheEngine {
 			$now = time();
 			$threshold = $now - $this->settings['duration'];
 		}
+		$prefixLength = strlen($this->settings['prefix']);
 		while (($entry = $dir->read()) !== false) {
+			if (substr($entry, 0, $prefixLength) !== $this->settings['prefix']) {
+				continue;
+			}
 			if ($this->_setKey($entry) === false) {
 				continue;
 			}
@@ -261,8 +265,8 @@ class FileEngine extends CacheEngine {
 		if ($this->_init && !is_writable($this->settings['path'])) {
 			$this->_init = false;
 			trigger_error(sprintf(__('%s is not writable', true), $this->settings['path']), E_USER_WARNING);
+			return false;
 		}
 		return true;
 	}
 }
-?>

@@ -181,7 +181,7 @@ class Shell extends Object {
 	}
 
 /**
- * Starts up the the Shell
+ * Starts up the Shell
  * allows for checking and configuring prior to command or main execution
  * can be overriden in subclasses
  *
@@ -570,14 +570,14 @@ class Shell extends Object {
 	}
 
 /**
- * Creates the proper singular model key for associations
+ * Creates the proper underscored model key for associations
  *
- * @param string $name Controller class name
+ * @param string $name Model class name
  * @return string Singular model key
  * @access protected
  */
 	function _modelKey($name) {
-		return Inflector::underscore(Inflector::singularize($name)) . '_id';
+		return Inflector::underscore($name) . '_id';
 	}
 
 /**
@@ -645,4 +645,3 @@ class Shell extends Object {
 		return App::pluginPath($pluginName);
 	}
 }
-?>

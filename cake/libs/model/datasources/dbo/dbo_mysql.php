@@ -122,7 +122,7 @@ class DboMysqlBase extends DboSource {
 			return $cache;
 		}
 		$fields = false;
-		$cols = $this->query('DESCRIBE ' . $this->fullTableName($model));
+		$cols = $this->query('SHOW FULL COLUMNS FROM ' . $this->fullTableName($model));
 
 		foreach ($cols as $column) {
 			$colKey = array_keys($column);
@@ -139,11 +139,23 @@ class DboMysqlBase extends DboSource {
 				if (!empty($column[0]['Key']) && isset($this->index[$column[0]['Key']])) {
 					$fields[$column[0]['Field']]['key'] = $this->index[$column[0]['Key']];
 				}
+				foreach ($this->fieldParameters as $name => $value) {
+					if (!empty($column[0][$value['column']])) {
+						$fields[$column[0]['Field']][$name] = $column[0][$value['column']];
+					}
+				}
+				if (isset($fields[$column[0]['Field']]['collate'])) {
+					$charset = $this->getCharsetName($fields[$column[0]['Field']]['collate']);
+					if ($charset) {
+						$fields[$column[0]['Field']]['charset'] = $charset;
+					}
+				}
 			}
 		}
 		$this->__cacheDescription($this->fullTableName($model, false), $fields);
 		return $fields;
 	}
+
 /**
  * Generates and executes an SQL UPDATE statement for given model, fields, and values.
  *
@@ -274,7 +286,7 @@ class DboMysqlBase extends DboSource {
 		$out = '';
 		$colList = array();
 		foreach ($compare as $curTable => $types) {
-			$indexes = $tableParameters = array();
+			$indexes = $tableParameters = $colList = array();
 			if (!$table || $table == $curTable) {
 				$out .= 'ALTER TABLE ' . $this->fullTableName($curTable) . " \n";
 				foreach ($types as $type => $column) {
@@ -507,9 +519,9 @@ class DboMysqlBase extends DboSource {
 class DboMysql extends DboMysqlBase {
 
 /**
- * Enter description here...
+ * Datasource description
  *
- * @var unknown_type
+ * @var string
  */
 	var $description = "MySQL DBO Driver";
 
@@ -646,16 +658,19 @@ class DboMysql extends DboMysqlBase {
 				if ($data === '') {
 					return 'NULL';
 				}
-				if ((is_int($data) || is_float($data) || $data === '0') || (
+				if (is_float($data)) {
+					return sprintf('%F', $data);
+				}
+				if ((is_int($data) || $data === '0') || (
 					is_numeric($data) && strpos($data, ',') === false &&
-					$data[0] != '0' && strpos($data, 'e') === false)) {
-						return $data;
-					}
+					$data[0] != '0' && strpos($data, 'e') === false)
+				) {
+					return $data;
+				}
 			default:
-				$data = "'" . mysql_real_escape_string($data, $this->connection) . "'";
+				return "'" . mysql_real_escape_string($data, $this->connection) . "'";
 			break;
 		}
-		return $data;
 	}
 
 /**
@@ -727,8 +742,8 @@ class DboMysql extends DboMysqlBase {
 		$j = 0;
 
 		while ($j < $numFields) {
-			$column = mysql_fetch_field($results,$j);
-			if (!empty($column->table)) {
+			$column = mysql_fetch_field($results, $j);
+			if (!empty($column->table) && strpos($column->name, $this->virtualFieldSeparator) === false) {
 				$this->map[$index++] = array($column->table, $column->name);
 			} else {
 				$this->map[$index++] = array(0, $column->name);
@@ -782,4 +797,3 @@ class DboMysql extends DboMysqlBase {
 		return false;
 	}
 }
-?>

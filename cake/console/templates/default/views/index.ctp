@@ -4,12 +4,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2009, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.console.libs.templates.views
@@ -71,22 +71,22 @@
 	</p>
 
 	<div class="paging">
-	<?php echo "\t<?php echo \$this->Paginator->prev('<< '.__('previous', true), array(), null, array('class'=>'disabled'));?>\n";?>
+	<?php echo "\t<?php echo \$this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>\n";?>
 	 | <?php echo "\t<?php echo \$this->Paginator->numbers();?>\n"?> |
-	<?php echo "\t<?php echo \$this->Paginator->next(__('next', true).' >>', array(), null, array('class' => 'disabled'));?>\n";?>
+	<?php echo "\t<?php echo \$this->Paginator->next(__('next', true) . ' >>', array(), null, array('class' => 'disabled'));?>\n";?>
 	</div>
 </div>
 <div class="actions">
 	<h3><?php echo "<?php __('Actions'); ?>"; ?></h3>
 	<ul>
-		<li><?php echo "<?php echo \$this->Html->link(sprintf(__('New %s', true), __('{$singularHumanName}', true)), array('action' => 'add')); ?>";?></li>
+		<li><?php echo "<?php echo \$this->Html->link(__('New " . $singularHumanName . "', true), array('action' => 'add')); ?>";?></li>
 <?php
 	$done = array();
 	foreach ($associations as $type => $data) {
 		foreach ($data as $alias => $details) {
 			if ($details['controller'] != $this->name && !in_array($details['controller'], $done)) {
-				echo "\t\t<li><?php echo \$this->Html->link(sprintf(__('List %s', true), __('" . Inflector::humanize($details['controller']) . "', true)), array('controller' => '{$details['controller']}', 'action' => 'index')); ?> </li>\n";
-				echo "\t\t<li><?php echo \$this->Html->link(sprintf(__('New %s', true), __('" . Inflector::humanize(Inflector::underscore($alias)) . "', true)), array('controller' => '{$details['controller']}', 'action' => 'add')); ?> </li>\n";
+				echo "\t\t<li><?php echo \$this->Html->link(__('List " . Inflector::humanize($details['controller']) . "', true), array('controller' => '{$details['controller']}', 'action' => 'index')); ?> </li>\n";
+				echo "\t\t<li><?php echo \$this->Html->link(__('New " . Inflector::humanize(Inflector::underscore($alias)) . "', true), array('controller' => '{$details['controller']}', 'action' => 'add')); ?> </li>\n";
 				$done[] = $details['controller'];
 			}
 		}
