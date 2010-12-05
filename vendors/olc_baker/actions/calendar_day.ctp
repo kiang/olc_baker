@@ -46,7 +46,7 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 $scripts = '
 $(function() {
     $(\'a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').load(this.href);
+        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
         return false;
     });
     $(\'a.control\').click(function() {

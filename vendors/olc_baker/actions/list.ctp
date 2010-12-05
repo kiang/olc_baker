@@ -64,7 +64,7 @@ if($item['<{$className}>']['<{$key}>']) {
 $scripts = '
 $(function() {
     $(\'#<{$controllerName}>_list_table th a, div.paging a, a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').load(this.href);
+        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
         return false;
     });
     $(\'a.control\').click(function() {

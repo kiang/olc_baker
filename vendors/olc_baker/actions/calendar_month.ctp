@@ -63,7 +63,7 @@ $lastDay = date('j', $daysRange['end']);
 $scripts = '
 $(function() {
     $(\'a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').load(this.href);
+        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
         return false;
     });
     $(\'a.control\').click(function() {

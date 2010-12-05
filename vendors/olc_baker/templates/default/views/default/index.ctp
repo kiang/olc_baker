@@ -101,7 +101,7 @@ if($item['<{$className}>']['<{$key}>']) {
 $scripts = '
 $(function() {
     $(\'#<{$controllerName}>IndexTable th a, div.paging a, a.<{$controllerName}>IndexControl\').click(function() {
-        $(\'#<{$controllerName}>Index\').load(this.href);
+        $(\'#<{$controllerName}>Index\').parent().load(this.href);
         return false;
     });
     $(\'a.<{$controllerName}>Control\').click(function() {

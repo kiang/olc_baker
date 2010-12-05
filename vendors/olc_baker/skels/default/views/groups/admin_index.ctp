@@ -51,7 +51,7 @@
                     echo $this->Html->scriptBlock('
 $(function() {
     $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
-        $(\'#GroupsAdminIndex\').load(this.href);
+        $(\'#GroupsAdminIndex\').parent().load(this.href);
         return false;
     });
     $(\'a.GroupsAdminIndexControl\').click(function() {

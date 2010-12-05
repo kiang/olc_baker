@@ -68,7 +68,7 @@
 echo $this->Html->scriptBlock('
 $(function() {
     $(\'a.<{$controllerName}>AdminViewControl\').click(function() {
-        $(\'#<{$controllerName}>AdminViewPanel\').load(this.href);
+        $(\'#<{$controllerName}>AdminViewPanel\').parent().load(this.href);
         return false;
     });
 });
