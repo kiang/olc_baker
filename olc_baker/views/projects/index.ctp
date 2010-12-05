@@ -16,7 +16,7 @@
         </tr>
         <?php
         $i = 0;
-        foreach ($projects as $project):
+        foreach ($projects as $project) {
             $class = null;
             if ($i++ % 2 == 0) {
                 $class = ' class="altrow"';
@@ -35,12 +35,12 @@
                 <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $project['Project']['id']), null, __('Delete the item, sure?', true)); ?>
             </td>
         </tr>
-        <?php endforeach; ?>
-            </table>
-        </div>
-        <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
-        <div class="actions">
-            <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('action' => 'add')); ?></li>
+        <?php } ?>
+        </table>
+    </div>
+    <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
+    <div class="actions">
+        <ul>
+            <li><?php echo $this->Html->link(__('Add', true), array('action' => 'add')); ?></li>
     </ul>
 </div>
