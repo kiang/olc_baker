@@ -1,9 +1,10 @@
 <?php
-if(!empty($content)) {
+
+if (!empty($content)) {
     echo $content['description'];
     $dateTimeFieldOptions = $imageFields = $fileFields = array();
-    foreach($fieldTypes AS $key => $fieldType) {
-        switch($fieldType) {
+    foreach ($fieldTypes AS $key => $fieldType) {
+        switch ($fieldType) {
             case 'datetime':
                 $dateTimeFieldOptions[$key] = $fields[$key];
                 break;
@@ -15,10 +16,10 @@ if(!empty($content)) {
                 break;
         }
     }
-    if(!empty($content['options'])) {
-        foreach($content['options'] AS $optionGroup => $optionItems) {
-            foreach($optionItems AS $key => $formOptions) {
-                switch($formOptions['type']) {
+    if (!empty($content['options'])) {
+        foreach ($content['options'] AS $optionGroup => $optionItems) {
+            foreach ($optionItems AS $key => $formOptions) {
+                switch ($formOptions['type']) {
                     case 'field':
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
@@ -28,9 +29,9 @@ if(!empty($content)) {
                         break;
                     case 'fieldWithId':
                         $fieldWithIds = array();
-                        foreach($fields AS $idx => $label) {
+                        foreach ($fields AS $idx => $label) {
                             $modelName = substr($idx, 0, strpos($idx, '.'));
-                            if(!array_key_exists($modelName . '.id', $fieldWithIds)) {
+                            if (!array_key_exists($modelName . '.id', $fieldWithIds)) {
                                 $labelName = substr($label, 0, strpos($label, '-'));
                                 $fieldWithIds[$modelName . '.id'] = $labelName . '-&gt;ID';
                             }
@@ -43,7 +44,7 @@ if(!empty($content)) {
                         ));
                         break;
                     case 'dateTimeField':
-                        if(empty($dateTimeFieldOptions)) {
+                        if (empty($dateTimeFieldOptions)) {
                             echo '<div>*' . __('This method will need a datetime field', true) . '</div>';
                             continue;
                         }
@@ -54,7 +55,7 @@ if(!empty($content)) {
                         ));
                         break;
                     case 'imageField':
-                        if(empty($imageFields)) {
+                        if (empty($imageFields)) {
                             echo '<div>*' . __('This method will need a file_image field', true) . '</div>';
                             continue;
                         }
@@ -65,7 +66,7 @@ if(!empty($content)) {
                         ));
                         break;
                     case 'fileField':
-                        if(empty($fileFields)) {
+                        if (empty($fileFields)) {
                             echo '<div>*' . __('This method will need a file field', true) . '</div>';
                             continue;
                         }
