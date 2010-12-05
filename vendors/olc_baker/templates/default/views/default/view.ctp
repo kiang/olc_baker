@@ -64,7 +64,7 @@
 <div id="<{$controllerName}>ViewPanel"></div>
 <?php
 echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
     $(\'a.<{$controllerName}>ViewControl\').click(function() {
         $(\'#<{$controllerName}>ViewPanel\').load(this.href);
         return false;

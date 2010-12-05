@@ -18,7 +18,7 @@
 </div>
 <?php
 echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
 	$(\'#ActionEngine\').change(function() {
 		$(\'#parameterBlock\').load(\'' . $this->Html->url(array('action' => 'engine_form', $formId)) . '/\' +
 			$(\'#ActionEngine option:selected\').val()

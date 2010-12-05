@@ -49,7 +49,7 @@
             <div id="GroupsAdminIndexPanel"></div>
     <?php
                     echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
     $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
         $(\'#GroupsAdminIndex\').load(this.href);
         return false;

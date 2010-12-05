@@ -62,7 +62,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <div id="<{$controllerName}>_control_panel"></div>
 <?php
 $scripts = '
-$(document).ready(function() {
+$(function() {
     $(\'#<{$controllerName}>_list_table th a, div.paging a, a.pageControl\').click(function() {
         $(\'#<{$controllerName}>_control_page\').load(this.href);
         return false;

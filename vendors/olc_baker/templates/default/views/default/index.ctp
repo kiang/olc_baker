@@ -99,7 +99,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <div id="<{$controllerName}>IndexPanel"></div>
 <?php
 $scripts = '
-$(document).ready(function() {
+$(function() {
     $(\'#<{$controllerName}>IndexTable th a, div.paging a, a.<{$controllerName}>IndexControl\').click(function() {
         $(\'#<{$controllerName}>Index\').load(this.href);
         return false;

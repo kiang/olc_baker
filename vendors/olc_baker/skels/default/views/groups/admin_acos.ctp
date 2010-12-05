@@ -44,7 +44,7 @@
             echo '<ul id="permissionStack"></ul>';
             echo $this->Form->end(__('Update', true));
             echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
 	$(\'input.acoPermitted\').click(function() {
 		if($(\'#p\' + this.name).size() > 0) {
 			$(\'#p\' + this.name).remove();

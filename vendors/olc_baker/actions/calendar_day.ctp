@@ -44,7 +44,7 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 <div id="<{$controllerName}>_control_panel"></div>
 <?php
 $scripts = '
-$(document).ready(function() {
+$(function() {
     $(\'a.pageControl\').click(function() {
         $(\'#<{$controllerName}>_control_page\').load(this.href);
         return false;

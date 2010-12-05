@@ -49,7 +49,7 @@ function switchFunctionBlock() {
 		$(\'#functionBlock\').hide();
 	}
 }
-$(document).ready(function() {
+$(function() {
 	$(\'#FormFieldType\').change(function() {
 		$(\'#optionBlock\').load(\'' . $this->Html->url(array('action' => 'type_form')) . '/\' +
 			$(\'#FormFieldType option:selected\').val()

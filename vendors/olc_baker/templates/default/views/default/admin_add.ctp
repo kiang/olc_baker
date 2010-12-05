@@ -29,7 +29,7 @@ echo $this->Form->create('<{$modelName}>', array('type' => 'file', 'url' => $url
 </div>
 <?php
 echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
     $(\'#<{$controllerName}>AdminAdd div.addForm a\').each(function() {
         $(this).parent().load(this.href);
     });

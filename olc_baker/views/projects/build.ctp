@@ -20,7 +20,7 @@ foreach($tasks AS $task) {
 echo '</ul>';
 echo '<br /><br /><div id="operactionDetail"></div>';
 echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
 	$(\'ul#buildOperactions li a\').click(function() {
 		$(\'div#operactionDetail\').html(\'' . __('Operaction Detail', true) . '<br />\' + $(\'#\' + this.rel).html());
 		return false;

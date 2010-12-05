@@ -17,7 +17,7 @@
 </div>
 <?php
 echo $this->Html->scriptBlock('
-$(document).ready(function() {
+$(function() {
     $(\'#<{$controllerName}>AdminEdit div.editForm a\').each(function() {
         $(this).parent().load(this.href);
     });

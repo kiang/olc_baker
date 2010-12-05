@@ -123,7 +123,7 @@ if($item['<{$className}>']['<{$key}>']) {
 <div id="<{$controllerName}>AdminIndexPanel"></div>
 <?php
 $scripts = '
-$(document).ready(function() {
+$(function() {
     $(\'#<{$controllerName}>AdminIndexTable th a, #<{$controllerName}>AdminIndex div.paging a\').click(function() {
         $(\'#<{$controllerName}>AdminIndex\').parent().load(this.href);
         return false;
