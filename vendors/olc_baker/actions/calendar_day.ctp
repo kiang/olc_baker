@@ -3,7 +3,7 @@ $day = date('Y/n/j', $dayRange['start']);
 $yesterday = date('Y/n/j', $dayRange['start'] - 1);
 $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
 ?>
-<div id="<{$controllerName}>_control_page">
+<div id="<{$controllerName}>Page">
 <h2><{$actionLabel}>： <?php echo $day; ?></h2>
 <div class="actions">
     <ul>
@@ -41,22 +41,15 @@ $tomorrow = date('Y/n/j', $dayRange['end'] + 1);
         <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
-<div id="<{$controllerName}>_control_panel"></div>
 <?php
 $scripts = '
 $(function() {
-    $(\'a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
+    $(\'#<{$controllerName}>Page a.pageControl\').click(function() {
+        $(\'#<{$controllerName}>Page\').parent().load(this.href);
         return false;
     });
-    $(\'a.control\').click(function() {
-        var target = $(\'#<{$controllerName}>_control_panel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+    $(\'#<{$controllerName}>Page a.control\').click(function() {
+        dialogFull(this);
         return false;
     });
 });';

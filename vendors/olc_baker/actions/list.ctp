@@ -1,4 +1,4 @@
-<div id="<{$controllerName}>_control_page">
+<div id="<{$controllerName}>Page">
 <h2><{$actionLabel}></h2>
 <p>
 <?php
@@ -6,7 +6,7 @@ echo $paginator->counter(array(
 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
-<table cellpadding="0" cellspacing="0" id="<{$controllerName}>_list_table">
+<table cellpadding="0" cellspacing="0" id="<{$controllerName}>Table">
 <tr>
 <{foreach from=$blocks.body key=className item=classFields}>
 <{foreach from=$classFields key=key item=label}>
@@ -59,22 +59,15 @@ if($item['<{$className}>']['<{$key}>']) {
         <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
-<div id="<{$controllerName}>_control_panel"></div>
 <?php
 $scripts = '
 $(function() {
-    $(\'#<{$controllerName}>_list_table th a, div.paging a, a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
+    $(\'#<{$controllerName}>Page #<{$controllerName}>Table th a, #<{$controllerName}>Page div.paging a, #<{$controllerName}>Page a.pageControl\').click(function() {
+        $(\'#<{$controllerName}>Page\').parent().load(this.href);
         return false;
     });
-    $(\'a.control\').click(function() {
-        var target = $(\'#<{$controllerName}>_control_panel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+    $(\'#<{$controllerName}>Page a.control\').click(function() {
+        dialogFull(this);
         return false;
     });
 });';

@@ -1,4 +1,4 @@
-<div id="<{$controllerName}>_control_page">
+<div id="<{$controllerName}>Page">
 <h2><{$actionLabel}></h2>
 <p>
 <?php
@@ -87,22 +87,15 @@ if($item['<{$className}>']['<{$key}>']) {
         <li><?php echo $this->Html->link(__('Back to the list', true), array('action'=>'index'), array('class' => 'pageControl')); ?></li>
     </ul>
 </div>
-<div id="<{$controllerName}>_control_panel"></div>
 <?php
 $scripts = '
 $(function() {
-    $(\'div.paging a, a.pageControl\').click(function() {
-        $(\'#<{$controllerName}>_control_page\').parent().load(this.href);
+    $(\'#<{$controllerName}>Page div.paging a, #<{$controllerName}>Page a.pageControl\').click(function() {
+        $(\'#<{$controllerName}>Page\').parent().load(this.href);
         return false;
     });
-    $(\'a.control\').click(function() {
-        var target = $(\'#<{$controllerName}>_control_panel\');
-        var targetOffset = target.offset().top;
-        $(target).load(this.href, {
-            success: function() {
-                $(\'html,body\').animate({scrollTop: targetOffset}, 1000);
-            }
-        });
+    $(\'#<{$controllerName}>Page a.control\').click(function() {
+        dialogFull(this);
         return false;
     });
 });';
