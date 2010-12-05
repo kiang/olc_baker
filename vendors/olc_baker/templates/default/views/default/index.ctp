@@ -104,10 +104,6 @@ $(function() {
         $(\'#<{$controllerName}>Index\').parent().load(this.href);
         return false;
     });
-    $(\'a.<{$controllerName}>Control\').click(function() {
-        dialogFull(this);
-        return false;
-    });
 });';
 echo $this->Html->scriptBlock($scripts);
 ?>

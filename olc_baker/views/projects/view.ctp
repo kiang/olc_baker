@@ -82,7 +82,7 @@ $class = ' class="altrow"'; ?>
                 </td>
                 <td class="actions">
                 <?php echo $this->Html->link(__('View', true), array('controller' => 'forms', 'action' => 'view', $form['Form']['id'])); ?>
-                <?php echo $this->Html->link(__('Edit', true), array('controller' => 'forms', 'action' => 'edit', $form['Form']['id'])); ?>
+                <?php echo $this->Html->link(__('Edit', true), array('controller' => 'forms', 'action' => 'edit', $form['Form']['id']), array('class' => 'dialogControl')); ?>
                 <?php echo $this->Html->link(__('Delete', true), array('controller' => 'forms', 'action' => 'delete', $form['Form']['id']), null, __('Delete the item, sure?', true)); ?>
                 </td>
             </tr>
@@ -92,6 +92,6 @@ $class = ' class="altrow"'; ?>
         <div class="paging"><?php echo $this->element('paginator'); ?></div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'forms', 'action' => 'add', $project['Project']['id'])); ?></li>
+                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'forms', 'action' => 'add', $project['Project']['id']), array('class' => 'dialogControl')); ?></li>
     </ul>
 </div>

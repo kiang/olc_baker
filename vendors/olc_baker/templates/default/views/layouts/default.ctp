@@ -61,6 +61,16 @@
 			& <?php echo $this->Html->link('Just This Computer Studio', 'http://olc.tw/', array('target'=>'_blank')); ?>
 		</div>
 	</div>
-	<?php echo $this->element('sql_dump'); ?>
+	<?php
+        echo $this->element('sql_dump');
+        echo $this->Html->scriptBlock('
+$(function() {
+    $(\'a.dialogControl\').click(function() {
+        dialogFull(this);
+        return false;
+    });
+});
+');
+        ?>
 </body>
 </html>

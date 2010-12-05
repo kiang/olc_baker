@@ -101,8 +101,8 @@ if($item['<{$className}>']['<{$key}>']) {
 <{/foreach}>
 <{/foreach}>
     <td class="actions">
-<?php echo $this->PHtml->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
-<?php echo $this->PHtml->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => '<{$controllerName}>AdminIndexControl')); ?>
+<?php echo $this->PHtml->link(__('View', true), array('action'=>'view', $item['<{$modelName}>']['id']), array('class' => 'dialogControl')); ?>
+<?php echo $this->PHtml->link(__('Edit', true), array('action'=>'edit', $item['<{$modelName}>']['id']), array('class' => 'dialogControl')); ?>
 <?php echo $this->PHtml->link(__('Delete', true), array('action'=>'delete', $item['<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
     </td>
 </tr>
@@ -114,9 +114,9 @@ if($item['<{$className}>']['<{$key}>']) {
     <ul>
 <{if isset($relationships.belongsTo)}>
 <?php $url = array_merge($url, array('action' => 'add')); ?>
-        <li><?php echo $this->PHtml->link(__('Add', true), $url, array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->PHtml->link(__('Add', true), $url, array('class' => 'dialogControl')); ?></li>
 <{else}>
-        <li><?php echo $this->PHtml->link(__('Add', true), array('action'=>'add'), array('class' => '<{$controllerName}>AdminIndexControl')); ?></li>
+        <li><?php echo $this->PHtml->link(__('Add', true), array('action'=>'add'), array('class' => 'dialogControl')); ?></li>
 <{/if}>
     </ul>
 </div>
@@ -126,10 +126,6 @@ $scripts = '
 $(function() {
     $(\'#<{$controllerName}>AdminIndexTable th a, #<{$controllerName}>AdminIndex div.paging a\').click(function() {
         $(\'#<{$controllerName}>AdminIndex\').parent().load(this.href);
-        return false;
-    });
-    $(\'a.<{$controllerName}>AdminIndexControl\').click(function() {
-        dialogFull(this);
         return false;
     });
 ';

@@ -34,7 +34,7 @@ $class = ' class="altrow"'; ?>
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $pForm['Form']['id'])); ?> </li>
+        <li><?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $pForm['Form']['id']), array('class' => 'dialogControl')); ?> </li>
         <li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $pForm['Form']['id']), null, __('Delete the item, sure?', true)); ?> </li>
         <li><?php echo $this->Html->link(__('Back to the project', true), array('controller' => 'projects', 'action' => 'view', $pForm['Form']['project_id'])); ?></li>
     </ul>
@@ -80,7 +80,7 @@ $class = ' class="altrow"'; ?>
                 <?php echo $formField['FormField']['modified']; ?>
                 </td>
                 <td class="actions">
-                <?php echo $this->Html->link(__('Edit', true), array('controller' => 'form_fields', 'action' => 'edit', $formField['FormField']['id'])); ?>
+                <?php echo $this->Html->link(__('Edit', true), array('controller' => 'form_fields', 'action' => 'edit', $formField['FormField']['id']), array('class' => 'dialogControl')); ?>
                 <?php echo $this->Html->link(__('Delete', true), array('controller' => 'form_fields', 'action' => 'delete', $formField['FormField']['id']), null, __('Delete the item, sure?', true)); ?>
                 </td>
             </tr>
@@ -89,7 +89,7 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'form_fields', 'action' => 'add', $pForm['Form']['id'])); ?></li>
+                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'form_fields', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
             </ul>
         </div>
 
@@ -128,7 +128,7 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'relationships', 'action' => 'add', $pForm['Form']['id'])); ?></li>
+                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'relationships', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
             </ul>
         </div>
 
@@ -171,6 +171,6 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'actions', 'action' => 'add', $pForm['Form']['id'])); ?></li>
+                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'actions', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
     </ul>
 </div>
