@@ -2,7 +2,7 @@
 <h2><{$actionLabel}></h2>
 <p>
 <?php
-echo $paginator->counter(array(
+echo $this->Paginator->counter(array(
 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?></p>
@@ -11,7 +11,7 @@ echo $paginator->counter(array(
     <ul>
 <{foreach from=$fields key=className item=classFields}>
 <{foreach from=$classFields key=key item=item}>
-        <li><?php echo $paginator->sort('<{$item.label}>', '<{$className}>.<{$key}>', array('class' => 'pageControl'));?></li>
+        <li><?php echo $this->Paginator->sort('<{$item.label}>', '<{$className}>.<{$key}>', array('class' => 'pageControl'));?></li>
 <{/foreach}>
 <{/foreach}>
     </ul>
@@ -76,9 +76,9 @@ if($item['<{$className}>']['<{$key}>']) {
 </table>
 <?php endforeach; ?>
 <div class="paging">
-<?php echo $paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
- | <?php echo $paginator->numbers();?>
-<?php echo $paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>
+<?php echo $this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>
+ | <?php echo $this->Paginator->numbers();?>
+<?php echo $this->Paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>
 </div>
 <div class="actions">
     <ul>

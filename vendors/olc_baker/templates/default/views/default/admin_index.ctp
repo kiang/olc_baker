@@ -11,7 +11,7 @@ if(!empty($foreignId) && !empty($foreignModel)) {
 <{/if}>
 ?>
 <div><?php
-echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
+echo $this->Paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
 ?></div>
 <div class="paging"><?php echo $this->element('paginator'); ?></div>
 <table cellpadding="0" cellspacing="0" id="<{$controllerName}>AdminIndexTable">
@@ -27,14 +27,14 @@ echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %
 <{if isset($relationships.belongsTo)}>
 <{foreach from=$relationships.belongsTo key=rModel item=rOption}>
 	<?php if(empty($scope['<{$modelName}>.<{$rOption.foreignKey}>'])): ?>
-    <th><?php echo $paginator->sort('<{$models[$rOption.className].label}>', '<{$modelName}>.<{$rOption.foreignKey}>', array('url' => $url));?></th>
+    <th><?php echo $this->Paginator->sort('<{$models[$rOption.className].label}>', '<{$modelName}>.<{$rOption.foreignKey}>', array('url' => $url));?></th>
     <?php endif; ?>
 <{/foreach}>
 <{/if}>
 
 <{foreach from=$fields key=className item=classFields}>
 <{foreach from=$classFields key=key item=item}>
-    <th><?php echo $paginator->sort('<{$item.label}>', '<{$modelName}>.<{$key}>', array('url' => $url));?></th>
+    <th><?php echo $this->Paginator->sort('<{$item.label}>', '<{$modelName}>.<{$key}>', array('url' => $url));?></th>
 <{/foreach}>
 <{/foreach}>
     <th class="actions"><?php echo __('Action', true); ?></th>

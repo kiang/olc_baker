@@ -1,17 +1,17 @@
 <div class="actions">
-	<ul>
-		<li><?php echo $this->Html->link(__('List', true), array('action'=>'index')); ?></li>
-	</ul>
+    <ul>
+        <li><?php echo $this->Html->link(__('List', true), array('action' => 'index')); ?></li>
+    </ul>
 </div>
 
 <?php
 echo __('Build operactions:', true);
 echo '<ul id="buildOperactions">';
 $count = 1;
-foreach($tasks AS $task) {
+foreach ($tasks AS $task) {
     echo '<li>' . $this->Html->link($task['title'], '#', array('rel' => 'operactionBlock' . $count));
     echo '<div style="display:none;" id="operactionBlock' . $count . '"><ul>';
-    foreach($task['operactions'] AS $operaction) {
+    foreach ($task['operactions'] AS $operaction) {
         echo '<li>' . $operaction . '</li>';
     }
     echo '</ul></div></li>';

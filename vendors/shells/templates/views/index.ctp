@@ -2,7 +2,7 @@
 <h2><?php echo "<?php __('{$pluralHumanName}');?>";?></h2>
 <p>
 <?php echo "<?php
-echo \$paginator->counter(array(
+echo \$this->Paginator->counter(array(
 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
 ));
 ?>";?>
@@ -10,7 +10,7 @@ echo \$paginator->counter(array(
 <table class="systable" cellpadding="0" cellspacing="0">
 <tr>
 <?php  foreach ($fields as $field):?>
-	<th><?php echo "<?php echo \$paginator->sort('{$field}', '{$field}');?>";?></th>
+	<th><?php echo "<?php echo \$this->Paginator->sort('{$field}', '{$field}');?>";?></th>
 <?php endforeach;?>
 	<th class="actions"><?php echo "<?php __('Actions');?>";?></th>
 </tr>
@@ -52,9 +52,9 @@ echo "<?php endforeach; ?>\n";
 </table>
 </div>
 <div class="paging">
-<?php echo "\t<?php echo \$paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>\n";?>
- | <?php echo "\t<?php echo \$paginator->numbers();?>\n"?>
-<?php echo "\t<?php echo \$paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>\n";?>
+<?php echo "\t<?php echo \$this->Paginator->prev('<< ' . __('previous', true), array(), null, array('class'=>'disabled'));?>\n";?>
+ | <?php echo "\t<?php echo \$this->Paginator->numbers();?>\n"?>
+<?php echo "\t<?php echo \$this->Paginator->next(__('next', true) . ' >>', array(), null, array('class'=>'disabled'));?>\n";?>
 </div>
 <div class="actions">
 	<ul>

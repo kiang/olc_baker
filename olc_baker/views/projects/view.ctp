@@ -47,16 +47,16 @@ $class = ' class="altrow"'; ?>
         <h2><?php echo __('Project forms', true); ?></h2>
         <p>
 <?php
-            echo $paginator->counter(array(
+            echo $this->Paginator->counter(array(
                 'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
             ));
 ?></p>
         <table class="systable" cellpadding="0" cellspacing="0">
             <tr>
-                <th><?php echo $paginator->sort(__('System name', true), 'name', $pageOption); ?></th>
-                <th><?php echo $paginator->sort(__('Display name', true), 'label', $pageOption); ?></th>
-                <th><?php echo $paginator->sort(__('Created time', true), 'created', $pageOption); ?></th>
-                <th><?php echo $paginator->sort(__('Modified time', true), 'modified', $pageOption); ?></th>
+                <th><?php echo $this->Paginator->sort(__('System name', true), 'name', $pageOption); ?></th>
+                <th><?php echo $this->Paginator->sort(__('Display name', true), 'label', $pageOption); ?></th>
+                <th><?php echo $this->Paginator->sort(__('Created time', true), 'created', $pageOption); ?></th>
+                <th><?php echo $this->Paginator->sort(__('Modified time', true), 'modified', $pageOption); ?></th>
                 <th class="actions"><?php echo __('Action', true); ?></th>
             </tr>
 <?php
@@ -89,11 +89,7 @@ $class = ' class="altrow"'; ?>
 <?php endforeach; ?>
                 </table>
             </div>
-            <div class="paging">
-<?php echo $paginator->prev('<< ' . __('previous', true), $pageOption, null, array('class' => 'disabled')); ?>
-                | 	<?php echo $paginator->numbers($pageOption); ?>
-<?php echo $paginator->next(__('next', true) . ' >>', $pageOption, null, array('class' => 'disabled')); ?>
-            </div>
+            <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
             <div class="actions">
                 <ul>
                     <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'forms', 'action' => 'add', $project['Project']['id'])); ?></li>

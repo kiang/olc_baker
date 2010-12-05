@@ -9,11 +9,11 @@
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <table cellpadding="0" cellspacing="0" id="MembersAdminIndexTable">
         <tr>
-            <th><?php echo $paginator->sort(__('Id', true), 'id'); ?></th>
-            <th><?php echo $paginator->sort(__('Account', true), 'username'); ?></th>
-            <th><?php echo $paginator->sort(__('Status', true), 'user_status'); ?></th>
-            <th><?php echo $paginator->sort(__('Created time', true), 'created'); ?></th>
-            <th><?php echo $paginator->sort(__('Modified time', true), 'modified'); ?></th>
+            <th><?php echo $this->Paginator->sort(__('Id', true), 'id'); ?></th>
+            <th><?php echo $this->Paginator->sort(__('Account', true), 'username'); ?></th>
+            <th><?php echo $this->Paginator->sort(__('Status', true), 'user_status'); ?></th>
+            <th><?php echo $this->Paginator->sort(__('Created time', true), 'created'); ?></th>
+            <th><?php echo $this->Paginator->sort(__('Modified time', true), 'modified'); ?></th>
             <th class="actions"><?php echo __('Action', true); ?></th>
         </tr>
         <?php
