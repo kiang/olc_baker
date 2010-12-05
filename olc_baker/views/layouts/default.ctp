@@ -8,9 +8,17 @@
 	</title>
 	<?php
 		echo $this->Html->meta('icon');
-		echo $this->Html->css('cake.generic');
-		echo $this->Html->script('jquery');
-		echo $scripts_for_layout;
+		
+		echo $this->Html->css('screen', NULL, array('media' => 'screen, projection'));
+	echo $this->Html->css('print', NULL, array('media' => 'print'));
+	echo '<!--[if IE]>';
+	echo $this->Html->css('ie', NULL, array('media' => 'screen, projection'));
+	echo '<![endif]-->';
+        echo $this->Html->css('jquery-ui', NULL, array('media' => 'screen, projection'));
+        echo $this->Html->css('cake.generic');
+	echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery-ui');
+        echo $this->Html->script('olc');
 	?>
 </head>
 <body>

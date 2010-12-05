@@ -89,7 +89,7 @@ $class = ' class="altrow"'; ?>
 <?php endforeach; ?>
                 </table>
             </div>
-            <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
+            <div class="paging"><?php echo $this->element('paginator'); ?></div>
             <div class="actions">
                 <ul>
                     <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'forms', 'action' => 'add', $project['Project']['id'])); ?></li>
