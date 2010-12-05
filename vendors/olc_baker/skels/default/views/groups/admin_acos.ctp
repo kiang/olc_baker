@@ -3,17 +3,12 @@
     <p>
         <?php
         $urlArray = array('url' => array($groupId));
-        echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
         ?>
     </p>
-    <div class="paging"><?php echo $this->element('paginator', $urlArray); ?></div>
     <table cellpadding="0" cellspacing="0" id="GroupsAdminAcosTable">
-        <tr>
-            <th><?php echo $paginator->sort('Controller', 'alias', $urlArray); ?></th>
-        </tr>
         <?php
         $i = 0;
-        foreach ($acos as $aco):
+        foreach ($acos as $aco) {
             $class = null;
             if ($i++ % 2 == 0) {
                 $class = ' class="altrow"';
@@ -26,24 +21,24 @@
                 echo '<input type="checkbox" name="ctrl' . $aco['Aco']['alias'] . '" class="acoController">';
                 echo '<hr /><div id="sub' . $aco['Aco']['alias'] . '">';
                 foreach ($aco['Aco']['Aco'] AS $actionAco) {
-                    echo '<input type="checkbox" name="' . $aco['Aco']['alias'] . '___' . $actionAco['alias'] . '"';
+                    echo '<div class="span-5"><input type="checkbox" name="' . $aco['Aco']['alias'] . '___' . $actionAco['alias'] . '"';
                     if ($actionAco['permitted'] == 1) {
                         echo ' checked="checked"';
                     }
                     echo ' class="acoPermitted">';
-                    echo $actionAco['alias'] . '&nbsp;';
+                    echo $actionAco['alias'] . '</div>';
                 }
                 echo '</div>';
             }
         ?></td>
         </tr>
-        <?php endforeach; ?>
-        </table>
+        <?php } // End of foreach ($acos as $aco) { ?>
+    </table>
     <?php
-            echo $this->Form->create('Group', array('url' => array('action' => 'acos', $groupId)));
-            echo '<ul id="permissionStack"></ul>';
-            echo $this->Form->end(__('Update', true));
-            echo $this->Html->scriptBlock('
+        echo $this->Form->create('Group', array('url' => array('action' => 'acos', $groupId)));
+        echo '<ul id="permissionStack"></ul>';
+        echo $this->Form->end(__('Update', true));
+        echo $this->Html->scriptBlock('
 $(function() {
 	$(\'input.acoPermitted\').click(function() {
 		if($(\'#p\' + this.name).size() > 0) {
@@ -70,10 +65,9 @@ $(function() {
 });
 ');
     ?>
-            <div class="paging"><?php echo $this->element('paginator', $urlArray); ?></div>
-            <div class="actions">
-                <ul>
-                    <li><?php echo $this->PHtml->link(__('List', true), array('action' => 'index')); ?></li>
+        <div class="actions">
+            <ul>
+                <li><?php echo $this->PHtml->link(__('List', true), array('action' => 'index')); ?></li>
         </ul>
     </div>
 </div>

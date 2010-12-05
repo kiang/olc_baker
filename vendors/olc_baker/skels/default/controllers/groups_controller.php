@@ -76,9 +76,8 @@ class GroupsController extends AppController {
     }
 
     function admin_acos($groupId = 0) {
-        $this->paginate['Aco']['limit'] = 10;
         if (empty($groupId) || !$aroGroup = $this->Group->find('first', array(
-                    'contain' => array(),
+                    'fields' => array('Group.id'),
                     'conditions' => array(
                         'Group.id' => $groupId,
                     ),
@@ -86,7 +85,6 @@ class GroupsController extends AppController {
             $this->Session->setFlash(__('Please select a group first!', true));
             $this->redirect(array('action' => 'index'));
         }
-        unset($aroGroup['Aco']);
         if (!empty($this->params['form'])) {
             $count = 0;
             foreach ($this->params['form'] AS $key => $val) {
@@ -95,7 +93,7 @@ class GroupsController extends AppController {
                     if ($val == '+') {
                         $this->Acl->allow($aroGroup, $key);
                         ++$count;
-                    } else if ($val = '-') {
+                    } else if ($val == '-') {
                         $this->Acl->deny($aroGroup, $key);
                         ++$count;
                     }
@@ -112,7 +110,9 @@ class GroupsController extends AppController {
         $aco = & $this->Acl->Aco;
         $acoRoot = $aco->node('app');
         if (!empty($acoRoot)) {
-            $acos = $this->paginate($this->Acl->Aco, array('Aco.parent_id' => $acoRoot[0]['Aco']['id']));
+            $acos = $this->Acl->Aco->find('all', array(
+                        'conditions' => array('Aco.parent_id' => $acoRoot[0]['Aco']['id']),
+                    ));
             foreach ($acos AS $key => $controllerAco) {
                 $actionAcos = $this->Acl->Aco->find('all', array(
                             'conditions' => array(
@@ -154,8 +154,8 @@ class GroupsController extends AppController {
             }
             $this->set('acos', $acos);
         } else {
-            /*
-             * Can't find the root node, forward to members/setup method
+            /**
+             *  Can't find the root node, forward to members/setup method
              */
             $this->redirect('/members/setup');
         }
