@@ -57,8 +57,27 @@ class MembersController extends AppController {
     }
 
     function admin_index() {
-        $this->Member->recursive = 0;
-        $this->set('members', $this->paginate());
+        $scope = array();
+        $keyword = '';
+        if(isset($this->params['named']['keyword'])) {
+            $keyword = $this->params['named']['keyword'];
+            $this->Session->write('Members.index.keyword', $keyword);
+        } else {
+            $keyword = $this->Session->read('Members.index.keyword');
+        }
+        if(!empty($keyword)) {
+            $scope['OR'] = array(
+                'Member.username LIKE' => '%' . $keyword . '%',
+                'Group.name LIKE' => '%' . $keyword . '%',
+                );
+        }
+        $this->paginate['Member'] = array(
+            'order' => array('Member.id DESC'),
+            'contain' => array('Group'),
+            'limit' => 40,
+        );
+        $this->set('members', $this->paginate($this->Member, $scope));
+        $this->set('keyword', $keyword);
     }
 
     function admin_view($id = null) {

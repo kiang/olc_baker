@@ -1,10 +1,11 @@
 <div id="MembersAdminIndex">
-    <h2><?php echo __('Member management', true); ?></h2>
-    <p>
-        <?php
-        echo $paginator->counter(array('format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)));
-        ?>
-    </p>
+    <h2><?php echo __('Members', true); ?></h2>
+    <?php
+    echo 'Filter: ' . $this->Form->text('Member.filter', array(
+        'id' => 'memberFilter',
+        'value' => $keyword,
+    ));
+    ?>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <table cellpadding="0" cellspacing="0" id="MembersAdminIndexTable">
         <tr>
@@ -58,15 +59,25 @@
             </div>
             <div id="MembersAdminIndexPanel"></div>
     <?php
-                echo $this->Html->scriptBlock('
-$(document).ready(function() {
+    $jsUri = $this->Html->url() . '/index';
+            echo $this->Html->scriptBlock('
+$(function() {
     $(\'#MembersAdminIndexTable th a, #MembersAdminIndex div.paging a\').click(function() {
-        $(\'#MembersAdminIndex\').load(this.href);
+        $(\'#MembersAdminIndex\').parent().load(this.href);
         return false;
     });
     $(\'a.MembersAdminIndexControl\').click(function() {
         dialogFull(this);
         return false;
+    });
+    $(\'#memberFilter\').autocomplete({
+        delay: 1000,
+        minLength: 0,
+        search: function(event, ui) {
+            var targetUri = \'' . $jsUri . '/keyword:\' + $(this).val();
+            $(\'#MembersAdminIndex\').parent().load(encodeURI(targetUri));
+            return false;
+        }
     });
 });
 ');
