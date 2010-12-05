@@ -28,7 +28,7 @@
                 <?php echo $group['Group']['name']; ?>
             </td>
             <td class="actions">
-                <?php echo $this->PHtml->link(__('Edit', true), array('action' => 'edit', $group['Group']['id']), array('class' => 'GroupsAdminIndexControl')); ?>
+                <?php echo $this->PHtml->link(__('Edit', true), array('action' => 'edit', $group['Group']['id']), array('class' => 'dialogControl')); ?>
                 <?php echo $this->PHtml->link(__('Delete', true), array('action' => 'delete', $group['Group']['id']), null, __('Delete the item, sure?', true)); ?>
                 <?php echo $this->PHtml->link(__('Sub group', true), array('action' => 'index', $group['Group']['id'])); ?>
                 <?php echo $this->PHtml->link(__('Permission', true), array('action' => 'acos', $group['Group']['id'])); ?>
@@ -42,7 +42,7 @@
             <?php if ($parentId > 0): ?>
                     <li><?php echo $this->Html->link(__('Upper level', true), array('action' => 'index', $upperLevelId)); ?></li>
             <?php endif; ?>
-                    <li><?php echo $this->PHtml->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'GroupsAdminIndexControl')); ?></li>
+                    <li><?php echo $this->PHtml->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'dialogControl')); ?></li>
                     <li><?php echo $this->PHtml->link(__('Members', true), array('controller' => 'members')); ?></li>
                 </ul>
             </div>
@@ -52,10 +52,6 @@
 $(function() {
     $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
         $(\'#GroupsAdminIndex\').parent().load(this.href);
-        return false;
-    });
-    $(\'a.GroupsAdminIndexControl\').click(function() {
-        dialogFull(this);
         return false;
     });
 });
