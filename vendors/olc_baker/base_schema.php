@@ -170,13 +170,47 @@ return array(
         ),
         'parent_id' => array(
             'type' => 'integer',
-            'null' => true,
+            'null' => false,
             'length' => 11,
         ),
         'name' => array(
             'type' => 'string',
             'null' => false,
             'length' => 64,
+        ),
+    ),
+    'group_permissions' => array(
+        'id' => array(
+            'type' => 'integer',
+            'null' => false,
+            'length' => 11,
+            'key' => 'primary',
+            'primary' => 'id',
+        ),
+        'parent_id' => array(
+            'type' => 'integer',
+            'null' => false,
+            'length' => 11,
+        ),
+        'order' => array(
+            'type' => 'integer',
+            'null' => false,
+            'length' => 11,
+        ),
+        'name' => array(
+            'type' => 'string',
+            'null' => false,
+            'length' => 64,
+        ),
+        'description' => array(
+            'type' => 'string',
+            'null' => true,
+            'length' => 255,
+        ),
+        'acos' => array(
+            'type' => 'string',
+            'null' => false,
+            'length' => 255,
         ),
     ),
 );

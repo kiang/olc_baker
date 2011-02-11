@@ -31,7 +31,11 @@
                 <?php echo $this->PHtml->link(__('Edit', true), array('action' => 'edit', $group['Group']['id']), array('class' => 'dialogControl')); ?>
                 <?php echo $this->PHtml->link(__('Delete', true), array('action' => 'delete', $group['Group']['id']), null, __('Delete the item, sure?', true)); ?>
                 <?php echo $this->PHtml->link(__('Sub group', true), array('action' => 'index', $group['Group']['id'])); ?>
-                <?php echo $this->PHtml->link(__('Permission', true), array('action' => 'acos', $group['Group']['id'])); ?>
+                <?php
+                if($group['Group']['id'] != 1) {
+                    echo $this->PHtml->link(__('Permission', true), array('controller' => 'group_permissions', 'action' => 'group', $group['Group']['id']));
+                }
+                ?>
             </td>
         </tr>
         <?php endforeach; ?>
@@ -44,6 +48,7 @@
             <?php endif; ?>
                     <li><?php echo $this->PHtml->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'dialogControl')); ?></li>
                     <li><?php echo $this->PHtml->link(__('Members', true), array('controller' => 'members')); ?></li>
+                    <li><?php echo $this->PHtml->link(__('Group Permissions', true), array('controller' => 'group_permissions')); ?></li>
                 </ul>
             </div>
             <div id="GroupsAdminIndexPanel"></div>
