@@ -4,31 +4,42 @@ class <{$controllerName}>Controller extends AppController {
     var $name = '<{$controllerName}>';
     var $helpers = array(<{if $uploads}>'Upload',<{/if}>);
 
-<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
+//<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
+
     function index($foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
-<{if isset($relationships.belongsTo)}>
+//<{if isset($relationships.belongsTo)}>
+
         $foreignKeys = array(
-<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+
             '<{$rModel}>' => '<{$rOption.foreignKey}>',
-<{/foreach}>
-        );
-<{/if}>
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{/foreach}>
+
+            );
+//<{/if}>
+
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
         $habtmKeys = array(
-<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+//<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+
             '<{$rModel}>' => '<{$rOption.associationForeignKey}>',
-<{/foreach}>
+//<{/foreach}>
+
         );
         $foreignKeys = array_merge($habtmKeys, $foreignKeys);
-<{/if}>
+//<{/if}>
+
         $scope = array();
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $scope['<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
             $joins = array(
-<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+//<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+
                 '<{$rModel}>' => array(
                     0 => array(
                     	'table' => '<{$rOption.joinTable}>',
@@ -43,14 +54,16 @@ class <{$controllerName}>Controller extends AppController {
                     	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.associationForeignKey}> = <{$rModel}>.id'),
                     ),
                 ),
-<{/foreach}>
+//<{/foreach}>
+
             );
             if(array_key_exists($foreignModel, $habtmKeys)) {
                 unset($scope['<{$modelName}>.' . $foreignKeys[$foreignModel]]);
                 $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
                 $this->paginate['<{$modelName}>']['joins'] = $joins[$foreignModel];
             }
-<{/if}>
+//<{/if}>
+
         } else {
             $foreignModel = '';
         }
@@ -61,14 +74,17 @@ class <{$controllerName}>Controller extends AppController {
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
     }
-<{else}>
+//<{else}>
+
+
     function index() {
         $this->paginate['<{$modelName}>'] = array(
             'limit' => 20,
         );
         $this->set('items', $this->paginate($this-><{$modelName}>));
     }
-<{/if}>
+//<{/if}>
+
 
     function view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
@@ -77,33 +93,45 @@ class <{$controllerName}>Controller extends AppController {
         }
     }
 
-<{$customMethods}>
+//<{$customMethods}>
 
-<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
+
+//<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
+
     function admin_index($foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
-<{if isset($relationships.belongsTo)}>
+//<{if isset($relationships.belongsTo)}>
+
         $foreignKeys = array(
-<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+
             '<{$rModel}>' => '<{$rOption.foreignKey}>',
-<{/foreach}>
+//<{/foreach}>
+
         );
-<{/if}>
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{/if}>
+
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
         $habtmKeys = array(
-<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+//<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+
             '<{$rModel}>' => '<{$rOption.associationForeignKey}>',
-<{/foreach}>
+//<{/foreach}>
+
         );
         $foreignKeys = array_merge($habtmKeys, $foreignKeys);
-<{/if}>
+//<{/if}>
+
         $scope = array();
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $scope['<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
             $joins = array(
-<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+//<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+
                 '<{$rModel}>' => array(
                     0 => array(
                     	'table' => '<{$rOption.joinTable}>',
@@ -118,7 +146,8 @@ class <{$controllerName}>Controller extends AppController {
                     	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.associationForeignKey}> = <{$rModel}>.id'),
                     ),
                 ),
-<{/foreach}>
+//<{/foreach}>
+
             );
             if(array_key_exists($foreignModel, $habtmKeys)) {
                 unset($scope['<{$modelName}>.' . $foreignKeys[$foreignModel]]);
@@ -127,14 +156,16 @@ class <{$controllerName}>Controller extends AppController {
                     $this->paginate['<{$modelName}>']['joins'] = $joins[$foreignModel];
                 }
             }
-<{/if}>
+//<{/if}>
+
         } else {
             $foreignModel = '';
         }
         $this->set('scope', $scope);
         $this->paginate['<{$modelName}>']['limit'] = 20;
         $items = $this->paginate($this-><{$modelName}>, $scope);
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
         if($op == 'set' && !empty($joins[$foreignModel]) && !empty($foreignModel) && !empty($foreignId) && !empty($items)) {
             foreach($items AS $key => $item) {
                 $items[$key]['option'] = $this-><{$modelName}>->find('count', array(
@@ -150,19 +181,22 @@ class <{$controllerName}>Controller extends AppController {
             }
             $this->set('op', $op);
         }
-<{/if}>
+//<{/if}>
+
         $this->set('items', $items);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
     }
-<{else}>
+//<{else}>
+
     function admin_index() {
         $this->paginate['<{$modelName}>'] = array(
             'limit' => 20,
         );
         $this->set('items', $this->paginate($this-><{$modelName}>));
     }
-<{/if}>
+//<{/if}>
+
 
     function admin_view($id = null) {
         if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
@@ -171,13 +205,16 @@ class <{$controllerName}>Controller extends AppController {
         }
     }
 
-<{if isset($relationships.belongsTo)}>
+//<{if isset($relationships.belongsTo)}>
+
     function admin_add($foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
         $foreignKeys = array(
-<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+
             '<{$rModel}>' => '<{$rOption.foreignKey}>',
-<{/foreach}>
+//<{/foreach}>
+
         );
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             if (!empty($this->data)) {
@@ -201,7 +238,8 @@ class <{$controllerName}>Controller extends AppController {
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
     }
-<{else}>
+//<{else}>
+
     function admin_add() {
         if (!empty($this->data)) {
             $this-><{$modelName}>->create();
@@ -216,7 +254,8 @@ class <{$controllerName}>Controller extends AppController {
             }
         }
     }
-<{/if}>
+//<{/if}>
+
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
@@ -259,15 +298,18 @@ class <{$controllerName}>Controller extends AppController {
 
         $this->set('id', $id);
         $this->set('foreignModel', $foreignModel);
-<{if isset($relationships.belongsTo)}>
+//<{if isset($relationships.belongsTo)}>
+
         $belongsToModels = array(
-<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+
             'list<{$rModel}>' => array(
                 'label' => '<{$models[$rOption.className].label}>',
                 'modelName' => '<{$rModel}>',
                 'foreignKey' => '<{$rOption.foreignKey}>',
             ),
-<{/foreach}>
+//<{/foreach}>
+
         );
 
         foreach($belongsToModels AS $key => $model) {
@@ -278,7 +320,8 @@ class <{$controllerName}>Controller extends AppController {
             $this->set($key, $this-><{$modelName}>->$model['modelName']->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
-<{/if}>
+//<{/if}>
+
     }
 
     function admin_delete($id = null) {
@@ -290,16 +333,19 @@ class <{$controllerName}>Controller extends AppController {
         $this->redirect(array('action'=>'index'));
     }
 
-<{if isset($relationships.hasAndBelongsToMany)}>
+//<{if isset($relationships.hasAndBelongsToMany)}>
+
     function admin_habtmSet($foreignModel = null, $foreignId = 0, $id = 0, $switch = null) {
         $habtmKeys = array(
-<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+//<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
+
             '<{$rModel}>' => array(
                 'associationForeignKey' => '<{$rOption.associationForeignKey}>',
                 'foreignKey' => '<{$rOption.foreignKey}>',
                 'alias' => '<{$htbtmModels[$modelName][$rOption.className]}>',
             ),
-<{/foreach}>
+//<{/foreach}>
+
         );
         $foreignModel = array_key_exists($foreignModel, $habtmKeys) ? $foreignModel : null;
         $foreignId = intval($foreignId);
@@ -334,5 +380,6 @@ class <{$controllerName}>Controller extends AppController {
             }
         }
     }
-<{/if}>
+//<{/if}>
+
 }

@@ -290,9 +290,11 @@ class ProjectsController extends AppController {
                     $this->Project->smarty->assign('modelFileName', $file_name);
                     $this->Project->smarty->assign('controllerName', $controller_name);
 
+                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'models' . DS . 'default.php');
+                    $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
                             $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php',
-                            $this->Project->smarty->fetch('default' . DS . 'models' . DS . 'default.php')
+                            $fileContent
                     );
                     chmod($project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php', 0777);
                     $operactions[] = $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php created';
@@ -322,9 +324,9 @@ class ProjectsController extends AppController {
                         $actions[] = 'admin_habtm_set.ctp';
                     }
                     foreach ($actions AS $action) {
-                        $viewFileContent = $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action);
-                        $viewFileContent = str_replace("\n//\n", "\n", $viewFileContent);
-                        file_put_contents($viewPath . $action, $viewFileContent);
+                        $fileContent = $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action);
+                        $fileContent = str_replace("\n//\n", "\n", $fileContent);
+                        file_put_contents($viewPath . $action, $fileContent);
                         chmod($viewPath . $action, 0777);
                         $operactions[] = $viewPath . $action . ' created';
                     }
@@ -368,12 +370,12 @@ class ProjectsController extends AppController {
                         $this->Project->smarty->assign('parameters', $action['parameters']);
                         $this->Project->smarty->assign('fields', $customFields);
                         $this->Project->smarty->assign('blocks', $blocks);
-                        $viewFileContent = $this->Project->smarty->fetch(
+                        $fileContent = $this->Project->smarty->fetch(
                                         VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp');
-                        $viewFileContent = str_replace("\n//\n", "\n", $viewFileContent);
+                        $fileContent = str_replace("\n//\n", "\n", $fileContent);
                         file_put_contents(
                                 $viewPath . $action['action'] . '.ctp',
-                                $viewFileContent
+                                $fileContent
                         );
                         chmod($viewPath . $action['action'] . '.ctp', 0777);
                         $this->Project->smarty->assign('actionName', $action['action']);
@@ -393,9 +395,11 @@ class ProjectsController extends AppController {
                     $operactions[] = $viewPath . 'index.ctp created';
 
                     $this->Project->smarty->assign('customMethods', $customMethods);
+                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'controllers' . DS . 'default.php');
+                    $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
                             $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php',
-                            $this->Project->smarty->fetch('default' . DS . 'controllers' . DS . 'default.php')
+                            $fileContent
                     );
                     chmod($project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php', 0777);
                     $operactions[] = $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php created';

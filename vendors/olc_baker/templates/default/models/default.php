@@ -2,57 +2,84 @@
 class <{$modelName}> extends AppModel {
 
     var $name = '<{$modelName}>';
-<{if $models[$modelName].validate}>
+//<{if $models[$modelName].validate}>
+
     var $validate = array(
-<{foreach from=$models[$modelName].validate key=field item=options}>
+//<{foreach from=$models[$modelName].validate key=field item=options}>
+
         '<{$field}>' => array(
-<{foreach from=$options key=option item=items}>
+//<{foreach from=$options key=option item=items}>
+
             '<{$option}>' => array(
-<{foreach from=$items key=ikey item=item}>
+//<{foreach from=$items key=ikey item=item}>
+
                 '<{$ikey}>' => <{$item}>,
-<{/foreach}>
+//<{/foreach}>
+
             ),
-<{/foreach}>
+//<{/foreach}>
+
         ),
-<{/foreach}>
+//<{/foreach}>
+
     );
-<{/if}>
+//<{/if}>
+                
 
     var $actsAs = array(
-<{if $uploads}>
+//<{if $uploads}>
+
         'Upload' => array(
-<{foreach from=$uploads key=field item=value}>
+//<{foreach from=$uploads key=field item=value}>
+
             '<{$field}>' => array(
-<{if $value eq 'image'}>
+//<{if $value eq 'image'}>
+
                 'styles' => array('thumb' => '150x150'),
-<{/if}>
+//<{/if}>
+
             ),
-<{/foreach}>
+//<{/foreach}>
+
         ),
-<{/if}>
+//<{/if}>
+
     );
 
-<{if isset($relationships)}>
-<{foreach from=$relationships key=type item=value}>
+//<{if isset($relationships)}>
+
+//<{foreach from=$relationships key=type item=value}>
+
     var $<{$type}> = array(
-<{foreach from=$value key=mKey item=mItem}>
+//<{foreach from=$value key=mKey item=mItem}>
+
         '<{$mKey}>' => array(
-<{foreach from=$mItem key=rKey item=rItem}>
-<{if $rItem == 'true' || $rItem == 'false'}>
+//<{foreach from=$mItem key=rKey item=rItem}>
+
+//<{if $rItem == 'true' || $rItem == 'false'}>
+
             '<{$rKey}>' => <{$rItem}>,
-<{else}>
+//<{else}>
+
             '<{$rKey}>' => '<{$rItem}>',
-<{/if}>
-<{/foreach}>
+//<{/if}>
+
+//<{/foreach}>
+
         ),
-<{/foreach}>
+//<{/foreach}>
+
     );
-<{/foreach}>
-<{/if}>
+//<{/foreach}>
+
+//<{/if}>
+
 
     function afterSave($created) {
-<{if isset($relationships.hasOne)}>
-<{foreach from=$relationships.hasOne key=rModel item=rOption}>
+//<{if isset($relationships.hasOne)}>
+
+//<{foreach from=$relationships.hasOne key=rModel item=rOption}>
+
         if(!empty($this->data['<{$rOption.className}>'])) {
             if($created) {
                 $this-><{$rOption.className}>->create();
@@ -60,8 +87,10 @@ class <{$modelName}> extends AppModel {
             $this->data['<{$rOption.className}>']['<{$rOption.foreignKey}>'] = $this->id;
             $this-><{$rOption.className}>->save($this->data);
         }
-<{/foreach}>
-<{/if}>
+//<{/foreach}>
+
+//<{/if}>
+
 	}
 
 }
