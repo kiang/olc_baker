@@ -164,7 +164,7 @@ class MembersController extends AppController {
 
     function admin_acos() {
         $this->loadModel('Permissible.PermissibleAco');
-        $this->PermissibleAco->reset();
+        $this->PermissibleAco->refresh();
         $this->redirect($this->referer());
     }
 
