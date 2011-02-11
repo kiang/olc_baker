@@ -11,7 +11,8 @@
     if($id > 0) {
         echo $this->Form->input('<{$modelName}>.id');
     }
-<{if isset($relationships.belongsTo)}>
+//<{if isset($relationships.belongsTo)}>
+
     foreach($belongsToModels AS $key => $model) {
         echo '<div class="span-3">' . $model['label'] . '：</div>' .
         $this->Form->input('<{$modelName}>.' . $model['foreignKey'], array(
@@ -22,15 +23,20 @@
         	'class' => 'span-6',
         )) . '<hr />';
     }
-<{/if}>
+//<{/if}>
 
-<{foreach from=$fields key=className item=classFields}>
-<{foreach from=$classFields key=key item=group}>
-<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
+
+//<{foreach from=$fields key=className item=classFields}>
+
+//<{foreach from=$classFields key=key item=group}>
+
+//<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
+
     if(!empty($this->data['<{$className}>']['<{$key}>'])) {
         echo $this->Html->link(FULL_BASE_URL . $upload->url($this->data, '<{$className}>.<{$key}>')) . '<br />';
     }
-<{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
+//<{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
+
     if(!empty($this->data['<{$className}>']['<{$key}>'])) {
         echo $this->Html->link(
             $upload->image($this->data, '<{$className}>.<{$key}>', 'thumb'),
@@ -38,47 +44,62 @@
             array(), false, false
         );
     }
-<{/if}>
-<{if $fieldTypes.$className.$key.function_type eq 1}>
+//<{/if}>
+
+//<{if $fieldTypes.$className.$key.function_type eq 1}>
+
     echo '<div class="span-3">' . '</div>' .
     $this->Form->input('<{$className}>.<{$key}>', array(
-<{foreach from=$group key=key2 item=value}>
+//<{foreach from=$group key=key2 item=value}>
+
         '<{$key2}>' => '<{$value}>',
-<{/foreach}>
+//<{/foreach}>
+
         'div' => 'span-6',
         'class' => 'span-6',
     )) . '<hr />';
-<{elseif $fieldTypes.$className.$key.function_type eq 2}>
+//<{elseif $fieldTypes.$className.$key.function_type eq 2}>
+
     if($id > 0) {
         echo '<div><{$classFields.$key.label}>：' . $this->data['<{$className}>']['<{$key}>'] . '</div>';
     } else {
         echo $this->Form->input('<{$className}>.<{$key}>', array(
-<{foreach from=$group key=key2 item=value}>
-        	'<{$key2}>' => '<{$value}>',
-<{/foreach}>
-        ));
+//<{foreach from=$group key=key2 item=value}>
+
+            '<{$key2}>' => '<{$value}>',
+//<{/foreach}>
+
+            ));
     }
-<{elseif $fieldTypes.$className.$key.function_type eq 3}>
+//<{elseif $fieldTypes.$className.$key.function_type eq 3}>
+
     if($id > 0) {
         echo '<div><{$classFields.$key.label}>：' . $this->data['<{$className}>']['<{$key}>'] . '</div>';
     } else {
         echo $this->Form->input('<{$className}>.<{$key}>', array('type' => 'hidden', 'value' => <{$fieldTypes.$className.$key.function_string}>));
     }
-<{elseif $fieldTypes.$className.$key.function_type eq 4}>
+//<{elseif $fieldTypes.$className.$key.function_type eq 4}>
+
     if($id > 0) {
         echo $this->Form->input('<{$className}>.<{$key}>', array(
-<{foreach from=$group key=key2 item=value}>
-        	'<{$key2}>' => '<{$value}>',
-<{/foreach}>
-        ));
+//<{foreach from=$group key=key2 item=value}>
+
+            '<{$key2}>' => '<{$value}>',
+//<{/foreach}>
+
+            ));
     } else {
         echo $this->Form->input('<{$className}>.<{$key}>', array('type' => 'hidden', 'value' => <{$fieldTypes.$className.$key.function_string}>));
     }
-<{elseif $fieldTypes.$className.$key.function_type eq 5}>
+//<{elseif $fieldTypes.$className.$key.function_type eq 5}>
+
     echo $this->Form->input('<{$className}>.<{$key}>', array('type' => 'hidden', 'value' => <{$fieldTypes.$className.$key.function_string}>));
-<{/if}>
-<{/foreach}>
-<{/foreach}>
+//<{/if}>
+
+//<{/foreach}>
+
+//<{/foreach}>
+
 ?>
 </fieldset>
 </div>

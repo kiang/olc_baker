@@ -320,10 +320,9 @@ class ProjectsController extends AppController {
 		                $actions[] = 'admin_habtm_set.ctp';
 		            }
 		            foreach($actions AS $action) {
-		                file_put_contents(
-		                    $viewPath . $action,
-		                    $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action)
-		                );
+                                $viewFileContent = $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action);
+                                $viewFileContent = str_replace("\n//\n", "\n", $viewFileContent);
+		                file_put_contents($viewPath . $action, $viewFileContent);
 		                chmod($viewPath . $action, 0777);
 		                $operactions[] = $viewPath . $action . ' created';
 		            }
@@ -367,11 +366,12 @@ class ProjectsController extends AppController {
 		                $this->Project->smarty->assign('parameters', $action['parameters']);
 		                $this->Project->smarty->assign('fields', $customFields);
 		                $this->Project->smarty->assign('blocks', $blocks);
+                                $viewFileContent = $this->Project->smarty->fetch(
+                                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp');
+                                $viewFileContent = str_replace("\n//\n", "\n", $viewFileContent);
 		                file_put_contents(
 		                    $viewPath . $action['action'] . '.ctp',
-		                    $this->Project->smarty->fetch(
-		                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp'
-		                    )
+		                    $viewFileContent
 		                );
 		                chmod($viewPath . $action['action'] . '.ctp', 0777);
 		                $this->Project->smarty->assign('actionName', $action['action']);
