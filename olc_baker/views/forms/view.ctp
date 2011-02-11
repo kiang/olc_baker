@@ -62,7 +62,7 @@ $class = ' class="altrow"'; ?>
                     <tr<?php echo $class; ?>>
                         <td>
                 <?php echo $formField['FormField']['label']; ?>
-        			(<?php echo $formField['FormField']['name']; ?>)
+            			(<?php echo $formField['FormField']['name']; ?>)
                 </td>
                 <td>
                 <?php echo $formField['FormField']['type']; ?>
@@ -114,7 +114,7 @@ $class = ' class="altrow"'; ?>
                     <tr<?php echo $class; ?>>
                         <td>
                 <?php echo $relationship['TargetForm']['label']; ?>
-            			(<?php echo $relationship['TargetForm']['name']; ?>)
+                			(<?php echo $relationship['TargetForm']['name']; ?>)
                 </td>
                 <td><?php echo $this->OaTool->relation_type($relationship['Relationship']['type']); ?></td>
                 <td><?php echo $relationship['Relationship']['created']; ?></td>

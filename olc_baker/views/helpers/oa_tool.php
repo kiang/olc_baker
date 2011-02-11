@@ -1,7 +1,9 @@
 <?php
+
 class OaToolHelper extends AppHelper {
+
     function relation_type($key) {
-        switch($key) {
+        switch ($key) {
             case 'bt':
                 return 'has an ancestor (belongsTo)';
                 break;
@@ -26,4 +28,5 @@ class OaToolHelper extends AppHelper {
             'habtm' => $this->relation_type('habtm'),
         );
     }
+
 }

@@ -41,8 +41,8 @@
             </div>
         </div>
         <?php
-        echo $this->element('sql_dump');
-        echo $this->Html->scriptBlock('
+                echo $this->element('sql_dump');
+                echo $this->Html->scriptBlock('
 $(function() {
     $(\'a.dialogControl\').click(function() {
         dialogFull(this);
