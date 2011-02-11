@@ -227,7 +227,7 @@ class Migrations{
 
         //Clear the data and return
         $sSql = trim( $sSql, ", \n\t" );
-        $sSql .= "\n) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n";
+        $sSql .= "\n) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;\n";
         return $sSql;
     }
 
