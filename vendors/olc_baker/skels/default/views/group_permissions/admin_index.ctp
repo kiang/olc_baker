@@ -1,5 +1,15 @@
 <div class="groupPermissions index" id="groupPermissionsIndex">
-    <h2><?php __('Group Permissions'); ?></h2>
+    <h2><?php
+    $this->Html->addCrumb(__('Group Permissions', true));
+    if(empty($parent['GroupPermission']['id'])) {
+        $this->Html->addCrumb(__('Categories', true));
+    } else {
+        $this->Html->addCrumb(__('Categories', true), '/admin/group_permissions/');
+        $this->Html->addCrumb($parent['GroupPermission']['name']);
+    }
+    echo $this->Html->getCrumbs();
+    $url = array($parent['GroupPermission']['id']);
+    ?></h2>
     <div class="actions">
         <ul>
             <li><?php echo $this->Html->link(__('New Group Permission', true), array(
@@ -8,15 +18,14 @@
             <li><?php echo $this->PHtml->link(__('Groups', true), array('controller' => 'groups')); ?></li>
         </ul>
     </div>
-    <div class="paging"><?php echo $this->element('paginator'); ?></div>
+    <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <th><?php echo $this->Paginator->sort('id'); ?></th>
-            <th><?php echo $this->Paginator->sort('parent_id'); ?></th>
-            <th><?php echo $this->Paginator->sort('order'); ?></th>
-            <th><?php echo $this->Paginator->sort('name'); ?></th>
-            <th><?php echo $this->Paginator->sort('description'); ?></th>
-            <th><?php echo $this->Paginator->sort('acos'); ?></th>
+            <th><?php echo $this->Paginator->sort('id', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('order', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('name', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('description', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('acos', array('url' => $url)); ?></th>
             <th class="actions"><?php __('Actions'); ?></th>
         </tr>
         <?php
@@ -29,12 +38,18 @@
         ?>
                     <tr<?php echo $class; ?>>
                         <td><?php echo $groupPermission['GroupPermission']['id']; ?>&nbsp;</td>
-                        <td><?php echo $groupPermission['GroupPermission']['parent_id']; ?>&nbsp;</td>
                         <td><?php echo $groupPermission['GroupPermission']['order']; ?>&nbsp;</td>
                         <td><?php echo $groupPermission['GroupPermission']['name']; ?>&nbsp;</td>
                         <td><?php echo $groupPermission['GroupPermission']['description']; ?>&nbsp;</td>
                         <td><?php echo nl2br($groupPermission['GroupPermission']['acos']); ?>&nbsp;</td>
                         <td class="actions">
+                <?php
+                if(empty($parent['GroupPermission']['id'])) {
+                    echo $this->Html->link(__('Items', true), array(
+                        'action' => 'index', $groupPermission['GroupPermission']['id']
+                            ));
+                }
+                ?>
                 <?php
                     echo $this->Html->link(__('Edit', true), array(
                         'action' => 'edit', $groupPermission['GroupPermission']['id']

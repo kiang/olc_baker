@@ -4,11 +4,25 @@ class GroupPermissionsController extends AppController {
 
     var $name = 'GroupPermissions';
 
-    function admin_index() {
+    function admin_index($parentId = 0) {
+        $parentId = intval($parentId);
+        $parent = array('GroupPermission' => array(
+            'id' => 0
+        ));
+        if ($parentId > 0) {
+            $parent = $this->GroupPermission->find('first', array(
+                        'conditions' => array('id' => $parentId),
+                        'fields' => array('id', 'name'),
+                    ));
+        }
         $this->paginate['GroupPermission'] = array(
+            'conditions' => array(
+                'parent_id' => $parentId,
+            ),
             'order' => array('parent_id ASC', 'order ASC'),
         );
         $this->set('groupPermissions', $this->paginate($this->GroupPermission));
+        $this->set('parent', $parent);
     }
 
     function admin_group($groupId = 0) {
