@@ -21,12 +21,14 @@ class Project extends AppModel {
 
     function __construct($id = false, $table = null, $ds = null) {
         parent::__construct($id, $table, $ds);
-        $this->smarty = new Smarty;
-        $this->smarty->template_dir = VENDORS . 'olc_baker' . DS . 'templates' . DS;
-        $this->smarty->compile_dir = TMP . 'smarty' . DS . 'compile' . DS;
-        $this->smarty->cache_dir = TMP . 'smarty' . DS . 'cache' . DS;
-        $this->smarty->left_delimiter = '<{';
-        $this->smarty->right_delimiter = '}>';
+        if (class_exists('Smarty')) {
+            $this->smarty = new Smarty;
+            $this->smarty->template_dir = VENDORS . 'olc_baker' . DS . 'templates' . DS;
+            $this->smarty->compile_dir = TMP . 'smarty' . DS . 'compile' . DS;
+            $this->smarty->cache_dir = TMP . 'smarty' . DS . 'cache' . DS;
+            $this->smarty->left_delimiter = '<{';
+            $this->smarty->right_delimiter = '}>';
+        }
     }
 
     var $tasks = array();
