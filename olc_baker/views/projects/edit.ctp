@@ -9,12 +9,12 @@
         echo $this->Form->input('rewrite_base', array('label' => __('Relative path to the root of url. For example, fill in /~kiang/demo/ when the url is http://localhost/~kiang/demo/', true)));
         echo $this->Form->input('app_path', array('label' => __('Absolute path to the application:', true)));
         echo $this->Form->input('db_host', array('label' => __('Location of database:', true)));
-        echo $this->Form->input('db_login', array('label' => __('Username of database:', true)));
+        echo $this->Form->input('db_login', array('label' => __('Username:', true)));
         echo $this->Form->input('db_password', array(
             'type' => 'password',
-            'label' => __('Username of database:', true)
+            'label' => __('Password:', true)
         ));
-        echo $this->Form->input('db_name', array('label' => __('Name of the database:', true)));
+        echo $this->Form->input('db_name', array('label' => __('Database name:', true)));
         ?>
         <div id="optionBlock"></div>
     </fieldset>
