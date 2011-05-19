@@ -95,10 +95,12 @@ class PermissibleAco extends PermissibleAppModel {
             foreach ($children as $id => $child) {
                 if (!in_array($child, $keys)) {
                     $this->delete($id);
+                    unset($children[$id]);
                 }
             }
             foreach ($keys as $key) {
                 if (!in_array($key, $children)) {
+                    $this->create();
                     $this->save(array(
                         'PermissibleAco' => array(
                             'parent_id' => $parent_id,
