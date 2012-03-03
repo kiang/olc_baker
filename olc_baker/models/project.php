@@ -26,7 +26,7 @@ class Project extends AppModel {
             $this->smarty->template_dir = VENDORS . 'olc_baker' . DS . 'templates' . DS;
             $this->smarty->compile_dir = TMP . 'smarty' . DS . 'compile' . DS;
             $this->smarty->cache_dir = TMP . 'smarty' . DS . 'cache' . DS;
-            $this->smarty->left_delimiter = '<{';
+            $this->smarty->left_delimiter = '//<{';
             $this->smarty->right_delimiter = '}>';
         }
     }

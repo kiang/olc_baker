@@ -3,7 +3,7 @@
 <head>
 	<?php echo $this->Html->charset(); ?>
 	<title>
-		<{$projectLabel}>::
+		//<{$projectLabel}>::
 		<?php echo $title_for_layout; ?>
 	</title><?php
 	echo $this->Html->meta('icon');
@@ -23,15 +23,15 @@
 <body>
 	<div id="container">
 		<div id="header">
-			<h1><?php echo $this->Html->link('<{$projectLabel}>', '/'); ?></h1>
+			<h1><?php echo $this->Html->link('//<{$projectLabel}>', '/'); ?></h1>
 		</div>
 		<div id="content">
 		<div class="actions">
 			<ul>
 				<?php if($this->Session->read('Auth.Member.id')): ?>
-				<{foreach from=$controllers key=key item=item}>
-				<li><?php echo $this->PHtml->link('<{$item}>', '/admin/<{$key}>'); ?></li>
-				<{/foreach}>
+				//<{foreach from=$controllers key=key item=item}>
+				<li><?php echo $this->PHtml->link('//<{$item}>', '/admin///<{$key}>'); ?></li>
+				//<{/foreach}>
 				<li><?php echo $this->PHtml->link('Members', '/admin/members'); ?></li>
 				<li><?php echo $this->PHtml->link('Groups', '/admin/groups'); ?></li>
 				<li><?php echo $this->Html->link('Logout', '/members/logout'); ?></li>

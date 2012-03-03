@@ -3,13 +3,13 @@ if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
 }
 if (!defined('ROOT')) {
-    define('ROOT', '<{$rootPath}>');
+    define('ROOT', '//<{$rootPath}>');
 }
 if (!defined('APP_DIR')) {
-    define('APP_DIR', '<{$appDir}>');
+    define('APP_DIR', '//<{$appDir}>');
 }
 if (!defined('CAKE_CORE_INCLUDE_PATH')) {
-    define('CAKE_CORE_INCLUDE_PATH', '<{$cakeIncludePath}>');
+    define('CAKE_CORE_INCLUDE_PATH', '//<{$cakeIncludePath}>');
 }
 if (!defined('WEBROOT_DIR')) {
     define('WEBROOT_DIR', 'webroot');

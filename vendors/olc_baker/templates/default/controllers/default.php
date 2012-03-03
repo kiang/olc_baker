@@ -1,8 +1,8 @@
 <?php
-class <{$controllerName}>Controller extends AppController {
+class //<{$controllerName}>Controller extends AppController {
 
-    var $name = '<{$controllerName}>';
-    var $helpers = array(<{if $uploads}>'Upload',<{/if}>);
+    var $name = '//<{$controllerName}>';
+    var $helpers = array(//<{if $uploads}>'Upload',//<{/if}>);
 
 //<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
 
@@ -14,7 +14,7 @@ class <{$controllerName}>Controller extends AppController {
         $foreignKeys = array(
 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
 
-            '<{$rModel}>' => '<{$rOption.foreignKey}>',
+            '//<{$rModel}>' => '//<{$rOption.foreignKey}>',
 //<{/foreach}>
 
             );
@@ -25,7 +25,7 @@ class <{$controllerName}>Controller extends AppController {
         $habtmKeys = array(
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
 
-            '<{$rModel}>' => '<{$rOption.associationForeignKey}>',
+            '//<{$rModel}>' => '//<{$rOption.associationForeignKey}>',
 //<{/foreach}>
 
         );
@@ -34,33 +34,33 @@ class <{$controllerName}>Controller extends AppController {
 
         $scope = array();
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            $scope['<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
+            $scope['//<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
 //<{if isset($relationships.hasAndBelongsToMany)}>
 
             $joins = array(
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
 
-                '<{$rModel}>' => array(
+                '//<{$rModel}>' => array(
                     0 => array(
-                    	'table' => '<{$rOption.joinTable}>',
-                    	'alias' => '<{$htbtmModels[$modelName][$rOption.className]}>',
+                    	'table' => '//<{$rOption.joinTable}>',
+                    	'alias' => '//<{$htbtmModels[$modelName][$rOption.className]}>',
                     	'type' => 'inner',
-                    	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.foreignKey}> = <{$modelName}>.id'),
+                    	'conditions'=> array('//<{$htbtmModels[$modelName][$rOption.className]}>.//<{$rOption.foreignKey}> = //<{$modelName}>.id'),
                     ),
                     1 => array(
-                    	'table' => '<{$models[$rOption.className].table_name}>',
-                    	'alias' => '<{$rModel}>',
+                    	'table' => '//<{$models[$rOption.className].table_name}>',
+                    	'alias' => '//<{$rModel}>',
                     	'type' => 'inner',
-                    	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.associationForeignKey}> = <{$rModel}>.id'),
+                    	'conditions'=> array('//<{$htbtmModels[$modelName][$rOption.className]}>.//<{$rOption.associationForeignKey}> = //<{$rModel}>.id'),
                     ),
                 ),
 //<{/foreach}>
 
             );
             if(array_key_exists($foreignModel, $habtmKeys)) {
-                unset($scope['<{$modelName}>.' . $foreignKeys[$foreignModel]]);
+                unset($scope['//<{$modelName}>.' . $foreignKeys[$foreignModel]]);
                 $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
-                $this->paginate['<{$modelName}>']['joins'] = $joins[$foreignModel];
+                $this->paginate['//<{$modelName}>']['joins'] = $joins[$foreignModel];
             }
 //<{/if}>
 
@@ -68,8 +68,8 @@ class <{$controllerName}>Controller extends AppController {
             $foreignModel = '';
         }
         $this->set('scope', $scope);
-        $this->paginate['<{$modelName}>']['limit'] = 20;
-        $items = $this->paginate($this-><{$modelName}>, $scope);
+        $this->paginate['//<{$modelName}>']['limit'] = 20;
+        $items = $this->paginate($this->//<{$modelName}>, $scope);
         $this->set('items', $items);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
@@ -78,16 +78,16 @@ class <{$controllerName}>Controller extends AppController {
 
 
     function index() {
-        $this->paginate['<{$modelName}>'] = array(
+        $this->paginate['//<{$modelName}>'] = array(
             'limit' => 20,
         );
-        $this->set('items', $this->paginate($this-><{$modelName}>));
+        $this->set('items', $this->paginate($this->//<{$modelName}>));
     }
 //<{/if}>
 
 
     function view($id = null) {
-        if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
+        if (!$id || !$this->data = $this->//<{$modelName}>->read(null, $id)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
@@ -106,7 +106,7 @@ class <{$controllerName}>Controller extends AppController {
         $foreignKeys = array(
 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
 
-            '<{$rModel}>' => '<{$rOption.foreignKey}>',
+            '//<{$rModel}>' => '//<{$rOption.foreignKey}>',
 //<{/foreach}>
 
         );
@@ -117,7 +117,7 @@ class <{$controllerName}>Controller extends AppController {
         $habtmKeys = array(
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
 
-            '<{$rModel}>' => '<{$rOption.associationForeignKey}>',
+            '//<{$rModel}>' => '//<{$rOption.associationForeignKey}>',
 //<{/foreach}>
 
         );
@@ -126,34 +126,34 @@ class <{$controllerName}>Controller extends AppController {
 
         $scope = array();
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            $scope['<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
+            $scope['//<{$modelName}>.' . $foreignKeys[$foreignModel]] = $foreignId;
 //<{if isset($relationships.hasAndBelongsToMany)}>
 
             $joins = array(
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
 
-                '<{$rModel}>' => array(
+                '//<{$rModel}>' => array(
                     0 => array(
-                    	'table' => '<{$rOption.joinTable}>',
-                    	'alias' => '<{$htbtmModels[$modelName][$rOption.className]}>',
+                    	'table' => '//<{$rOption.joinTable}>',
+                    	'alias' => '//<{$htbtmModels[$modelName][$rOption.className]}>',
                     	'type' => 'inner',
-                    	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.foreignKey}> = <{$modelName}>.id'),
+                    	'conditions'=> array('//<{$htbtmModels[$modelName][$rOption.className]}>.//<{$rOption.foreignKey}> = //<{$modelName}>.id'),
                     ),
                     1 => array(
-                    	'table' => '<{$models[$rOption.className].table_name}>',
-                    	'alias' => '<{$rModel}>',
+                    	'table' => '//<{$models[$rOption.className].table_name}>',
+                    	'alias' => '//<{$rModel}>',
                     	'type' => 'inner',
-                    	'conditions'=> array('<{$htbtmModels[$modelName][$rOption.className]}>.<{$rOption.associationForeignKey}> = <{$rModel}>.id'),
+                    	'conditions'=> array('//<{$htbtmModels[$modelName][$rOption.className]}>.//<{$rOption.associationForeignKey}> = //<{$rModel}>.id'),
                     ),
                 ),
 //<{/foreach}>
 
             );
             if(array_key_exists($foreignModel, $habtmKeys)) {
-                unset($scope['<{$modelName}>.' . $foreignKeys[$foreignModel]]);
+                unset($scope['//<{$modelName}>.' . $foreignKeys[$foreignModel]]);
                 if($op != 'set') {
                     $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
-                    $this->paginate['<{$modelName}>']['joins'] = $joins[$foreignModel];
+                    $this->paginate['//<{$modelName}>']['joins'] = $joins[$foreignModel];
                 }
             }
 //<{/if}>
@@ -162,16 +162,16 @@ class <{$controllerName}>Controller extends AppController {
             $foreignModel = '';
         }
         $this->set('scope', $scope);
-        $this->paginate['<{$modelName}>']['limit'] = 20;
-        $items = $this->paginate($this-><{$modelName}>, $scope);
+        $this->paginate['//<{$modelName}>']['limit'] = 20;
+        $items = $this->paginate($this->//<{$modelName}>, $scope);
 //<{if isset($relationships.hasAndBelongsToMany)}>
 
         if($op == 'set' && !empty($joins[$foreignModel]) && !empty($foreignModel) && !empty($foreignId) && !empty($items)) {
             foreach($items AS $key => $item) {
-                $items[$key]['option'] = $this-><{$modelName}>->find('count', array(
+                $items[$key]['option'] = $this->//<{$modelName}>->find('count', array(
                     'joins' => $joins[$foreignModel],
                     'conditions' => array(
-                        '<{$modelName}>.id' => $item['<{$modelName}>']['id'],
+                        '//<{$modelName}>.id' => $item['//<{$modelName}>']['id'],
                         $foreignModel.'.id' => $foreignId,
                     ),
                 ));
@@ -190,16 +190,16 @@ class <{$controllerName}>Controller extends AppController {
 //<{else}>
 
     function admin_index() {
-        $this->paginate['<{$modelName}>'] = array(
+        $this->paginate['//<{$modelName}>'] = array(
             'limit' => 20,
         );
-        $this->set('items', $this->paginate($this-><{$modelName}>));
+        $this->set('items', $this->paginate($this->//<{$modelName}>));
     }
 //<{/if}>
 
 
     function admin_view($id = null) {
-        if (!$id || !$this->data = $this-><{$modelName}>->read(null, $id)) {
+        if (!$id || !$this->data = $this->//<{$modelName}>->read(null, $id)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action'=>'index'));
         }
@@ -212,26 +212,26 @@ class <{$controllerName}>Controller extends AppController {
         $foreignKeys = array(
 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
 
-            '<{$rModel}>' => '<{$rOption.foreignKey}>',
+            '//<{$rModel}>' => '//<{$rOption.foreignKey}>',
 //<{/foreach}>
 
         );
         if(array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             if (!empty($this->data)) {
-                $this->data['<{$modelName}>'][$foreignKeys[$foreignModel]] = $foreignId;
+                $this->data['//<{$modelName}>'][$foreignKeys[$foreignModel]] = $foreignId;
             }
         } else {
             $foreignModel = '';
         }
         if (!empty($this->data)) {
-            $this-><{$modelName}>->create();
-            if ($this-><{$modelName}>->save($this->data)) {
+            $this->//<{$modelName}>->create();
+            if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.<{$modelName}>');
+                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.<{$modelName}>.data', $this->data);
-                $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
+                $this->Session->write('form.//<{$modelName}>.data', $this->data);
+                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
@@ -242,14 +242,14 @@ class <{$controllerName}>Controller extends AppController {
 
     function admin_add() {
         if (!empty($this->data)) {
-            $this-><{$modelName}>->create();
-            if ($this-><{$modelName}>->save($this->data)) {
+            $this->//<{$modelName}>->create();
+            if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.<{$modelName}>');
+                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.<{$modelName}>.data', $this->data);
-                $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
+                $this->Session->write('form.//<{$modelName}>.data', $this->data);
+                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
@@ -263,32 +263,32 @@ class <{$controllerName}>Controller extends AppController {
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
-            if ($this-><{$modelName}>->save($this->data)) {
+            if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.<{$modelName}>');
+                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.<{$modelName}>.data', $this->data);
-                $this->Session->write('form.<{$modelName}>.validationErrors', $this-><{$modelName}>->validationErrors);
+                $this->Session->write('form.//<{$modelName}>.data', $this->data);
+                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         $this->set('id', $id);
-        $this->data = $this-><{$modelName}>->read(null, $id);
+        $this->data = $this->//<{$modelName}>->read(null, $id);
     }
 
     function admin_form($id = 0, $foreignModel = '') {
         $id = intval($id);
-        if($sessionFormData = $this->Session->read('form.<{$modelName}>.data')) {
-            $this-><{$modelName}>->validationErrors = $this->Session->read('form.<{$modelName}>.validationErrors');
-            $this->Session->delete('form.<{$modelName}>');
+        if($sessionFormData = $this->Session->read('form.//<{$modelName}>.data')) {
+            $this->//<{$modelName}>->validationErrors = $this->Session->read('form.//<{$modelName}>.validationErrors');
+            $this->Session->delete('form.//<{$modelName}>');
         }
         if($id > 0) {
-            $this->data = $this-><{$modelName}>->read(null, $id);
-            if(!empty($sessionFormData['<{$modelName}>'])) {
-                foreach($sessionFormData['<{$modelName}>'] AS $key => $val) {
-                    if(isset($this->data['<{$modelName}>'][$key])) {
-                        $this->data['<{$modelName}>'][$key] = $val;
+            $this->data = $this->//<{$modelName}>->read(null, $id);
+            if(!empty($sessionFormData['//<{$modelName}>'])) {
+                foreach($sessionFormData['//<{$modelName}>'] AS $key => $val) {
+                    if(isset($this->data['//<{$modelName}>'][$key])) {
+                        $this->data['//<{$modelName}>'][$key] = $val;
                     }
                 }
             }
@@ -303,10 +303,10 @@ class <{$controllerName}>Controller extends AppController {
         $belongsToModels = array(
 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
 
-            'list<{$rModel}>' => array(
-                'label' => '<{$models[$rOption.className].label}>',
-                'modelName' => '<{$rModel}>',
-                'foreignKey' => '<{$rOption.foreignKey}>',
+            'list//<{$rModel}>' => array(
+                'label' => '//<{$models[$rOption.className].label}>',
+                'modelName' => '//<{$rModel}>',
+                'foreignKey' => '//<{$rOption.foreignKey}>',
             ),
 //<{/foreach}>
 
@@ -317,7 +317,7 @@ class <{$controllerName}>Controller extends AppController {
                 unset($belongsToModels[$key]);
                 continue;
             }
-            $this->set($key, $this-><{$modelName}>->$model['modelName']->find('list'));
+            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
 //<{/if}>
@@ -327,7 +327,7 @@ class <{$controllerName}>Controller extends AppController {
     function admin_delete($id = null) {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page', true));
-        } else if ($this-><{$modelName}>->delete($id)) {
+        } else if ($this->//<{$modelName}>->delete($id)) {
             $this->Session->setFlash(__('The data has been deleted', true));
         }
         $this->redirect(array('action'=>'index'));
@@ -339,10 +339,10 @@ class <{$controllerName}>Controller extends AppController {
         $habtmKeys = array(
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
 
-            '<{$rModel}>' => array(
-                'associationForeignKey' => '<{$rOption.associationForeignKey}>',
-                'foreignKey' => '<{$rOption.foreignKey}>',
-                'alias' => '<{$htbtmModels[$modelName][$rOption.className]}>',
+            '//<{$rModel}>' => array(
+                'associationForeignKey' => '//<{$rOption.associationForeignKey}>',
+                'foreignKey' => '//<{$rOption.foreignKey}>',
+                'alias' => '//<{$htbtmModels[$modelName][$rOption.className]}>',
             ),
 //<{/foreach}>
 
@@ -354,7 +354,7 @@ class <{$controllerName}>Controller extends AppController {
         if(empty($foreignModel) || $foreignId <= 0 || $id <= 0 || empty($switch)) {
             $this->set('habtmMessage', __('Wrong Parameters'));
         } else {
-            $habtmModel = &$this-><{$modelName}>->$habtmKeys[$foreignModel]['alias'];
+            $habtmModel = &$this->//<{$modelName}>->$habtmKeys[$foreignModel]['alias'];
             $conditions = array(
                 $habtmKeys[$foreignModel]['associationForeignKey'] => $foreignId,
                 $habtmKeys[$foreignModel]['foreignKey'] => $id,

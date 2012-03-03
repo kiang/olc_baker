@@ -1,19 +1,19 @@
 <?php
-class <{$modelName}> extends AppModel {
+class //<{$modelName}> extends AppModel {
 
-    var $name = '<{$modelName}>';
+    var $name = '//<{$modelName}>';
 //<{if $models[$modelName].validate}>
 
     var $validate = array(
 //<{foreach from=$models[$modelName].validate key=field item=options}>
 
-        '<{$field}>' => array(
+        '//<{$field}>' => array(
 //<{foreach from=$options key=option item=items}>
 
-            '<{$option}>' => array(
+            '//<{$option}>' => array(
 //<{foreach from=$items key=ikey item=item}>
 
-                '<{$ikey}>' => <{$item}>,
+                '//<{$ikey}>' => //<{$item}>,
 //<{/foreach}>
 
             ),
@@ -32,7 +32,7 @@ class <{$modelName}> extends AppModel {
         'Upload' => array(
 //<{foreach from=$uploads key=field item=value}>
 
-            '<{$field}>' => array(
+            '//<{$field}>' => array(
 //<{if $value eq 'image'}>
 
                 'styles' => array('thumb' => '150x150'),
@@ -50,18 +50,18 @@ class <{$modelName}> extends AppModel {
 
 //<{foreach from=$relationships key=type item=value}>
 
-    var $<{$type}> = array(
+    var $//<{$type}> = array(
 //<{foreach from=$value key=mKey item=mItem}>
 
-        '<{$mKey}>' => array(
+        '//<{$mKey}>' => array(
 //<{foreach from=$mItem key=rKey item=rItem}>
 
 //<{if $rItem == 'true' || $rItem == 'false'}>
 
-            '<{$rKey}>' => <{$rItem}>,
+            '//<{$rKey}>' => //<{$rItem}>,
 //<{else}>
 
-            '<{$rKey}>' => '<{$rItem}>',
+            '//<{$rKey}>' => '//<{$rItem}>',
 //<{/if}>
 
 //<{/foreach}>
@@ -80,12 +80,12 @@ class <{$modelName}> extends AppModel {
 
 //<{foreach from=$relationships.hasOne key=rModel item=rOption}>
 
-        if(!empty($this->data['<{$rOption.className}>'])) {
+        if(!empty($this->data['//<{$rOption.className}>'])) {
             if($created) {
-                $this-><{$rOption.className}>->create();
+                $this->//<{$rOption.className}>->create();
             }
-            $this->data['<{$rOption.className}>']['<{$rOption.foreignKey}>'] = $this->id;
-            $this-><{$rOption.className}>->save($this->data);
+            $this->data['//<{$rOption.className}>']['//<{$rOption.foreignKey}>'] = $this->id;
+            $this->//<{$rOption.className}>->save($this->data);
         }
 //<{/foreach}>
 
