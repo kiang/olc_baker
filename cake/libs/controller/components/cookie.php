@@ -5,12 +5,12 @@
  * PHP versions 4 and 5
  *
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2010, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       cake
  * @subpackage    cake.cake.libs.controller.components
@@ -281,12 +281,19 @@ class CookieComponent extends Object {
 			$this->read();
 		}
 		if (strpos($key, '.') === false) {
-			unset($this->__values[$key]);
+			if (isset($this->__values[$key]) && is_array($this->__values[$key])) {
+				foreach ($this->__values[$key] as $idx => $val) {
+					$this->__delete("[$key][$idx]");
+				}
+			}
 			$this->__delete("[$key]");
+			unset($this->__values[$key]);
 			return;
 		}
 		$names = explode('.', $key, 2);
-		$this->__values[$names[0]] = Set::remove($this->__values[$names[0]], $names[1]);
+		if (isset($this->__values[$names[0]])) {
+			$this->__values[$names[0]] = Set::remove($this->__values[$names[0]], $names[1]);
+		}
 		$this->__delete('[' . implode('][', $names) . ']');
 	}
 
@@ -461,6 +468,10 @@ class CookieComponent extends Object {
  * @access private
  */
 	function __explode($string) {
+		if (($string[0] === '{' || $string[0] === '[') && function_exists('json_decode')) {
+			$ret = json_decode($string, true);
+			return ($ret != null) ? $ret : $string;
+		}
 		$array = array();
 		foreach (explode(',', $string) as $pair) {
 			$key = explode('|', $pair);
