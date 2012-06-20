@@ -263,7 +263,7 @@ class MigrationVersion {
  * @access private
  */
 	function __loadFile($name, $type) {
-		$path = CONFIGS . 'migrations' . DS;
+		$path = APP . 'Config' . DS . 'migrations' . DS;
 		if ($type != 'app') {
 			$path = App::pluginPath($type) . 'config' . DS . 'migrations' . DS;
 		}

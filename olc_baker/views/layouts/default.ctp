@@ -33,7 +33,7 @@
                 <?php
                 echo $this->Html->link(
                         $this->Html->image('cake.power.gif', array(
-                            'alt' => __("CakePHP: the rapid development php framework", true), 'border' => "0")
+                            'alt' => __("CakePHP: the rapid development php framework"), 'border' => "0")
                         ), 'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false), null, false
                 );
                 echo ' & ' . $this->Html->link('Just This Computer Studio', 'http://olc.tw/', array('target' => '_blank'));

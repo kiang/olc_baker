@@ -6,7 +6,7 @@ class FormsController extends AppController {
 
     function view($id = null) {
         if (!$id) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         }
         $this->set('pForm', $this->Form->read(null, $id));
@@ -26,17 +26,17 @@ class FormsController extends AppController {
 
     function add($projectId = null) {
         if (!$projectId) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             $this->Form->create();
             $this->data['Form']['project_id'] = $projectId;
             if ($this->Form->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'view', $this->Form->getInsertID()));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
         $this->set('projectId', $projectId);
@@ -44,15 +44,15 @@ class FormsController extends AppController {
 
     function edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             if ($this->Form->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('controller' => 'projects', 'action' => 'view', $this->Form->field('project_id')));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
         if (empty($this->data)) {
@@ -62,10 +62,10 @@ class FormsController extends AppController {
 
     function delete($id = null) {
         if (!$id || !$projectId = $this->Form->field('project_id', array('Form.id' => $id))) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         } else if ($this->Form->delete($id)) {
-            $this->Session->setFlash(__('The data has been deleted', true));
+            $this->Session->setFlash(__('The data has been deleted'));
             $this->redirect(array('controller' => 'projects', 'action' => 'view', $projectId));
         }
     }

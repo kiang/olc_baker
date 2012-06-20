@@ -1,7 +1,7 @@
 <h2>Sweet, "olc_baker" got Baked by CakePHP!</h2>
 
 <?php
-if (Configure::read() > 0):
+if (Configure::read('debug') > 0):
     Debugger::checkSessionKey();
 endif;
 ?>
@@ -23,7 +23,7 @@ endif;
     $settings = Cache::settings();
     if (!empty($settings)):
         echo '<span class="notice success">';
-        echo sprintf(__('The %s is being used for caching. To change the config edit APP/config/core.php ', true), '<em>' . $settings['engine'] . 'Engine</em>');
+        echo sprintf(__('The %s is being used for caching. To change the config edit APP/config/core.php '), '<em>' . $settings['engine'] . 'Engine</em>');
         echo '</span>';
     else:
         echo '<span class="notice">';
@@ -35,7 +35,7 @@ endif;
 <p>
     <?php
     $filePresent = null;
-    if (file_exists(CONFIGS . 'database.php')):
+    if (file_exists(APP . 'Config' . DS . 'database.php')):
         echo '<span class="notice success">';
         __('Your database configuration file is present.');
         $filePresent = true;
@@ -69,7 +69,7 @@ endif;
     ?>
     </p>
 <?php endif; ?>
-        <h3><?php __('Editing this Page') ?></h3>
+        <h3><?php echo __('Editing this Page') ?></h3>
         <p>
     <?php
         echo sprintf(__('To change the content of this page, edit: %s

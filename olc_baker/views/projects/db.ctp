@@ -14,17 +14,17 @@ if (!empty($tables)) {
     echo $this->Form->create('Form', array('url' => array(
             'controller' => 'projects', 'action' => 'db', $projectId, $tableName
             )));
-    echo '<h2>' . __('Table name:', true) . ' &nbsp; ' . $tableName . '</h2>';
+    echo '<h2>' . __('Table name:') . ' &nbsp; ' . $tableName . '</h2>';
     echo $this->Form->input('Form.label', array(
-        'label' => __('Display name of the form', true)
+        'label' => __('Display name of the form')
     ));
     echo '<table class="systable" cellpadding="0" cellspacing="0">
     <tr>
-    	<th>' . __('Form field', true) . '</th>
-    	<th>' . __('Display name', true) . '</th>
-    	<th>' . __('Type', true) . '</th>
-    	<th>' . __('Sort', true) . '</th>
-    	<th>' . __('Required', true) . '</th>
+    	<th>' . __('Form field') . '</th>
+    	<th>' . __('Display name') . '</th>
+    	<th>' . __('Type') . '</th>
+    	<th>' . __('Sort') . '</th>
+    	<th>' . __('Required') . '</th>
     </tr>';
     $fieldCount = 0;
     foreach ($schema AS $field => $fieldOption) {
@@ -46,6 +46,6 @@ if (!empty($tables)) {
         echo '</tr>';
     }
     echo '</table>';
-    echo $this->Form->end(__('Submit', true));
+    echo $this->Form->end(__('Submit'));
 }
-echo $this->Html->link(__('Back to the project', true), array('action' => 'view', $projectId));
+echo $this->Html->link(__('Back to the project'), array('action' => 'view', $projectId));

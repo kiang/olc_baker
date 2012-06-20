@@ -1,19 +1,19 @@
 <div class="actions form">
     <?php echo $this->Form->create('Action', array('url' => array($formId))); ?>
     <fieldset>
-        <legend><?php echo __('Add a method', true); ?></legend>
+        <legend><?php echo __('Add a method'); ?></legend>
         <?php
-        echo $this->Form->input('action', array('label' => __('System name', true)));
-        echo $this->Form->input('name', array('label' => __('Display name', true)));
-        echo $this->Form->input('engine', array('label' => __('Method engine', true), 'type' => 'select', 'options' => $engines));
+        echo $this->Form->input('action', array('label' => __('System name')));
+        echo $this->Form->input('name', array('label' => __('Display name')));
+        echo $this->Form->input('engine', array('label' => __('Method engine'), 'type' => 'select', 'options' => $engines));
         ?>
         <div id="parameterBlock"></div>
     </fieldset>
-    <?php echo $this->Form->end(__('Submit', true)); ?>
+    <?php echo $this->Form->end(__('Submit')); ?>
     </div>
     <div class="actions">
         <ul>
-            <li><?php echo $this->Html->link(__('Back to the form', true), array('controller' => 'forms', 'action' => 'view', $formId)); ?></li>
+            <li><?php echo $this->Html->link(__('Back to the form'), array('controller' => 'forms', 'action' => 'view', $formId)); ?></li>
         </ul>
     </div>
 <?php

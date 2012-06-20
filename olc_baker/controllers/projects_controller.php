@@ -11,7 +11,7 @@ class ProjectsController extends AppController {
 
     function view($id = null) {
         if (!$id) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         }
         $this->set('project', $this->Project->read(null, $id));
@@ -26,17 +26,17 @@ class ProjectsController extends AppController {
             }
             unset($this->data['Project']['option']);
             if ($this->Project->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
     }
 
     function edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->data)) {
@@ -45,10 +45,10 @@ class ProjectsController extends AppController {
             }
             unset($this->data['Project']['option']);
             if ($this->Project->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
         if (empty($this->data)) {
@@ -58,11 +58,11 @@ class ProjectsController extends AppController {
 
     function delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         }
         if ($this->Project->delete($id)) {
-            $this->Session->setFlash(__('The data has been deleted', true));
+            $this->Session->setFlash(__('The data has been deleted'));
             $this->redirect(array('action' => 'index'));
         }
     }
@@ -74,7 +74,7 @@ class ProjectsController extends AppController {
 
     function build($projectId = null) {
         if (!$projectId || !$project = $this->Project->fetchProject($projectId)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         } else {
             /*
@@ -115,7 +115,7 @@ class ProjectsController extends AppController {
                 $operactions[] = $project['Project']['app_path'] . $file . ' created';
             }
             $this->Project->tasks[] = array(
-                'title' => __('Generate the files of settings', true),
+                'title' => __('Generate the files of settings'),
                 'operactions' => $operactions,
             );
 
@@ -406,7 +406,7 @@ class ProjectsController extends AppController {
                 }
             }
             $this->Project->tasks[] = array(
-                'title' => __('Generate the MVC files', true),
+                'title' => __('Generate the MVC files'),
                 'operactions' => $operactions,
             );
             $this->Project->smarty->assign('projectLabel', $project['Project']['label']);
@@ -423,7 +423,7 @@ class ProjectsController extends AppController {
                 $operactions[] = $project['Project']['app_path'] . $file . ' created';
             }
             $this->Project->tasks[] = array(
-                'title' => __('Generate the application layout', true),
+                'title' => __('Generate the application layout'),
                 'operactions' => $operactions,
             );
 
@@ -466,7 +466,7 @@ class ProjectsController extends AppController {
             file_put_contents($sqlPath . DS . 'schema.sql', $sqlContent);
             chmod($sqlPath . DS . 'schema.sql', 0777);
             $this->Project->tasks[] = array(
-                'title' => __('Generate the database schema', true),
+                'title' => __('Generate the database schema'),
                 'operactions' => array(
                     $sqlPath . DS . 'schema.yaml created',
                     $sqlPath . DS . 'schema.sql created',
@@ -481,7 +481,7 @@ class ProjectsController extends AppController {
                     'conditions' => array('Project.id' => $projectId),
                     'contain' => array(),
                 ))) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
         } else {
             App::Import('vendor', 'migrations');
             $db = & ConnectionManager::getInstance();
@@ -502,8 +502,8 @@ class ProjectsController extends AppController {
             $migrations = new Migrations('olc_baker-dev');
             $migrations->load($sqlPath . DS . 'schema.yaml');
             $migrations->down();
-            $migrations->up();
-            $this->Session->setFlash(__('Database was rebuilt', true));
+            $migrations->strtoupper();
+            $this->Session->setFlash(__('Database was rebuilt'));
         }
         $this->redirect(array('action' => 'index'));
     }
@@ -559,7 +559,7 @@ class ProjectsController extends AppController {
                                 'function_type' => 1,
                                 )));
                     }
-                    $this->Session->setFlash(__('The form has been generated', true));
+                    $this->Session->setFlash(__('The form has been generated'));
                     $this->redirect('/forms/view/' . $formId);
                 }
             }

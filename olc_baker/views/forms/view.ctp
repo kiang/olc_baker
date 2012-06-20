@@ -1,30 +1,30 @@
 <div class="forms view">
-    <h2><?php __('View the form'); ?></h2>
+    <h2><?php echo __('View the form'); ?></h2>
     <dl><?php $i = 0;
 $class = ' class="altrow"'; ?>
         <dt<?php if ($i % 2 == 0)
-            echo $class; ?>><?php __('System name'); ?></dt>
+            echo $class; ?>><?php echo __('System name'); ?></dt>
         <dd<?php if ($i++ % 2 == 0)
                 echo $class; ?>>
                 <?php echo $pForm['Form']['name']; ?>
             &nbsp;
         </dd>
         <dt<?php if ($i % 2 == 0)
-                    echo $class; ?>><?php __('Display name'); ?></dt>
+                    echo $class; ?>><?php echo __('Display name'); ?></dt>
             <dd<?php if ($i++ % 2 == 0)
                     echo $class; ?>>
                 <?php echo $pForm['Form']['label']; ?>
             &nbsp;
         </dd>
         <dt<?php if ($i % 2 == 0)
-                    echo $class; ?>><?php __('Created time'); ?></dt>
+                    echo $class; ?>><?php echo __('Created time'); ?></dt>
             <dd<?php if ($i++ % 2 == 0)
                     echo $class; ?>>
                 <?php echo $pForm['Form']['created']; ?>
             &nbsp;
         </dd>
         <dt<?php if ($i % 2 == 0)
-                    echo $class; ?>><?php __('Modified time'); ?></dt>
+                    echo $class; ?>><?php echo __('Modified time'); ?></dt>
             <dd<?php if ($i++ % 2 == 0)
                     echo $class; ?>>
                 <?php echo $pForm['Form']['modified']; ?>
@@ -34,22 +34,22 @@ $class = ' class="altrow"'; ?>
 </div>
 <div class="actions">
     <ul>
-        <li><?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $pForm['Form']['id']), array('class' => 'dialogControl')); ?> </li>
-        <li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $pForm['Form']['id']), null, __('Delete the item, sure?', true)); ?> </li>
-        <li><?php echo $this->Html->link(__('Back to the project', true), array('controller' => 'projects', 'action' => 'view', $pForm['Form']['project_id'])); ?></li>
+        <li><?php echo $this->Html->link(__('Edit'), array('action' => 'edit', $pForm['Form']['id']), array('class' => 'dialogControl')); ?> </li>
+        <li><?php echo $this->Html->link(__('Delete'), array('action' => 'delete', $pForm['Form']['id']), null, __('Delete the item, sure?')); ?> </li>
+        <li><?php echo $this->Html->link(__('Back to the project'), array('controller' => 'projects', 'action' => 'view', $pForm['Form']['project_id'])); ?></li>
     </ul>
 </div>
 <div class="formFields index">
-    <h2><?php __('Form fields'); ?></h2>
+    <h2><?php echo __('Form fields'); ?></h2>
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <th><?php __('Field name'); ?></th>
-            <th><?php __('Field type'); ?></th>
-            <th><?php __('Sort'); ?></th>
-            <th><?php __('Required'); ?></th>
-            <th><?php __('Created time'); ?></th>
-            <th><?php __('Modified time'); ?></th>
-            <th class="actions"><?php echo __('Action', true); ?></th>
+            <th><?php echo __('Field name'); ?></th>
+            <th><?php echo __('Field type'); ?></th>
+            <th><?php echo __('Sort'); ?></th>
+            <th><?php echo __('Required'); ?></th>
+            <th><?php echo __('Created time'); ?></th>
+            <th><?php echo __('Modified time'); ?></th>
+            <th class="actions"><?php echo __('Action'); ?></th>
         </tr>
         <?php
                 $i = 0;
@@ -71,7 +71,7 @@ $class = ' class="altrow"'; ?>
                 <?php echo $formField['FormField']['sort']; ?>
                 </td>
                 <td>
-                <?php echo ($formField['FormField']['is_required'] == 0) ? __('Not required', true) : __('Required', true); ?>
+                <?php echo ($formField['FormField']['is_required'] == 0) ? __('Not required') : __('Required'); ?>
                 </td>
                 <td>
                 <?php echo $formField['FormField']['created']; ?>
@@ -80,8 +80,8 @@ $class = ' class="altrow"'; ?>
                 <?php echo $formField['FormField']['modified']; ?>
                 </td>
                 <td class="actions">
-                <?php echo $this->Html->link(__('Edit', true), array('controller' => 'form_fields', 'action' => 'edit', $formField['FormField']['id']), array('class' => 'dialogControl')); ?>
-                <?php echo $this->Html->link(__('Delete', true), array('controller' => 'form_fields', 'action' => 'delete', $formField['FormField']['id']), null, __('Delete the item, sure?', true)); ?>
+                <?php echo $this->Html->link(__('Edit'), array('controller' => 'form_fields', 'action' => 'edit', $formField['FormField']['id']), array('class' => 'dialogControl')); ?>
+                <?php echo $this->Html->link(__('Delete'), array('controller' => 'form_fields', 'action' => 'delete', $formField['FormField']['id']), null, __('Delete the item, sure?')); ?>
                 </td>
             </tr>
         <?php } ?>
@@ -89,19 +89,19 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'form_fields', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
+                <li><?php echo $this->Html->link(__('Add'), array('controller' => 'form_fields', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
             </ul>
         </div>
 
         <div class="relationships index">
-            <h2><?php __('Form relationships'); ?></h2>
+            <h2><?php echo __('Form relationships'); ?></h2>
             <table cellpadding="0" cellspacing="0">
                 <tr>
-                    <th><?php __('Relationship target'); ?></th>
-                    <th><?php __('Relationship type'); ?></th>
-                    <th><?php __('Created time'); ?></th>
-                    <th><?php __('Modified time'); ?></th>
-                    <th class="actions"><?php echo __('Action', true); ?></th>
+                    <th><?php echo __('Relationship target'); ?></th>
+                    <th><?php echo __('Relationship type'); ?></th>
+                    <th><?php echo __('Created time'); ?></th>
+                    <th><?php echo __('Modified time'); ?></th>
+                    <th class="actions"><?php echo __('Action'); ?></th>
                 </tr>
         <?php
                 $i = 0;
@@ -120,7 +120,7 @@ $class = ' class="altrow"'; ?>
                 <td><?php echo $relationship['Relationship']['created']; ?></td>
                 <td><?php echo $relationship['Relationship']['modified']; ?></td>
                 <td class="actions">
-                <?php echo $this->Html->link(__('Delete', true), array('controller' => 'relationships', 'action' => 'delete', $relationship['Relationship']['id']), null, __('Delete the item, sure?', true)); ?>
+                <?php echo $this->Html->link(__('Delete'), array('controller' => 'relationships', 'action' => 'delete', $relationship['Relationship']['id']), null, __('Delete the item, sure?')); ?>
                 </td>
             </tr>
         <?php } ?>
@@ -128,21 +128,21 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'relationships', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
+                <li><?php echo $this->Html->link(__('Add'), array('controller' => 'relationships', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
             </ul>
         </div>
 
         <div class="actions index">
-            <h2><?php __('Additional methods'); ?></h2>
-    <?php __('Reserved method names:'); ?> index, view, admin_index, admin_add, admin_edit, admin_view, admin_habtm_set
+            <h2><?php echo __('Additional methods'); ?></h2>
+    <?php echo __('Reserved method names:'); ?> index, view, admin_index, admin_add, admin_edit, admin_view, admin_habtm_set
                 <table cellpadding="0" cellspacing="0">
                     <tr>
-                        <th><?php __('Method name'); ?></th>
-                        <th><?php __('System name'); ?></th>
-                        <th><?php __('Method engine'); ?></th>
-                        <th><?php __('Created time'); ?></th>
-                        <th><?php __('Modified time'); ?></th>
-                        <th class="actions"><?php echo __('Action', true); ?></th>
+                        <th><?php echo __('Method name'); ?></th>
+                        <th><?php echo __('System name'); ?></th>
+                        <th><?php echo __('Method engine'); ?></th>
+                        <th><?php echo __('Created time'); ?></th>
+                        <th><?php echo __('Modified time'); ?></th>
+                        <th class="actions"><?php echo __('Action'); ?></th>
                     </tr>
         <?php
                 $i = 0;
@@ -159,8 +159,8 @@ $class = ' class="altrow"'; ?>
                         <td><?php echo $action['Action']['created']; ?></td>
                         <td><?php echo $action['Action']['modified']; ?></td>
                         <td class="actions">
-                <?php echo $this->Html->link(__('Parameters', true), '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
-                <?php echo $this->Html->link(__('Delete', true), array('controller' => 'actions', 'action' => 'delete', $action['Action']['id']), null, __('Delete the item, sure?', true)); ?>
+                <?php echo $this->Html->link(__('Parameters'), '#', array('onClick' => '$(\'#parameters' . $action['Action']['id'] . '\').toggle(); return false;')); ?>
+                <?php echo $this->Html->link(__('Delete'), array('controller' => 'actions', 'action' => 'delete', $action['Action']['id']), null, __('Delete the item, sure?')); ?>
                 </td>
             </tr>
             <tr<?php echo $class; ?> style="display:none;" id="parameters<?php echo $action['Action']['id']; ?>">
@@ -171,6 +171,6 @@ $class = ' class="altrow"'; ?>
         </div>
         <div class="actions">
             <ul>
-                <li><?php echo $this->Html->link(__('Add', true), array('controller' => 'actions', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
+                <li><?php echo $this->Html->link(__('Add'), array('controller' => 'actions', 'action' => 'add', $pForm['Form']['id']), array('class' => 'dialogControl')); ?></li>
     </ul>
 </div>

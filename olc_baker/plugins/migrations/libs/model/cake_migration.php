@@ -152,7 +152,7 @@ class CakeMigration extends Object {
  */
 	function run($direction) {
 		if (!in_array($direction, array('up', 'down'))) {
-			trigger_error(sprintf(__d('migrations', 'Migration direction (%s) is not one of valid directions.', true), $direction), E_USER_NOTICE);
+			trigger_error(sprintf(__d('migrations', 'Migration direction (%s) is not one of valid directions.'), $direction), E_USER_NOTICE);
 			return false;
 		}
 		$this->direction = $direction;
@@ -193,7 +193,7 @@ class CakeMigration extends Object {
 					$methodName = '_alterTable';
 					break;
 				default:
-					trigger_error(sprintf(__d('migrations', 'Migration action type (%s) is not one of valid actions type.', true), $type), E_USER_NOTICE);
+					trigger_error(sprintf(__d('migrations', 'Migration action type (%s) is not one of valid actions type.'), $type), E_USER_NOTICE);
 					continue 2;
 			}
 

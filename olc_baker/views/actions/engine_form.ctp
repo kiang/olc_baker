@@ -45,7 +45,7 @@ if (!empty($content)) {
                         break;
                     case 'dateTimeField':
                         if (empty($dateTimeFieldOptions)) {
-                            echo '<div>*' . __('This method will need a datetime field', true) . '</div>';
+                            echo '<div>*' . __('This method will need a datetime field') . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -56,7 +56,7 @@ if (!empty($content)) {
                         break;
                     case 'imageField':
                         if (empty($imageFields)) {
-                            echo '<div>*' . __('This method will need a file_image field', true) . '</div>';
+                            echo '<div>*' . __('This method will need a file_image field') . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -67,7 +67,7 @@ if (!empty($content)) {
                         break;
                     case 'fileField':
                         if (empty($fileFields)) {
-                            echo '<div>*' . __('This method will need a file field', true) . '</div>';
+                            echo '<div>*' . __('This method will need a file field') . '</div>';
                             continue;
                         }
                         echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
@@ -85,7 +85,7 @@ if (!empty($content)) {
                             'options' => $fields,
                             'div' => false,
                         ));
-                        echo '<br />' . $this->Html->link(__('Add a field', true), '#', array('id' => 'duplicate' . $domId));
+                        echo '<br />' . $this->Html->link(__('Add a field'), '#', array('id' => 'duplicate' . $domId));
                         echo $this->Html->scriptBlock('
 $(\'#' . $domId . '\').attr(\'name\', $(\'#' . $domId . '\').attr(\'name\') + \'[]\');
 $(\'#duplicate' . $domId . '\').click(function() {

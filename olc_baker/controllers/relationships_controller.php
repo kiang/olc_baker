@@ -9,7 +9,7 @@ class RelationshipsController extends AppController {
                     'conditions' => array('BaseForm.id' => $formId),
                     'contain' => array(),
                 ))) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
@@ -17,7 +17,7 @@ class RelationshipsController extends AppController {
             $this->data['Relationship']['project_id'] = $baseForm['BaseForm']['project_id'];
             $this->data['Relationship']['form_id_base'] = $baseForm['BaseForm']['id'];
             if ($this->Relationship->save($this->data)) {
-                $this->Session->setFlash(__('Data has been saved', true));
+                $this->Session->setFlash(__('Data has been saved'));
                 /*
                  * Build the related relationship
                  */
@@ -41,7 +41,7 @@ class RelationshipsController extends AppController {
                 }
                 $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
         $this->set('targetForms', $this->Relationship->TargetForm->find('list', array(
@@ -55,9 +55,9 @@ class RelationshipsController extends AppController {
 
     function delete($id = null) {
         if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
         } else if ($this->Relationship->delete($id) && $this->Relationship->delete($parentId)) {
-            $this->Session->setFlash(__('Data has been deleted', true));
+            $this->Session->setFlash(__('Data has been deleted'));
         }
         $this->redirect($this->referer());
     }

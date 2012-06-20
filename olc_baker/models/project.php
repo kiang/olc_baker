@@ -64,11 +64,11 @@ class Project extends AppModel {
         $fh = new Folder();
         if (file_exists($appPath)) {
             if (false === $fh->delete($appPath)) {
-                $this->errorMessage = __('Target path exists. But the program could not delete the folder automatically', true);
+                $this->errorMessage = __('Target path exists. But the program could not delete the folder automatically');
                 return false;
             } else {
                 $this->tasks[] = array(
-                    'title' => __('Target path exists. Delete the old folders.', true),
+                    'title' => __('Target path exists. Delete the old folders.'),
                     'operactions' => $fh->messages(),
                 );
             }
@@ -85,11 +85,11 @@ class Project extends AppModel {
         ));
         $errors = $fh->errors();
         if (!empty($errors)) {
-            $this->errorMessage = __('The program could not copy files to the folder automatically', true);
+            $this->errorMessage = __('The program could not copy files to the folder automatically');
             return false;
         } else {
             $this->tasks[] = array(
-                'title' => __('Copy the skelecton of application to the target path', true),
+                'title' => __('Copy the skelecton of application to the target path'),
                 'operactions' => $fh->__messages,
             );
         }

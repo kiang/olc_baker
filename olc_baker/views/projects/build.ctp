@@ -1,11 +1,11 @@
 <div class="actions">
     <ul>
-        <li><?php echo $this->Html->link(__('List', true), array('action' => 'index')); ?></li>
+        <li><?php echo $this->Html->link(__('List'), array('action' => 'index')); ?></li>
     </ul>
 </div>
 
 <?php
-echo __('Build operactions:', true);
+echo __('Build operactions:');
 echo '<ul id="buildOperactions">';
 $count = 1;
 foreach ($tasks AS $task) {
@@ -22,7 +22,7 @@ echo '<br /><br /><div id="operactionDetail"></div>';
 echo $this->Html->scriptBlock('
 $(function() {
 	$(\'ul#buildOperactions li a\').click(function() {
-		$(\'div#operactionDetail\').html(\'' . __('Operaction Detail', true) . '<br />\' + $(\'#\' + this.rel).html());
+		$(\'div#operactionDetail\').html(\'' . __('Operaction Detail') . '<br />\' + $(\'#\' + this.rel).html());
 		return false;
 	});
 });

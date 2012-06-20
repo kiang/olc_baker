@@ -6,7 +6,7 @@ class ActionsController extends AppController {
 
     function add($formId = null) {
         if (!$formId) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
@@ -17,7 +17,7 @@ class ActionsController extends AppController {
                         'form_id' => $formId,
                         'action' => $this->data['Action']['action'],
                     ))) {
-                $this->Session->setFlash(__('Method name is duplicated', true));
+                $this->Session->setFlash(__('Method name is duplicated'));
             } else {
                 $this->data['Action']['form_id'] = $formId;
                 if (!empty($this->data['Action']['parameter'])) {
@@ -26,10 +26,10 @@ class ActionsController extends AppController {
                 unset($this->data['Action']['parameter']);
                 $this->Action->create();
                 if ($this->Action->save($this->data)) {
-                    $this->Session->setFlash(__('The data has been saved', true));
+                    $this->Session->setFlash(__('The data has been saved'));
                     $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));
                 } else {
-                    $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                    $this->Session->setFlash(__('Something was wrong during saving, please try again'));
                 }
             }
         }
@@ -39,11 +39,11 @@ class ActionsController extends AppController {
 
     function delete($id = null) {
         if (!$id || !$formId = $this->Action->field('form_id', array('Action.id' => $id))) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
         if ($this->Action->delete($id)) {
-            $this->Session->setFlash(__('The data has been deleted', true));
+            $this->Session->setFlash(__('The data has been deleted'));
             $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));
         }
     }
