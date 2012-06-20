@@ -10,20 +10,22 @@
         <div id="parameterBlock"></div>
     </fieldset>
     <?php echo $this->Form->end(__('Submit')); ?>
-    </div>
-    <div class="actions">
-        <ul>
-            <li><?php echo $this->Html->link(__('Back to the form'), array('controller' => 'forms', 'action' => 'view', $formId)); ?></li>
-        </ul>
-    </div>
-<?php
-        echo $this->Html->scriptBlock('
-$(function() {
-	$(\'#ActionEngine\').change(function() {
-		$(\'#parameterBlock\').load(\'' . $this->Html->url(array('action' => 'engine_form', $formId)) . '/\' +
-			$(\'#ActionEngine option:selected\').val()
-		);
-	});
-	$(\'#ActionEngine\').trigger(\'change\');
-});
-');
+</div>
+<div class="actions">
+    <ul>
+        <li><?php echo $this->Html->link(__('Back to the form'), array('controller' => 'forms', 'action' => 'view', $formId)); ?></li>
+    </ul>
+</div>
+<script type="text/javascript">
+    //<![CDATA[
+
+    $(function() {
+        $('#ActionEngine').change(function() {
+            $('#parameterBlock').load('<?php echo $this->Html->url(array('action' => 'engine_form', $formId)); ?>/' +
+                $('#ActionEngine option:selected').val());
+        });
+        $('#ActionEngine').trigger('change');
+    });
+
+    //]]>
+</script>

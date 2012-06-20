@@ -17,6 +17,7 @@ class FormField extends AppModel {
     );
 
     function getFieldTypeList() {
+        App::uses('Folder', 'Utility');
         $sourcePath = VENDORS . 'olc_baker' . DS . 'field_types' . DS;
         $fh = new Folder($sourcePath);
         $files = $fh->read();

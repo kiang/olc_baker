@@ -1,5 +1,5 @@
 <div class="formFields form">
-    <?php echo $this->Form->create('FormField', array('url' => array($formId))); ?>
+    <?php echo $this->Form->create('FormField', array('url' => array($this->FormId))); ?>
     <fieldset>
         <legend><?php echo __('Add a form field'); ?></legend>
         <?php
@@ -37,7 +37,7 @@
     </div>
     <div class="actions">
         <ul>
-            <li><?php echo $this->Html->link(__('Back to the form'), array('controller' => 'forms', 'action' => 'view', $formId)); ?></li>
+            <li><?php echo $this->Html->link(__('Back to the form'), array('controller' => 'forms', 'action' => 'view', $this->FormId)); ?></li>
         </ul>
     </div>
 <?php

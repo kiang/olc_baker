@@ -61,6 +61,7 @@ class Project extends AppModel {
      * @param string $appPath
      */
     function initialAppPath($appPath) {
+        App::uses('Folder', 'Utility');
         $fh = new Folder();
         if (file_exists($appPath)) {
             if (false === $fh->delete($appPath)) {

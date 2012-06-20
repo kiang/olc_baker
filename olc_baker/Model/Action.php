@@ -15,6 +15,7 @@ class Action extends AppModel {
     );
 
     function getEngineList() {
+        App::uses('Folder', 'Utility');
         $sourcePath = VENDORS . 'olc_baker' . DS . 'actions' . DS;
         $fh = new Folder($sourcePath);
         $files = $fh->find('.*\.php$');

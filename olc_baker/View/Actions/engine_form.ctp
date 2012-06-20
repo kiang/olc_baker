@@ -18,12 +18,12 @@ if (!empty($content)) {
     }
     if (!empty($content['options'])) {
         foreach ($content['options'] AS $optionGroup => $optionItems) {
-            foreach ($optionItems AS $key => $formOptions) {
-                switch ($formOptions['type']) {
+            foreach ($optionItems AS $key => $this->FormOptions) {
+                switch ($this->FormOptions['type']) {
                     case 'field':
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $fields,
                         ));
                         break;
@@ -37,9 +37,9 @@ if (!empty($content)) {
                             }
                         }
                         $fieldWithIds = array_merge($fieldWithIds, $fields);
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $fieldWithIds,
                         ));
                         break;
@@ -48,9 +48,9 @@ if (!empty($content)) {
                             echo '<div>*' . __('This method will need a datetime field') . '</div>';
                             continue;
                         }
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $dateTimeFieldOptions,
                         ));
                         break;
@@ -59,9 +59,9 @@ if (!empty($content)) {
                             echo '<div>*' . __('This method will need a file_image field') . '</div>';
                             continue;
                         }
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $imageFields,
                         ));
                         break;
@@ -70,18 +70,18 @@ if (!empty($content)) {
                             echo '<div>*' . __('This method will need a file field') . '</div>';
                             continue;
                         }
-                        echo $form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $fileFields,
                         ));
                         break;
                     case 'fields':
                         $key = implode('.', array('Action', 'parameter', $optionGroup, $key));
-                        $domId = $form->domId($key);
-                        echo $form->input($key, array(
+                        $domId = $this->Form->domId($key);
+                        echo $this->Form->input($key, array(
                             'type' => 'select',
-                            'label' => $formOptions['label'],
+                            'label' => $this->FormOptions['label'],
                             'options' => $fields,
                             'div' => false,
                         ));
@@ -99,7 +99,7 @@ $(\'#duplicate' . $domId . '\').click(function() {
                         ');
                         break;
                     default:
-                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), $formOptions);
+                        echo $this->Form->input(implode('.', array('Action', 'parameter', $optionGroup, $key)), $this->FormOptions);
                         break;
                 }
             }
