@@ -19,13 +19,13 @@ class ProjectsController extends AppController {
     }
 
     function add() {
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->Project->create();
-            if (!empty($this->data['Project']['option'])) {
-                $this->data['Project']['options'] = serialize($this->data['Project']['option']);
+            if (!empty($this->request->data['Project']['option'])) {
+                $this->request->data['Project']['options'] = serialize($this->request->data['Project']['option']);
             }
-            unset($this->data['Project']['option']);
-            if ($this->Project->save($this->data)) {
+            unset($this->request->data['Project']['option']);
+            if ($this->Project->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -35,24 +35,24 @@ class ProjectsController extends AppController {
     }
 
     function edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
         }
-        if (!empty($this->data)) {
-            if (!empty($this->data['Project']['option'])) {
-                $this->data['Project']['options'] = serialize($this->data['Project']['option']);
+        if (!empty($this->request->data)) {
+            if (!empty($this->request->data['Project']['option'])) {
+                $this->request->data['Project']['options'] = serialize($this->request->data['Project']['option']);
             }
-            unset($this->data['Project']['option']);
-            if ($this->Project->save($this->data)) {
+            unset($this->request->data['Project']['option']);
+            if ($this->Project->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->Project->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->Project->read(null, $id);
         }
     }
 
@@ -539,15 +539,15 @@ class ProjectsController extends AppController {
             $this->set('tables', $tables);
         } else {
             $this->loadModel('FormField');
-            if (!empty($this->data)) {
+            if (!empty($this->request->data)) {
                 $this->FormField->Form->create();
                 if ($this->FormField->Form->save(array('Form' => array(
                                 'project_id' => $projectId,
                                 'name' => $tableName,
-                                'label' => $this->data['Form']['label'],
+                                'label' => $this->request->data['Form']['label'],
                                 )))) {
                     $formId = $this->FormField->Form->getInsertID();
-                    foreach ($this->data['Field'] AS $fieldName => $fieldOption) {
+                    foreach ($this->request->data['Field'] AS $fieldName => $fieldOption) {
                         $this->FormField->create();
                         $this->FormField->save(array('FormField' => array(
                                 'form_id' => $formId,

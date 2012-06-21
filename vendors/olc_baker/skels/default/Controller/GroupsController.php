@@ -31,10 +31,10 @@ class GroupsController extends AppController {
     }
 
     function admin_add($parentId = 0) {
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->Group->create();
-            $this->data['Group']['parent_id'] = $parentId;
-            if ($this->Group->save($this->data)) {
+            $this->request->data['Group']['parent_id'] = $parentId;
+            if ($this->Group->save($this->request->data)) {
                 $this->Acl->Aro->saveField('alias', 'Group' . $this->Group->getInsertID());
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'index', $parentId));
@@ -46,20 +46,20 @@ class GroupsController extends AppController {
     }
 
     function admin_edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please select a group first!', true));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
-            if ($this->Group->save($this->data)) {
+        if (!empty($this->request->data)) {
+            if ($this->Group->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'index', $this->Group->field('parent_id')));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->Group->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->Group->read(null, $id);
         }
     }
 

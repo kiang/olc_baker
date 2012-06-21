@@ -34,16 +34,16 @@ class MembersController extends AppController {
         if ($this->Member->hasAny(array('user_status' => 'Y'))) {
             $this->Session->setFlash(__('There are members in database. If you want to reset, please remove them first.', true));
             $this->redirect('/members/login');
-        } else if (!empty($this->data)) {
+        } else if (!empty($this->request->data)) {
             $this->loadModel('Group');
-            $this->data['Group']['name'] = 'Admin';
-            $this->data['Group']['parent_id'] = 0;
+            $this->request->data['Group']['name'] = 'Admin';
+            $this->request->data['Group']['parent_id'] = 0;
             $this->Group->create();
-            if ($this->Group->save($this->data)) {
-                $this->data['Member']['group_id'] = $this->Group->id;
-                $this->data['Member']['user_status'] = 'Y';
+            if ($this->Group->save($this->request->data)) {
+                $this->request->data['Member']['group_id'] = $this->Group->id;
+                $this->request->data['Member']['user_status'] = 'Y';
                 $this->Member->create();
-                if ($this->Member->save($this->data)) {
+                if ($this->Member->save($this->request->data)) {
                     $this->loadModel('Permissible.PermissibleAro');
                     $this->PermissibleAro->reset();
                     $this->loadModel('Permissible.PermissibleAco');
@@ -95,9 +95,9 @@ class MembersController extends AppController {
     }
 
     function admin_add() {
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->Member->create();
-            if ($this->Member->save($this->data)) {
+            if ($this->Member->save($this->request->data)) {
                 $this->Acl->Aro->saveField('alias', 'Member/' . $this->Member->getInsertID());
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'index'));
@@ -109,17 +109,17 @@ class MembersController extends AppController {
     }
 
     function admin_edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
         }
-        if (!empty($this->data)) {
-            $oldgroupid = $this->Member->field('group_id', array('Member.id' => $this->data['Member']['id']));
-            if ($this->Member->save($this->data)) {
-                if ($oldgroupid !== $this->data['Member']['group_id']) {
+        if (!empty($this->request->data)) {
+            $oldgroupid = $this->Member->field('group_id', array('Member.id' => $this->request->data['Member']['id']));
+            if ($this->Member->save($this->request->data)) {
+                if ($oldgroupid !== $this->request->data['Member']['group_id']) {
                     $aro = & $this->Acl->Aro;
-                    $member = $aro->findByForeignKeyAndModel($this->data['Member']['id'], 'Member');
-                    $group = $aro->findByForeignKeyAndModel($this->data['Member']['group_id'], 'Group');
+                    $member = $aro->findByForeignKeyAndModel($this->request->data['Member']['id'], 'Member');
+                    $group = $aro->findByForeignKeyAndModel($this->request->data['Member']['group_id'], 'Group');
                     $aro->id = $member['Aro']['id'];
                     $aro->save(array('parent_id' => $group['Aro']['id']));
                 }
@@ -129,8 +129,8 @@ class MembersController extends AppController {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->Member->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->Member->read(null, $id);
         }
         $this->set('groups', $this->Member->Group->find('list'));
     }

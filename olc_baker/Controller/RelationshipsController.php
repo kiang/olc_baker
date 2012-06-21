@@ -12,31 +12,31 @@ class RelationshipsController extends AppController {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->Relationship->create();
-            $this->data['Relationship']['project_id'] = $baseForm['BaseForm']['project_id'];
-            $this->data['Relationship']['form_id_base'] = $baseForm['BaseForm']['id'];
-            if ($this->Relationship->save($this->data)) {
+            $this->request->data['Relationship']['project_id'] = $baseForm['BaseForm']['project_id'];
+            $this->request->data['Relationship']['form_id_base'] = $baseForm['BaseForm']['id'];
+            if ($this->Relationship->save($this->request->data)) {
                 $this->Session->setFlash(__('Data has been saved'));
                 /*
                  * Build the related relationship
                  */
-                $this->data['Relationship']['parent_id'] = $this->Relationship->getInsertID();
-                switch ($this->data['Relationship']['type']) {
+                $this->request->data['Relationship']['parent_id'] = $this->Relationship->getInsertID();
+                switch ($this->request->data['Relationship']['type']) {
                     case 'bt':
-                        $this->data['Relationship']['type'] = 'hm';
+                        $this->request->data['Relationship']['type'] = 'hm';
                         break;
                     case 'ho':
                     case 'hm':
-                        $this->data['Relationship']['type'] = 'bt';
+                        $this->request->data['Relationship']['type'] = 'bt';
                         break;
                 }
-                $this->data['Relationship']['form_id_base'] = $this->data['Relationship']['form_id_target'];
-                $this->data['Relationship']['form_id_target'] = $baseForm['BaseForm']['id'];
+                $this->request->data['Relationship']['form_id_base'] = $this->request->data['Relationship']['form_id_target'];
+                $this->request->data['Relationship']['form_id_target'] = $baseForm['BaseForm']['id'];
                 $this->Relationship->create();
-                if ($this->Relationship->save($this->data)) {
+                if ($this->Relationship->save($this->request->data)) {
                     $newId = $this->Relationship->getInsertID();
-                    $this->Relationship->id = $this->data['Relationship']['parent_id'];
+                    $this->Relationship->id = $this->request->data['Relationship']['parent_id'];
                     $this->Relationship->saveField('parent_id', $newId);
                 }
                 $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));

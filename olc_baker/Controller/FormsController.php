@@ -29,10 +29,10 @@ class FormsController extends AppController {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->Form->create();
-            $this->data['Form']['project_id'] = $projectId;
-            if ($this->Form->save($this->data)) {
+            $this->request->data['Form']['project_id'] = $projectId;
+            if ($this->Form->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('action' => 'view', $this->Form->getInsertID()));
             } else {
@@ -43,20 +43,20 @@ class FormsController extends AppController {
     }
 
     function edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
-            if ($this->Form->save($this->data)) {
+        if (!empty($this->request->data)) {
+            if ($this->Form->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('controller' => 'projects', 'action' => 'view', $this->Form->field('project_id')));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->Form->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->Form->read(null, $id);
         }
     }
 

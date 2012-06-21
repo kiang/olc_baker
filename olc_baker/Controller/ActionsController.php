@@ -9,23 +9,23 @@ class ActionsController extends AppController {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
-            if (in_array($this->data['Action']['action'], array(
+        if (!empty($this->request->data)) {
+            if (in_array($this->request->data['Action']['action'], array(
                         'index', 'view', 'admin_index', 'admin_add', 'admin_edit',
                         'admin_view', 'admin_habtm_set',
                     )) || $this->Action->hasAny(array(
                         'form_id' => $formId,
-                        'action' => $this->data['Action']['action'],
+                        'action' => $this->request->data['Action']['action'],
                     ))) {
                 $this->Session->setFlash(__('Method name is duplicated'));
             } else {
-                $this->data['Action']['form_id'] = $formId;
-                if (!empty($this->data['Action']['parameter'])) {
-                    $this->data['Action']['parameters'] = serialize($this->data['Action']['parameter']);
+                $this->request->data['Action']['form_id'] = $formId;
+                if (!empty($this->request->data['Action']['parameter'])) {
+                    $this->request->data['Action']['parameters'] = serialize($this->request->data['Action']['parameter']);
                 }
-                unset($this->data['Action']['parameter']);
+                unset($this->request->data['Action']['parameter']);
                 $this->Action->create();
-                if ($this->Action->save($this->data)) {
+                if ($this->Action->save($this->request->data)) {
                     $this->Session->setFlash(__('The data has been saved'));
                     $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));
                 } else {

@@ -9,14 +9,14 @@ class FormFieldsController extends AppController {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->FormField->create();
-            $this->data['FormField']['form_id'] = $formId;
-            if (!empty($this->data['FormField']['option'])) {
-                $this->data['FormField']['options'] = serialize($this->data['FormField']['option']);
+            $this->request->data['FormField']['form_id'] = $formId;
+            if (!empty($this->request->data['FormField']['option'])) {
+                $this->request->data['FormField']['options'] = serialize($this->request->data['FormField']['option']);
             }
-            unset($this->data['FormField']['option']);
-            if ($this->FormField->save($this->data)) {
+            unset($this->request->data['FormField']['option']);
+            if ($this->FormField->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('controller' => 'forms', 'action' => 'view', $formId));
             } else {
@@ -28,24 +28,24 @@ class FormFieldsController extends AppController {
     }
 
     function edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
         }
-        if (!empty($this->data)) {
-            if (!empty($this->data['FormField']['option'])) {
-                $this->data['FormField']['options'] = serialize($this->data['FormField']['option']);
+        if (!empty($this->request->data)) {
+            if (!empty($this->request->data['FormField']['option'])) {
+                $this->request->data['FormField']['options'] = serialize($this->request->data['FormField']['option']);
             }
-            unset($this->data['FormField']['option']);
-            if ($this->FormField->save($this->data)) {
+            unset($this->request->data['FormField']['option']);
+            if ($this->FormField->save($this->request->data)) {
                 $this->Session->setFlash(__('The data has been saved'));
                 $this->redirect(array('controller' => 'forms', 'action' => 'view', $this->FormField->field('FormField.form_id')));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->FormField->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->FormField->read(null, $id);
         }
         $this->set('types', $this->FormField->getFieldTypeList());
     }

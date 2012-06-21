@@ -72,11 +72,11 @@ class GroupPermissionsController extends AppController {
         $groupPermissions = $this->GroupPermission->find('all', array(
             'order' => array('GroupPermission.parent_id ASC', 'GroupPermission.order ASC'),
         ));
-        if (!empty($this->data['GroupPermission'])) {
+        if (!empty($this->request->data['GroupPermission'])) {
             $keyStack = Set::combine($groupPermissions, '{n}.GroupPermission.id', '{n}.GroupPermission');
             $allowedStack = array();
             foreach($keyStack AS $gpId => $gp) {
-                if(!empty($this->data['GroupPermission'][$gpId])) {
+                if(!empty($this->request->data['GroupPermission'][$gpId])) {
                     $acoArray = explode(chr(10), $gp['acos']);
                     foreach($acoArray AS $acoItem) {
                         $allowedStack[$acoItem] = 1;
@@ -112,9 +112,9 @@ class GroupPermissionsController extends AppController {
     }
 
     function admin_add() {
-        if (!empty($this->data)) {
+        if (!empty($this->request->data)) {
             $this->GroupPermission->create();
-            if ($this->GroupPermission->save($this->data)) {
+            if ($this->GroupPermission->save($this->request->data)) {
                 $this->Session->setFlash(__('The group permission has been saved', true));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -130,20 +130,20 @@ class GroupPermissionsController extends AppController {
     }
 
     function admin_edit($id = null) {
-        if (!$id && empty($this->data)) {
+        if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Invalid group permission', true));
             $this->redirect(array('action' => 'index'));
         }
-        if (!empty($this->data)) {
-            if ($this->GroupPermission->save($this->data)) {
+        if (!empty($this->request->data)) {
+            if ($this->GroupPermission->save($this->request->data)) {
                 $this->Session->setFlash(__('The group permission has been saved', true));
                 $this->redirect(array('action' => 'index'));
             } else {
                 $this->Session->setFlash(__('The group permission could not be saved. Please, try again.', true));
             }
         }
-        if (empty($this->data)) {
-            $this->data = $this->GroupPermission->read(null, $id);
+        if (empty($this->request->data)) {
+            $this->request->data = $this->GroupPermission->read(null, $id);
         }
         $this->set('parents', $this->GroupPermission->find('list', array(
             'conditions' => array(

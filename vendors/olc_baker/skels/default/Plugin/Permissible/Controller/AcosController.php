@@ -74,10 +74,10 @@ class AcosController extends PermissibleAppController {
            $this->PermissibleAco->id = $aco['PermissibleAco']['id'];
            $alias = $aco['PermissibleAco']['alias'] . '/' . $alias;
         }
-        if (!empty($this->data)) {
-            $cascade = (isset($this->data['PermissibleAco']['cascade']) && $this->data['PermissibleAco']['cascade'] === '1');
-            unset($this->data['PermissibleAco']['cascade']);
-            foreach ($this->data['PermissibleAco'] as $aro_alias => $perm) {
+        if (!empty($this->request->data)) {
+            $cascade = (isset($this->request->data['PermissibleAco']['cascade']) && $this->request->data['PermissibleAco']['cascade'] === '1');
+            unset($this->request->data['PermissibleAco']['cascade']);
+            foreach ($this->request->data['PermissibleAco'] as $aro_alias => $perm) {
                 $perm = ((int)$perm === 1);
                 if ($perm) {
                     if ($cascade) {
@@ -94,7 +94,7 @@ class AcosController extends PermissibleAppController {
                 }
             }
             $this->Session->setFlash('The permissions list has been updated');
-            $this->data = array();
+            $this->request->data = array();
         }
         $this->set('alias', $alias);
         $this->loadModel('Permissible.PermissibleAro');
