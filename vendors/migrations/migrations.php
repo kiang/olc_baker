@@ -9,7 +9,7 @@
 * @package Migrations
 */
 
-App::import('vendor','spyc');
+require_once VENDORS . 'spyc/spyc.php';
 App::import('Core', 'ConnectionManager');
 
 class Migrations{

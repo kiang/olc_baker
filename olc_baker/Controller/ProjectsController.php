@@ -104,7 +104,7 @@ class ProjectsController extends AppController {
             $files = array(
                 DS . '.htaccess',
                 DS . 'webroot' . DS . '.htaccess',
-                DS . 'config' . DS . 'database.php',
+                DS . 'Config' . DS . 'database.php',
                 DS . 'webroot' . DS . 'index.php',
             );
 
@@ -290,16 +290,16 @@ class ProjectsController extends AppController {
                     $this->Project->smarty->assign('modelFileName', $file_name);
                     $this->Project->smarty->assign('controllerName', $controller_name);
 
-                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'models' . DS . 'default.php');
+                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'Model' . DS . 'default.php');
                     $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
-                            $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php',
+                            $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php',
                             $fileContent
                     );
-                    chmod($project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php', 0777);
-                    $operactions[] = $project['Project']['app_path'] . DS . 'models' . DS . $file_name . '.php created';
+                    chmod($project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php', 0777);
+                    $operactions[] = $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php created';
 
-                    $viewPath = $project['Project']['app_path'] . DS . 'views' . DS . $table_name . DS;
+                    $viewPath = $project['Project']['app_path'] . DS . 'View' . DS . $table_name . DS;
                     if (!file_exists($viewPath)) {
                         mkdir($viewPath, 0777, true);
                     }
@@ -324,7 +324,7 @@ class ProjectsController extends AppController {
                         $actions[] = 'admin_habtm_set.ctp';
                     }
                     foreach ($actions AS $action) {
-                        $fileContent = $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . $action);
+                        $fileContent = $this->Project->smarty->fetch('default' . DS . 'View' . DS . 'default' . DS . $action);
                         $fileContent = str_replace("\n//\n", "\n", $fileContent);
                         file_put_contents($viewPath . $action, $fileContent);
                         chmod($viewPath . $action, 0777);
@@ -389,20 +389,20 @@ class ProjectsController extends AppController {
                     $this->Project->smarty->assign('actions', $actions);
                     file_put_contents(
                             $viewPath . 'index.ctp',
-                            $this->Project->smarty->fetch('default' . DS . 'views' . DS . 'default' . DS . 'index.ctp')
+                            $this->Project->smarty->fetch('default' . DS . 'View' . DS . 'default' . DS . 'index.ctp')
                     );
                     chmod($viewPath . 'index.ctp', 0777);
                     $operactions[] = $viewPath . 'index.ctp created';
 
                     $this->Project->smarty->assign('customMethods', $customMethods);
-                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'controllers' . DS . 'default.php');
+                    $fileContent = $this->Project->smarty->fetch('default' . DS . 'Controller' . DS . 'default.php');
                     $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
-                            $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php',
+                            $project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php',
                             $fileContent
                     );
-                    chmod($project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php', 0777);
-                    $operactions[] = $project['Project']['app_path'] . DS . 'controllers' . DS . $table_name . '_controller.php created';
+                    chmod($project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php', 0777);
+                    $operactions[] = $project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php created';
                 }
             }
             $this->Project->tasks[] = array(
@@ -410,8 +410,8 @@ class ProjectsController extends AppController {
                 'operactions' => $operactions,
             );
             $this->Project->smarty->assign('projectLabel', $project['Project']['label']);
-            $this->Project->smarty->assign('controllers', $controllers);
-            $file = DS . 'views' . DS . 'layouts' . DS . 'default.ctp';
+            $this->Project->smarty->assign('Controller', $controllers);
+            $file = DS . 'View' . DS . 'Layouts' . DS . 'default.ctp';
             $operactions = array();
             $operactions[] = $project['Project']['app_path'] . $file . ' created';
             file_put_contents($project['Project']['app_path'] . $file, $this->Project->smarty->fetch('default' . $file));
@@ -427,10 +427,10 @@ class ProjectsController extends AppController {
                 'operactions' => $operactions,
             );
 
-            App::Import('vendor', 'migrations');
-            $db = & ConnectionManager::getInstance();
+            require_once VENDORS . 'migrations/migrations.php';
+            $db = new ConnectionManager();
             $db->create('olc_baker-dev', array(
-                'driver' => 'mysql',
+                'datasource' => 'Database/Mysql',
                 'host' => $project['Project']['db_host'],
                 'login' => $project['Project']['db_login'],
                 'password' => $project['Project']['db_password'],
@@ -440,7 +440,7 @@ class ProjectsController extends AppController {
             ));
             $dbn = $db->getDataSource('olc_baker-dev');
             $migrations = new Migrations('olc_baker-dev');
-            $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'schema';
+            $sqlPath = $project['Project']['app_path'] . DS . 'Config' . DS . 'schema';
             if (!file_exists($sqlPath)) {
                 mkdir($sqlPath, 0777, true);
             }
@@ -495,7 +495,7 @@ class ProjectsController extends AppController {
                 'persistent' => false,
             ));
             $dbn = $db->getDataSource('olc_baker-dev');
-            $sqlPath = $project['Project']['app_path'] . DS . 'config' . DS . 'schema';
+            $sqlPath = $project['Project']['app_path'] . DS . 'Config' . DS . 'schema';
             $dbn->execute('CREATE DATABASE IF NOT EXISTS `' . $project['Project']['db_name'] . '`
 		    DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
             $dbn->execute('USE `' . $project['Project']['db_name'] . '`;');

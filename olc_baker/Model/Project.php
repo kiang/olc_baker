@@ -1,7 +1,4 @@
 <?php
-
-App::import('vendor', 'smarty', array('file' => 'Smarty.class.php'));
-
 class Project extends AppModel {
 
     var $name = 'Project';
@@ -21,6 +18,7 @@ class Project extends AppModel {
 
     function __construct($id = false, $table = null, $ds = null) {
         parent::__construct($id, $table, $ds);
+        require_once VENDORS . 'smarty/Smarty.class.php';
         if (class_exists('Smarty')) {
             $this->smarty = new Smarty;
             $this->smarty->template_dir = VENDORS . 'olc_baker' . DS . 'templates' . DS;
@@ -73,7 +71,6 @@ class Project extends AppModel {
                     'operactions' => $fh->messages(),
                 );
             }
-            $fh->__messages = array();
         }
 
         /*
@@ -91,7 +88,7 @@ class Project extends AppModel {
         } else {
             $this->tasks[] = array(
                 'title' => __('Copy the skelecton of application to the target path'),
-                'operactions' => $fh->__messages,
+                'operactions' => $fh->messages(),
             );
         }
         return true;
