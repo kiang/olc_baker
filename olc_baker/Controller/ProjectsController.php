@@ -299,7 +299,7 @@ class ProjectsController extends AppController {
                     chmod($project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php', 0777);
                     $operactions[] = $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php created';
 
-                    $viewPath = $project['Project']['app_path'] . DS . 'View' . DS . $table_name . DS;
+                    $viewPath = $project['Project']['app_path'] . DS . 'View' . DS . $controller_name . DS;
                     if (!file_exists($viewPath)) {
                         mkdir($viewPath, 0777, true);
                     }
@@ -398,11 +398,11 @@ class ProjectsController extends AppController {
                     $fileContent = $this->Project->smarty->fetch('default' . DS . 'Controller' . DS . 'default.php');
                     $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
-                            $project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php',
+                            $project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php',
                             $fileContent
                     );
-                    chmod($project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php', 0777);
-                    $operactions[] = $project['Project']['app_path'] . DS . 'Controller' . DS . $table_name . '_controller.php created';
+                    chmod($project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php', 0777);
+                    $operactions[] = $project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php created';
                 }
             }
             $this->Project->tasks[] = array(
