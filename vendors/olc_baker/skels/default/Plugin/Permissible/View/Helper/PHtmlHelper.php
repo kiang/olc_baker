@@ -80,8 +80,7 @@ class PHtmlHelper extends HtmlHelper {
             }
         }
         $this->_Instance =& new $name();
-        $this->_Instance->initialize($this);
-        parent::__construct();
+        parent::__construct($settings);
     }
 /**
  * Returns a user array for use with ACL
