@@ -20,7 +20,7 @@
 //<{/if}>
 
         echo $this->Paginator->counter(array(
-            'format' => __('Page %page% of %pages%, showing %current% records out of %count% total, starting on record %start%, ending on %end%', true)
+            'format' => __('Page {:page} of {:pages}, showing {:current} records out of {:count} total, starting on record {:start}, ending on {:end}')
         ));
         ?></p>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
@@ -32,85 +32,82 @@
                 <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
                     <th><?php echo $this->Paginator->sort('//<{$models[$rOption.className].label}>', '//<{$modelName}>.//<{$rOption.foreignKey}>', array('url' => $url)); ?></th>
                 <?php endif; ?>
+                //<{/foreach}>
+                //<{/if}>
+
+                //<{foreach from=$fields key=className item=classFields}>
+                //<{foreach from=$classFields key=key item=item}>
+                <th><?php echo $this->Paginator->sort('//<{$item.label}>', '//<{$modelName}>.//<{$key}>', array('url' => $url)); ?></th>
+                //<{/foreach}>
+                //<{/foreach}>
+                <th class="actions"><?php echo __('Action', true); ?></th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $i = 0;
+            foreach ($items as $item) {
+                $class = null;
+                if ($i++ % 2 == 0) {
+                    $class = ' class="altrow"';
+                }
+                ?>
+                <tr<?php echo $class; ?>>
+                    //<{if isset($relationships.belongsTo)}>
+                    //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+                    <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
+                        <td><?php
+                if (empty($item['//<{$rOption.className}>']['id'])) {
+                    echo '--';
+                } else {
+                    echo $this->PHtml->link($item['//<{$rOption.className}>']['id'], array(
+                        'controller' => '//<{$models[$rOption.className].table_name}>',
+                        'action' => 'view',
+                        $item['//<{$rOption.className}>']['id']
+                    ));
+                }
+                        ?></td>
+                    <?php endif; ?>
                     //<{/foreach}>
                     //<{/if}>
 
                     //<{foreach from=$fields key=className item=classFields}>
                     //<{foreach from=$classFields key=key item=item}>
-                    <th><?php echo $this->Paginator->sort('//<{$item.label}>', '//<{$modelName}>.//<{$key}>', array('url' => $url)); ?></th>
-                    //<{/foreach}>
-                    //<{/foreach}>
-                    <th class="actions"><?php echo __('Action', true); ?></th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php
-                    $i = 0;
-                    foreach ($items as $item) {
-                        $class = null;
-                        if ($i++ % 2 == 0) {
-                            $class = ' class="altrow"';
-                        }
-            ?>
-                        <tr<?php echo $class; ?>>
-                            //<{if isset($relationships.belongsTo)}>
-                            //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
-                <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
-                            <td><?php
-                            if (empty($item['//<{$rOption.className}>']['id'])) {
-                                echo '--';
-                            } else {
-                                echo $this->PHtml->link($item['//<{$rOption.className}>']['id'], array(
-                                    'controller' => '//<{$models[$rOption.className].table_name}>',
-                                    'action' => 'view',
-                                    $item['//<{$rOption.className}>']['id']
-                                ));
-                            }
-                ?></td>
-                <?php endif; ?>
-                            //<{/foreach}>
-                            //<{/if}>
-
-                            //<{foreach from=$fields key=className item=classFields}>
-                            //<{foreach from=$classFields key=key item=item}>
-                            <td><?php
-                            if ($item['//<{$className}>']['//<{$key}>']) {
+                    <td><?php
+                if ($item['//<{$className}>']['//<{$key}>']) {
 //<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
 
-                                echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>')) . '<br />';
+                    echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>')) . '<br />';
 //<{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
 
-                                echo $this->Html->link(
-                                        $upload->image($item, '//<{$className}>.//<{$key}>', 'thumb'),
-                                        FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>'),
-                                        array(), false, false
-                                );
+                    echo $this->Html->link(
+                            $upload->image($item, '//<{$className}>.//<{$key}>', 'thumb'), FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>'), array(), false, false
+                    );
 //<{else}>
 
-                                echo $item['//<{$className}>']['//<{$key}>'];
+                    echo $item['//<{$className}>']['//<{$key}>'];
 //<{/if}>
-
-                            }
-                ?></td>
-                        //<{/foreach}>
-                        //<{/foreach}>
-                        <td class="actions">
-<?php echo $this->PHtml->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
-                        </td>
-                    </tr>
-<?php }; // End of foreach ($items as $item) {  ?>
-            </tbody>
-        </table>
-        <div class="paging"><?php echo $this->element('paginator'); ?></div>
-                <div id="//<{$controllerName}>IndexPanel"></div>
+                }
+                    ?></td>
+                    //<{/foreach}>
+                    //<{/foreach}>
+                    <td class="actions">
+    <?php echo $this->PHtml->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
+                    </td>
+                </tr>
+                    <?php }; // End of foreach ($items as $item) {  ?>
+        </tbody>
+    </table>
+    <div class="paging"><?php echo $this->element('paginator'); ?></div>
+    <div id="//<{$controllerName}>IndexPanel"></div>
 <?php
-                        $scripts = '
+$scripts = '
 $(function() {
     $(\'#//<{$controllerName}>IndexTable th a, div.paging a, a.//<{$controllerName}>IndexControl\').click(function() {
         $(\'#//<{$controllerName}>Index\').parent().load(this.href);
         return false;
     });
 });';
-                        echo $this->Html->scriptBlock($scripts);
+echo $this->Html->scriptBlock($scripts);
 ?>
 </div>
