@@ -145,8 +145,7 @@ class ProjectsController extends AppController {
                  * Confirm the tables and models
                  */
                 foreach ($project['Form'] AS $key => $form) {
-                    $models[$form['name']]['file_name'] = Inflector::singularize($form['name']);
-                    $models[$form['name']]['model_name'] = Inflector::camelize($models[$form['name']]['file_name']);
+                    $models[$form['name']]['file_name'] = $models[$form['name']]['model_name'] = Inflector::camelize(Inflector::singularize($form['name']));
                     $models[$form['name']]['table_name'] = Inflector::tableize($models[$form['name']]['model_name']);
                     $models[$form['name']]['controller_name'] = Inflector::camelize($models[$form['name']]['table_name']);
                     $models[$form['name']]['label'] = $form['label'];
