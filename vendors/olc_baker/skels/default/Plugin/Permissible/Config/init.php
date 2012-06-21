@@ -1,5 +1,5 @@
 <?php
-require App::pluginPath('Permissible') . 'config/bootstrap.php';
+require App::pluginPath('Permissible') . 'Config/bootstrap.php';
 # Ensure Permissible array exists
 if (Configure::read('Permissible') === null) {
     Configure::write('Permissible', array());

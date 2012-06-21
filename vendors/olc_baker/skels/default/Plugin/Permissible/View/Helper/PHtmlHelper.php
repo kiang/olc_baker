@@ -1,6 +1,6 @@
 <?php
 App::import('Helper', 'Html');
-require_once App::pluginPath('Permissible') . 'config/init.php';
+require_once App::pluginPath('Permissible') . 'Config/init.php';
 /**
  * Permissible Plugin PHtml Helper class
  *

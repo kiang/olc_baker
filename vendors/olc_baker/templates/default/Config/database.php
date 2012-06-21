@@ -2,8 +2,8 @@
 
 class DATABASE_CONFIG {
 
-    var $default = array(
-        'driver' => 'mysql',
+    public $default = array(
+        'datasource' => 'Database/Mysql',
         'persistent' => false,
         'host' => '//<{$db_host}>',
         'login' => '//<{$db_login}>',

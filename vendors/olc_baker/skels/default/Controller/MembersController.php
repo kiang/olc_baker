@@ -10,12 +10,18 @@ class MembersController extends AppController {
 
     function beforeFilter() {
         parent::beforeFilter();
-        $this->Auth->allowedActions = array('login', 'logout', 'setup');
+        if (isset($this->Auth)) {
+            $this->Auth->allow('login', 'logout', 'setup');
+        }
     }
 
     function login() {
         if (!$this->Member->hasAny()) {
             $this->redirect(array('action' => 'setup'));
+        } elseif ($this->Auth->login()) {
+            return $this->redirect($this->Auth->redirect());
+        } else {
+            $this->Session->setFlash(__('Username or password is wrong', true));
         }
     }
 
@@ -59,17 +65,17 @@ class MembersController extends AppController {
     function admin_index() {
         $scope = array();
         $keyword = '';
-        if(isset($this->params['named']['keyword'])) {
+        if (isset($this->params['named']['keyword'])) {
             $keyword = $this->params['named']['keyword'];
             $this->Session->write('Members.index.keyword', $keyword);
         } else {
             $keyword = $this->Session->read('Members.index.keyword');
         }
-        if(!empty($keyword)) {
+        if (!empty($keyword)) {
             $scope['OR'] = array(
                 'Member.username LIKE' => '%' . $keyword . '%',
                 'Group.name LIKE' => '%' . $keyword . '%',
-                );
+            );
         }
         $this->paginate['Member'] = array(
             'order' => array('Member.id DESC'),

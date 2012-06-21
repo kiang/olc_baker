@@ -63,7 +63,9 @@ class PagesController extends AppController {
 
 	function beforeFilter() {
 		parent::beforeFilter();
-		$this->Auth->allowedActions = array('display');
+                if (isset($this->Auth)) {
+                    $this->Auth->allow('display');
+                }
 	}
 
 	function display() {

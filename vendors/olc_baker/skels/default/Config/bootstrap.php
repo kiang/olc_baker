@@ -1,3 +1,3 @@
 <?php
-require App::pluginPath('Permissible') . 'config/init.php';
 CakePlugin::loadAll();
+require App::pluginPath('Permissible') . 'Config/init.php';
