@@ -18,10 +18,13 @@ class MembersController extends AppController {
     function login() {
         if (!$this->Member->hasAny()) {
             $this->redirect(array('action' => 'setup'));
-        } elseif ($this->Auth->login()) {
-            return $this->redirect($this->Auth->redirect());
-        } else {
-            $this->Session->setFlash(__('Username or password is wrong', true));
+        }
+        if (!empty($this->request->data['Member']['username'])) {
+            if ($this->Auth->login()) {
+                return $this->redirect($this->Auth->redirect());
+            } else {
+                $this->Session->setFlash(__('Username or password is wrong', true));
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Permissible Plugin PermissibleAco Model class
  *
@@ -8,40 +9,45 @@
  * @subpackage permissible.models
  */
 class PermissibleAco extends PermissibleAppModel {
-/**
- * Sets the name for the model
- *
- * @var array
- * @access public
- */
+
+    /**
+     * Sets the name for the model
+     *
+     * @var array
+     * @access public
+     */
     var $name = 'PermissiableAco';
-/**
- * Sets the table name for the model
- *
- * @var array
- * @access public
- */
+
+    /**
+     * Sets the table name for the model
+     *
+     * @var array
+     * @access public
+     */
     var $useTable = 'acos';
-/**
- * Array containing the names of behaviours this model uses
- *
- * @var array
- * @access public
- */
+
+    /**
+     * Array containing the names of behaviours this model uses
+     *
+     * @var array
+     * @access public
+     */
     var $actsAs = array('Tree');
-/**
- * Sets the model to cache queries for optimisation
- *
- * @var array
- * @access public
- */
+
+    /**
+     * Sets the model to cache queries for optimisation
+     *
+     * @var array
+     * @access public
+     */
     var $cacheQueries = true;
-/**
- * Recursively saves a complete ACO tree
- *
- * @return null
- * @access public
- */
+
+    /**
+     * Recursively saves a complete ACO tree
+     *
+     * @return null
+     * @access public
+     */
     function completeTreeSave($tree, $parent_id = null) {
         if ($parent_id === null) {
             $this->truncate();
@@ -57,15 +63,16 @@ class PermissibleAco extends PermissibleAppModel {
             }
         }
     }
-/**
- * Recursively updates the ACO tree
- *
- * @return null
- * @access public
- */
+
+    /**
+     * Recursively updates the ACO tree
+     *
+     * @return null
+     * @access public
+     */
     function completeTreeUpdate($tree, $parent_id = null) {
         if (!is_array($tree)) {
-            return ;
+            return;
         }
         $keys = array_keys($tree);
         sort($keys);
@@ -76,7 +83,7 @@ class PermissibleAco extends PermissibleAppModel {
             'fields' => array(
                 'PermissibleAco.alias'
             )
-        ));
+                ));
         sort($children);
         $same = ($children === $keys);
         $children = $this->find('list', array(
@@ -86,7 +93,7 @@ class PermissibleAco extends PermissibleAppModel {
             'fields' => array(
                 'PermissibleAco.alias'
             )
-        ));
+                ));
         if ($same) {
             foreach ($children as $id => $alias) {
                 $this->completeTreeUpdate($tree[$alias], $id);
@@ -111,12 +118,13 @@ class PermissibleAco extends PermissibleAppModel {
             }
         }
     }
-/**
- * Automates finding of ARO aliases where possible
- *
- * @return array Results
- * @access public
- */
+
+    /**
+     * Automates finding of ARO aliases where possible
+     *
+     * @return array Results
+     * @access public
+     */
     function afterFind($results, $primary) {
         foreach ($results as $key => $result) {
             if (!isset($result[$this->alias]['alias']) && isset($result[$this->alias]['model'])) {
@@ -145,16 +153,17 @@ class PermissibleAco extends PermissibleAppModel {
         }
         return $results;
     }
-/**
- * Generates a list of ACOs
- *
- * @return array List
- * @access public
- */
+
+    /**
+     * Generates a list of ACOs
+     *
+     * @return array List
+     * @access public
+     */
     function generateList($parent = null) {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
-        ), null, null, null, 1);
+                ), null, null, null, 1);
         $ret = array();
         foreach ($temp as $id => $name) {
             $this->id = $id;
@@ -167,16 +176,17 @@ class PermissibleAco extends PermissibleAppModel {
         }
         return $ret;
     }
-/**
- * Generates a list of ACOs and whether an ARO can access them
- *
- * @return array List
- * @access public
- */
+
+    /**
+     * Generates a list of ACOs and whether an ARO can access them
+     *
+     * @return array List
+     * @access public
+     */
     function generateListPerms($Acl, $aro_alias, $aco_alias = array(), $parent = null) {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
-        ), null, null, null, 1);
+                ), null, null, null, 1);
         $ret = array();
         foreach ($temp as $id => $name) {
             $this->id = $id;
@@ -194,12 +204,13 @@ class PermissibleAco extends PermissibleAppModel {
         }
         return $ret;
     }
-/**
- * Wipes then resets the ACO tree
- *
- * @return boolean ACO/ARO tree valid
- * @access public
- */
+
+    /**
+     * Wipes then resets the ACO tree
+     *
+     * @return boolean ACO/ARO tree valid
+     * @access public
+     */
     function reset() {
         $this->completeTreeSave($this->getCompleteTree());
         $Aro = ClassRegistry::init('Permissible.PermissibleAro');
@@ -208,24 +219,26 @@ class PermissibleAco extends PermissibleAppModel {
                 'PermissibleAro.parent_id' => null,
                 'PermissibleAro.alias' => 'everyone'
             )
-        ));
+                ));
         return ($aro !== false);
     }
-/**
- * Refreshes the ACO tree
- *
- * @return null
- * @access public
- */
+
+    /**
+     * Refreshes the ACO tree
+     *
+     * @return null
+     * @access public
+     */
     function refresh() {
         $this->completeTreeUpdate($this->getCompleteTree());
     }
-/**
- * Gets a complete list of plugins/controllers/actions
- *
- * @return array List
- * @access public
- */
+
+    /**
+     * Gets a complete list of plugins/controllers/actions
+     *
+     * @return array List
+     * @access public
+     */
     function getCompleteTree() {
         App::uses('Folder', 'Utility');
         $acos = array(
@@ -236,30 +249,35 @@ class PermissibleAco extends PermissibleAppModel {
         $app_cont = new AppController();
         $app_cont = get_class_methods($app_cont);
         foreach ($controllers[1] as $file) {
-            if (substr($file, -15) === '_controller.php') {
+            if (substr($file, -14) === 'Controller.php') {
                 $cont = Inflector::camelize(substr($file, 0, -4));
-                if (App::import('Controller', substr($cont, 0, -10))) {
-                    $cont_clas = new $cont();
-                    $methods = array_diff(get_class_methods($cont_clas), $app_cont);
-                    foreach ($methods as $key => $method) {
-                        if (substr($method, 0, 1) === '_') {
-                            unset($methods[$key]);
+                $controllerName = substr($cont, 0, -10);
+                if ($controllerName === 'App') {
+                    continue;
+                } else {
+                    if (App::import('Controller', $controllerName)) {
+                        $cont_clas = new $cont();
+                        $methods = array_diff(get_class_methods($cont_clas), $app_cont);
+                        foreach ($methods as $key => $method) {
+                            if (substr($method, 0, 1) === '_') {
+                                unset($methods[$key]);
+                            }
                         }
+                        sort($methods);
+                        $acos['app'][Inflector::camelize(substr($cont, 0, -10))] = array_flip($methods);
                     }
-                    sort($methods);
-                    $acos['app'][Inflector::camelize(substr($cont, 0, -10))] = array_flip($methods);
                 }
             }
         }
-        foreach(App::objects('plugin') as $plugin) {
-            $folder = new Folder(App::pluginPath($plugin) . 'controllers/');
+        foreach (App::objects('plugin') as $plugin) {
+            $folder = new Folder(App::pluginPath($plugin) . 'Controller/');
             $controllers = $folder->read();
             if ($controllers[1] !== array() && App::import('Controller', $plugin . '.' . $plugin . 'App')) {
                 $plug_cont = $plugin . 'AppController';
                 $plug_cont = new $plug_cont();
                 $plug_cont = get_class_methods($plug_cont);
                 foreach ($controllers[1] as $file) {
-                    if (substr($file, -15) === '_controller.php') {
+                    if (substr($file, -14) === 'Controller.php') {
                         $cont = Inflector::camelize(substr($file, 0, -4));
                         if (App::import('Controller', $plugin . '.' . substr($cont, 0, -10))) {
                             $cont_clas = new $cont();
@@ -278,4 +296,5 @@ class PermissibleAco extends PermissibleAppModel {
         }
         return $acos;
     }
+
 }

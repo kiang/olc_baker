@@ -25,14 +25,12 @@ class Member extends AppModel {
             return array('Group' => array('id' => $data['Member']['group_id']));
         }
     }
-
-    function beforeSave() {
-        if (isset($this->data['Member']['password']) &&
-                $this->data['Member']['password'] == Security::hash('', null, true)
-        ) {
-            if (!$this->id) {
-                $this->validationErrors['password'] = __('Password can\'t not be empty.', true);
-                return false;
+    
+    function beforeSave($options) {
+        if (isset($this->data['Member']['password'])) {
+            $this->data['Member']['password'] = trim($this->data['Member']['password']);
+            if (!empty($this->data['Member']['password'])) {
+                $this->data['Member']['password'] = Security::hash(Configure::read('Security.salt') . $this->data['Member']['password']);
             } else {
                 unset($this->data['Member']['password']);
             }

@@ -1,5 +1,5 @@
 <?php
-require_once App::pluginPath('Permissible') . 'config/init.php';
+require_once App::pluginPath('Permissible') . 'Config/init.php';
 /**
  * Permissible Plugin PermissibleUser Model class
  *
