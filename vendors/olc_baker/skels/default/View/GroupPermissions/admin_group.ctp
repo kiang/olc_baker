@@ -40,7 +40,7 @@ echo $group['Group']['name'];
     <?php echo $this->Form->end(__('Update', true)); ?>
             <div class="actions">
                 <ul>
-                    <li><?php echo $this->PHtml->link(__('Advanced', true), array(
+                    <li><?php echo $this->Html->link(__('Advanced', true), array(
                 'controller' => 'groups', 'action' => 'acos', $group['Group']['id'])); ?></li>
         </ul>
     </div>

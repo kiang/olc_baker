@@ -7,6 +7,7 @@
 class MembersController extends AppController {
 
     var $name = 'Members';
+    var $paginate = array();
 
     function beforeFilter() {
         parent::beforeFilter();

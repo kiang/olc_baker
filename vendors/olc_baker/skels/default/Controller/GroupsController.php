@@ -6,6 +6,7 @@
 class GroupsController extends AppController {
 
     var $name = 'Groups';
+    var $paginate = array();
 
     function admin_index($parentId = 0) {
         $this->paginate['Group'] = array(

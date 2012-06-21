@@ -14,8 +14,8 @@
         <ul>
             <li><?php echo $this->Html->link(__('New Group Permission', true), array(
     'action' => 'add'), array('class' => 'groupPermissionsIndexControl')); ?></li>
-            <li><?php echo $this->PHtml->link(__('Members', true), array('controller' => 'members')); ?></li>
-            <li><?php echo $this->PHtml->link(__('Groups', true), array('controller' => 'groups')); ?></li>
+            <li><?php echo $this->Html->link(__('Members', true), array('controller' => 'members')); ?></li>
+            <li><?php echo $this->Html->link(__('Groups', true), array('controller' => 'groups')); ?></li>
         </ul>
     </div>
     <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>

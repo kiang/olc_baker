@@ -3,6 +3,7 @@
 class GroupPermissionsController extends AppController {
 
     var $name = 'GroupPermissions';
+    var $paginate = array();
 
     function admin_index($parentId = 0) {
         $parentId = intval($parentId);
