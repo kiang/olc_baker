@@ -227,7 +227,7 @@ class PermissibleAco extends PermissibleAppModel {
  * @access public
  */
     function getCompleteTree() {
-        App::import('Core', array('File', 'Folder'));
+        App::uses('Folder', 'Utility');
         $acos = array(
             'app' => array()
         );
