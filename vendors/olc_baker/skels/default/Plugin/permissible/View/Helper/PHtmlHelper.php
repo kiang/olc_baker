@@ -76,7 +76,7 @@ class PHtmlHelper extends HtmlHelper {
                 list($plugin, $name) = pluginSplit($name);
                 $name .= 'Component';
             } else {
-                trigger_error(sprintf(__('Could not find %s.', true), $name), E_USER_WARNING);
+                trigger_error(sprintf(__('Could not find %s.'), $name), E_USER_WARNING);
             }
         }
         $this->_Instance =& new $name();

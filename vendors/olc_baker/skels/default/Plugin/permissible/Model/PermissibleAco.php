@@ -231,7 +231,7 @@ class PermissibleAco extends PermissibleAppModel {
         $acos = array(
             'app' => array()
         );
-        $cont_fold = new Folder(CONTROLLERS);
+        $cont_fold = new Folder(APP . 'Controller' . DS);
         $controllers = $cont_fold->read();
         $app_cont = new AppController();
         $app_cont = get_class_methods($app_cont);
