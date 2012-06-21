@@ -2,7 +2,7 @@
 App::uses('Controller', 'Controller');
 class AppController extends Controller {
 
-    var $helpers = array('Html', 'Permissible.PHtml', 'Form', 'Js', 'Session');
+    var $helpers = array('Html', 'Form', 'Js', 'Session');
     var $components = array('Acl', 'Auth', 'RequestHandler', 'Session');
 
     function beforeFilter() {

@@ -410,7 +410,7 @@ class ProjectsController extends AppController {
                 'operactions' => $operactions,
             );
             $this->Project->smarty->assign('projectLabel', $project['Project']['label']);
-            $this->Project->smarty->assign('Controller', $controllers);
+            $this->Project->smarty->assign('controllers', $controllers);
             $file = DS . 'View' . DS . 'Layouts' . DS . 'default.ctp';
             $operactions = array();
             $operactions[] = $project['Project']['app_path'] . $file . ' created';

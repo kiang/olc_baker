@@ -8,7 +8,7 @@
 if (empty($this->data['//<{$rOption.className}>']['id'])) {
     echo '--';
 } else {
-    echo $this->PHtml->link($this->data['//<{$rOption.className}>']['id'], array(
+    echo $this->Html->link($this->data['//<{$rOption.className}>']['id'], array(
         'controller' => '//<{$models[$rOption.className].table_name}>',
         'action' => 'view',
         $this->data['//<{$rOption.className}>']['id']
@@ -46,20 +46,20 @@ if (empty($this->data['//<{$rOption.className}>']['id'])) {
     </div>
     <div class="actions">
         <ul>
-            <li><?php echo $this->PHtml->link(__('//<{$formLabel}> List', true), array('action' => 'index')); ?> </li>
+            <li><?php echo $this->Html->link(__('//<{$formLabel}> List', true), array('action' => 'index')); ?> </li>
             //<{if isset($relationships.hasOne)}>
             //<{foreach from=$relationships.hasOne key=rModel item=rOption}>
-            <li><?php echo $this->PHtml->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['//<{$rOption.className}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
+            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['//<{$rOption.className}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
             //<{/foreach}>
             //<{/if}>
             //<{if isset($relationships.hasMany)}>
             //<{foreach from=$relationships.hasMany key=rModel item=rOption}>
-            <li><?php echo $this->PHtml->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
+            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
             //<{/foreach}>
             //<{/if}>
             //<{if isset($relationships.hasAndBelongsToMany)}>
             //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
-            <li><?php echo $this->PHtml->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
+            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>ViewControl')); ?></li>
             //<{/foreach}>
             //<{/if}>
         </ul>

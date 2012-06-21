@@ -4,7 +4,7 @@
     <div class="clear actions">
         <ul>
             //<{foreach from=$actions key=linkPath item=linkItem}>
-            <li><?php echo $this->PHtml->link('//<{$linkItem.label}>', array('action' => '//<{$linkPath}>'), array('class' => '//<{$linkItem.class}>')); ?></li>
+            <li><?php echo $this->Html->link('//<{$linkItem.label}>', array('action' => '//<{$linkPath}>'), array('class' => '//<{$linkItem.class}>')); ?></li>
             //<{/foreach}>
         </ul>
     </div>
@@ -60,7 +60,7 @@
                 if (empty($item['//<{$rOption.className}>']['id'])) {
                     echo '--';
                 } else {
-                    echo $this->PHtml->link($item['//<{$rOption.className}>']['id'], array(
+                    echo $this->Html->link($item['//<{$rOption.className}>']['id'], array(
                         'controller' => '//<{$models[$rOption.className].table_name}>',
                         'action' => 'view',
                         $item['//<{$rOption.className}>']['id']
@@ -92,7 +92,7 @@
                     //<{/foreach}>
                     //<{/foreach}>
                     <td class="actions">
-    <?php echo $this->PHtml->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
+    <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
                     </td>
                 </tr>
                     <?php }; // End of foreach ($items as $item) {  ?>
