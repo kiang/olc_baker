@@ -482,10 +482,10 @@ class ProjectsController extends AppController {
                 ))) {
             $this->Session->setFlash(__('Please do following links in the page'));
         } else {
-            App::Import('vendor', 'migrations');
-            $db = & ConnectionManager::getInstance();
+            require_once VENDORS . 'migrations/migrations.php';
+            $db = new ConnectionManager();
             $db->create('olc_baker-dev', array(
-                'driver' => 'mysql',
+                'datasource' => 'Database/Mysql',
                 'host' => $project['Project']['db_host'],
                 'login' => $project['Project']['db_login'],
                 'password' => $project['Project']['db_password'],
@@ -501,7 +501,7 @@ class ProjectsController extends AppController {
             $migrations = new Migrations('olc_baker-dev');
             $migrations->load($sqlPath . DS . 'schema.yaml');
             $migrations->down();
-            $migrations->strtoupper();
+            $migrations->up();
             $this->Session->setFlash(__('Database was rebuilt'));
         }
         $this->redirect(array('action' => 'index'));
