@@ -61,7 +61,7 @@ $class = ' class="altrow"'; ?>
                 </tr>
         <?php
                 $i = 0;
-                foreach ($this->Forms as $this->Form) {
+                foreach ($forms as $form) {
                     $class = null;
                     if ($i++ % 2 == 0) {
                         $class = ' class="altrow"';
@@ -69,21 +69,21 @@ $class = ' class="altrow"'; ?>
         ?>
                     <tr<?php echo $class; ?>>
                         <td>
-                <?php echo $this->Form['Form']['name']; ?>
+                <?php echo $form['Form']['name']; ?>
                 </td>
                 <td>
-                <?php echo $this->Form['Form']['label']; ?>
+                <?php echo $form['Form']['label']; ?>
                 </td>
                 <td>
-                <?php echo $this->Form['Form']['created']; ?>
+                <?php echo $form['Form']['created']; ?>
                 </td>
                 <td>
-                <?php echo $this->Form['Form']['modified']; ?>
+                <?php echo $form['Form']['modified']; ?>
                 </td>
                 <td class="actions">
-                <?php echo $this->Html->link(__('View'), array('controller' => 'forms', 'action' => 'view', $this->Form['Form']['id'])); ?>
-                <?php echo $this->Html->link(__('Edit'), array('controller' => 'forms', 'action' => 'edit', $this->Form['Form']['id']), array('class' => 'dialogControl')); ?>
-                <?php echo $this->Html->link(__('Delete'), array('controller' => 'forms', 'action' => 'delete', $this->Form['Form']['id']), null, __('Delete the item, sure?')); ?>
+                <?php echo $this->Html->link(__('View'), array('controller' => 'forms', 'action' => 'view', $form['Form']['id'])); ?>
+                <?php echo $this->Html->link(__('Edit'), array('controller' => 'forms', 'action' => 'edit', $form['Form']['id']), array('class' => 'dialogControl')); ?>
+                <?php echo $this->Html->link(__('Delete'), array('controller' => 'forms', 'action' => 'delete', $form['Form']['id']), null, __('Delete the item, sure?')); ?>
                 </td>
             </tr>
         <?php } ?>

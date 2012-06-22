@@ -53,7 +53,7 @@ $class = ' class="altrow"'; ?>
         </tr>
         <?php
                 $i = 0;
-                foreach ($this->FormFields as $this->FormField) {
+                foreach ($formFields as $formField) {
                     $class = null;
                     if ($i++ % 2 == 0) {
                         $class = ' class="altrow"';
@@ -61,27 +61,27 @@ $class = ' class="altrow"'; ?>
         ?>
                     <tr<?php echo $class; ?>>
                         <td>
-                <?php echo $this->FormField['FormField']['label']; ?>
-            			(<?php echo $this->FormField['FormField']['name']; ?>)
+                <?php echo $formField['FormField']['label']; ?>
+            			(<?php echo $formField['FormField']['name']; ?>)
                 </td>
                 <td>
-                <?php echo $this->FormField['FormField']['type']; ?>
+                <?php echo $formField['FormField']['type']; ?>
                 </td>
                 <td>
-                <?php echo $this->FormField['FormField']['sort']; ?>
+                <?php echo $formField['FormField']['sort']; ?>
                 </td>
                 <td>
-                <?php echo ($this->FormField['FormField']['is_required'] == 0) ? __('Not required') : __('Required'); ?>
+                <?php echo ($formField['FormField']['is_required'] == 0) ? __('Not required') : __('Required'); ?>
                 </td>
                 <td>
-                <?php echo $this->FormField['FormField']['created']; ?>
+                <?php echo $formField['FormField']['created']; ?>
                 </td>
                 <td>
-                <?php echo $this->FormField['FormField']['modified']; ?>
+                <?php echo $formField['FormField']['modified']; ?>
                 </td>
                 <td class="actions">
-                <?php echo $this->Html->link(__('Edit'), array('controller' => 'form_fields', 'action' => 'edit', $this->FormField['FormField']['id']), array('class' => 'dialogControl')); ?>
-                <?php echo $this->Html->link(__('Delete'), array('controller' => 'form_fields', 'action' => 'delete', $this->FormField['FormField']['id']), null, __('Delete the item, sure?')); ?>
+                <?php echo $this->Html->link(__('Edit'), array('controller' => 'form_fields', 'action' => 'edit', $formField['FormField']['id']), array('class' => 'dialogControl')); ?>
+                <?php echo $this->Html->link(__('Delete'), array('controller' => 'form_fields', 'action' => 'delete', $formField['FormField']['id']), null, __('Delete the item, sure?')); ?>
                 </td>
             </tr>
         <?php } ?>
