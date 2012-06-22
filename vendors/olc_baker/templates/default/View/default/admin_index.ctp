@@ -40,14 +40,14 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 //<{if isset($relationships.belongsTo)}>
                 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
                 <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
-                    <th><?php echo $this->Paginator->sort('//<{$models[$rOption.className].label}>', '//<{$modelName}>.//<{$rOption.foreignKey}>', array('url' => $url)); ?></th>
+                    <th><?php echo $this->Paginator->sort('//<{$modelName}>.//<{$rOption.foreignKey}>', '//<{$models[$rOption.className].label}>', array('url' => $url)); ?></th>
                 <?php endif; ?>
                 //<{/foreach}>
                 //<{/if}>
 
                 //<{foreach from=$fields key=className item=classFields}>
                 //<{foreach from=$classFields key=key item=item}>
-                <th><?php echo $this->Paginator->sort('//<{$item.label}>', '//<{$modelName}>.//<{$key}>', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('//<{$modelName}>.//<{$key}>', '//<{$item.label}>', array('url' => $url)); ?></th>
                 //<{/foreach}>
                 //<{/foreach}>
                 <th class="actions"><?php echo __('Action', true); ?></th>
