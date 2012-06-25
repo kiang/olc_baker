@@ -86,9 +86,9 @@ class GroupsController extends AppController {
             $this->Session->setFlash(__('Please select a group first!', true));
             $this->redirect(array('action' => 'index'));
         }
-        if (!empty($this->params['form'])) {
+        if (!empty($this->data)) {
             $count = 0;
-            foreach ($this->params['form'] AS $key => $val) {
+            foreach ($this->data AS $key => $val) {
                 if (strstr($key, '___')) {
                     $key = str_replace('___', '/', $key);
                     if ($val == '+') {
