@@ -570,7 +570,7 @@ class ProjectsController extends AppController {
                         'ds' => 'olc_baker-dev'
                     ));
             $this->set('tableName', $tableName);
-            $this->set('schema', $tempModel->_schema);
+            $this->set('schema', $tempModel->schema());
             $this->set('types', $this->FormField->getFieldTypeList());
         }
         $this->set('projectId', $projectId);
