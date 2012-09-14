@@ -292,8 +292,7 @@ class ProjectsController extends AppController {
                     $fileContent = $this->Project->smarty->fetch('default' . DS . 'Model' . DS . 'default.php');
                     $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
-                            $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php',
-                            $fileContent
+                            $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php', $fileContent
                     );
                     chmod($project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php', 0777);
                     $operactions[] = $project['Project']['app_path'] . DS . 'Model' . DS . $file_name . '.php created';
@@ -370,25 +369,23 @@ class ProjectsController extends AppController {
                         $this->Project->smarty->assign('fields', $customFields);
                         $this->Project->smarty->assign('blocks', $blocks);
                         $fileContent = $this->Project->smarty->fetch(
-                                        VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp');
+                                VENDORS . 'olc_baker' . DS . 'actions' . DS . $action['engine'] . '.ctp');
                         $fileContent = str_replace("\n//\n", "\n", $fileContent);
                         file_put_contents(
-                                $viewPath . $action['action'] . '.ctp',
-                                $fileContent
+                                $viewPath . $action['action'] . '.ctp', $fileContent
                         );
                         chmod($viewPath . $action['action'] . '.ctp', 0777);
                         $this->Project->smarty->assign('actionName', $action['action']);
                         $customMethods .= $this->Project->smarty->fetch(
-                                        VENDORS . 'olc_baker' . DS . 'actions' . DS . 'methods' . DS .
-                                        $action['parameters']['methods']['method'] . '.php'
+                                VENDORS . 'olc_baker' . DS . 'actions' . DS . 'methods' . DS .
+                                $action['parameters']['methods']['method'] . '.php'
                         );
                         $operactions[] = $viewPath . $action['action'] . '.ctp created';
                     }
                     $this->Project->smarty->assign('fields', $fields);
                     $this->Project->smarty->assign('actions', $actions);
                     file_put_contents(
-                            $viewPath . 'index.ctp',
-                            $this->Project->smarty->fetch('default' . DS . 'View' . DS . 'default' . DS . 'index.ctp')
+                            $viewPath . 'index.ctp', $this->Project->smarty->fetch('default' . DS . 'View' . DS . 'default' . DS . 'index.ctp')
                     );
                     chmod($viewPath . 'index.ctp', 0777);
                     $operactions[] = $viewPath . 'index.ctp created';
@@ -397,8 +394,7 @@ class ProjectsController extends AppController {
                     $fileContent = $this->Project->smarty->fetch('default' . DS . 'Controller' . DS . 'default.php');
                     $fileContent = str_replace("\n//\n", "\n", $fileContent);
                     file_put_contents(
-                            $project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php',
-                            $fileContent
+                            $project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php', $fileContent
                     );
                     chmod($project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php', 0777);
                     $operactions[] = $project['Project']['app_path'] . DS . 'Controller' . DS . $controller_name . 'Controller.php created';
@@ -447,7 +443,8 @@ class ProjectsController extends AppController {
             $aResult = array();
             $sqlContent = "SET NAMES utf8;\n\n";
             $aResult['UP'] = $aResult['DOWN'] = array();
-            $aResult['UP']['create_table'] = include(VENDORS . 'olc_baker' . DS . 'base_schema.php');;
+            $aResult['UP']['create_table'] = include(VENDORS . 'olc_baker' . DS . 'base_schema.php');
+            ;
             $aResult['DOWN']['drop_table'] = array(
                 'acos', 'aros', 'aros_acos', 'members', 'groups',);
             foreach ($aResult['UP']['create_table'] AS $table => $tableSchema) {
@@ -477,8 +474,8 @@ class ProjectsController extends AppController {
 
     function rebuild_db($projectId = null) {
         if (!$projectId || !$project = $this->Project->find('first', array(
-                    'conditions' => array('Project.id' => $projectId),
-                    'contain' => array(),
+            'conditions' => array('Project.id' => $projectId),
+            'contain' => array(),
                 ))) {
             $this->Session->setFlash(__('Please do following links in the page'));
         } else {
@@ -515,9 +512,9 @@ class ProjectsController extends AppController {
         $projectId = intval($projectId);
 
         if ($project = $this->Project->read(null, $projectId)) {
-            $db = & ConnectionManager::getInstance();
+            $db = new ConnectionManager;
             $db->create('olc_baker-dev', array(
-                'driver' => 'mysql',
+                'datasource' => 'Database/Mysql',
                 'host' => $project['Project']['db_host'],
                 'login' => $project['Project']['db_login'],
                 'password' => $project['Project']['db_password'],
@@ -528,9 +525,11 @@ class ProjectsController extends AppController {
             $dbn = $db->getDataSource('olc_baker-dev');
             $tables = $dbn->listSources();
             $currentForms = Set::extract('{n}.name', $project['Form']);
-            foreach ($currentForms AS $formName) {
-                if ($key = array_search($formName, $tables)) {
-                    unset($tables[$key]);
+            if (!empty($currentForms)) {
+                foreach ($currentForms AS $formName) {
+                    if ($key = array_search($formName, $tables)) {
+                        unset($tables[$key]);
+                    }
                 }
             }
         }
