@@ -545,17 +545,19 @@ class ProjectsController extends AppController {
                                 'label' => $this->request->data['Form']['label'],
                                 )))) {
                     $formId = $this->FormField->Form->getInsertID();
-                    foreach ($this->request->data['Field'] AS $fieldName => $fieldOption) {
-                        $this->FormField->create();
-                        $this->FormField->save(array('FormField' => array(
-                                'form_id' => $formId,
-                                'sort' => $fieldOption['sort'],
-                                'is_required' => $fieldOption['is_required'],
-                                'name' => $fieldName,
-                                'label' => $fieldOption['label'],
-                                'type' => $fieldOption['type'],
-                                'function_type' => 1,
-                                )));
+                    if (!empty($this->request->data['Field'])) {
+                        foreach ($this->request->data['Field'] AS $fieldName => $fieldOption) {
+                            $this->FormField->create();
+                            $this->FormField->save(array('FormField' => array(
+                                    'form_id' => $formId,
+                                    'sort' => $fieldOption['sort'],
+                                    'is_required' => $fieldOption['is_required'],
+                                    'name' => $fieldName,
+                                    'label' => $fieldOption['label'],
+                                    'type' => $fieldOption['type'],
+                                    'function_type' => 1,
+                                    )));
+                        }
                     }
                     $this->Session->setFlash(__('The form has been generated'));
                     $this->redirect('/forms/view/' . $formId);
