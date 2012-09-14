@@ -23,27 +23,30 @@
                 <h1><?php echo $this->Html->link('//<{$projectLabel}>', '/'); ?></h1>
             </div>
             <div id="content">
-                <div class="actions">
-                    <ul>
-                        <?php if ($this->Session->read('Auth.User.id')): ?>
-                            //<{foreach from=$controllers key=key item=item}>
-                            <li><?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>'); ?></li>
-                            //<{/foreach}>
-                            <li><?php echo $this->Html->link('Members', '/admin/members'); ?></li>
-                            <li><?php echo $this->Html->link('Groups', '/admin/groups'); ?></li>
-                            <li><?php echo $this->Html->link('Logout', '/members/logout'); ?></li>
-                        <?php else: ?>
-                            <li><?php echo $this->Html->link('Login', '/members/login'); ?></li>
-                        <?php endif; ?>
-                        <?php
-                        if (!empty($actions_for_layout)) {
-                            foreach ($actions_for_layout as $title => $url) {
-                                echo '<li>' . $this->Html->link($title, $url) . '</li>';
+                <div class="navbar">
+                    <div class="navbar-inner">
+                        <ul class="nav">
+                            <?php if ($this->Session->read('Auth.User.id')): ?>
+                                //<{foreach from=$controllers key=key item=item}>
+                                <li><?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>'); ?></li>
+                                //<{/foreach}>
+                                <li><?php echo $this->Html->link('Members', '/admin/members'); ?></li>
+                                <li><?php echo $this->Html->link('Groups', '/admin/groups'); ?></li>
+                                <li><?php echo $this->Html->link('Logout', '/members/logout'); ?></li>
+                            <?php else: ?>
+                                <li><?php echo $this->Html->link('Login', '/members/login'); ?></li>
+                            <?php endif; ?>
+                            <?php
+                            if (!empty($actions_for_layout)) {
+                                foreach ($actions_for_layout as $title => $url) {
+                                    echo '<li>' . $this->Html->link($title, $url) . '</li>';
+                                }
                             }
-                        }
-                        ?>
-                    </ul>
+                            ?>
+                        </ul>
+                    </div>
                 </div>
+
                 <?php echo $this->Session->flash(); ?>
                 <div id="viewContent"><?php echo $content_for_layout; ?></div>
             </div>
