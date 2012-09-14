@@ -1,10 +1,4 @@
 <div id="//<{$controllerName}>AdminAdd">
-    <div class="clear actions">
-        <ul>
-            <li><?php echo $this->Html->link(__('List', true), array('action' => 'index')); ?></li>
-        </ul>
-    </div>
-
     //<{if isset($relationships.belongsTo)}>
     <?php
     $url = array();
@@ -14,7 +8,7 @@
         $url = array('action' => 'add');
         $foreignModel = '';
     }
-    echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'url' => $url));
+    echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'url' => $url, 'class' => 'form-inline'));
     ?>
     <div class="addForm"><?php echo $this->Html->link(' ', array('action' => 'form', 0, $foreignModel)); ?></div>
     //<{else}>

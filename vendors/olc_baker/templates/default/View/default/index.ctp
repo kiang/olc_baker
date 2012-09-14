@@ -24,7 +24,7 @@
         ));
         ?></p>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
-    <table cellpadding="0" cellspacing="0" id="//<{$controllerName}>IndexTable">
+    <table class="table table-bordered" id="//<{$controllerName}>IndexTable">
         <thead>
             <tr>
                 //<{if isset($relationships.belongsTo)}>

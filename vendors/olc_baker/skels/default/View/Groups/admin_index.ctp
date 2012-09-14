@@ -1,5 +1,13 @@
 <div id="GroupsAdminIndex">
-    <h2><?php __('Group management', true); ?></h2>
+    <h2><?php echo __('Groups', true); ?></h2>
+    <div class="btn-group">
+            <?php if ($parentId > 0): ?>
+                <?php echo $this->Html->link(__('Upper level', true), array('action' => 'index', $upperLevelId), array('class' => 'btn')); ?>
+            <?php endif; ?>
+            <?php echo $this->Html->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'btn dialogControl')); ?>
+            <?php echo $this->Html->link(__('Members', true), array('controller' => 'members'), array('class' => 'btn')); ?>
+            <?php echo $this->Html->link(__('Group Permissions', true), array('controller' => 'group_permissions'), array('class' => 'btn')); ?>
+    </div>
     <p>
         <?php
         echo $this->Paginator->counter(array(
@@ -8,7 +16,7 @@
         ?>
     </p>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
-    <table cellpadding="0" cellspacing="0" id="GroupsAdminIndexTable">
+    <table class="table table-bordered" id="GroupsAdminIndexTable">
         <tr>
             <th><?php echo $this->Paginator->sort(__('Id', true), 'id'); ?></th>
             <th><?php echo $this->Paginator->sort(__('Name', true), 'name'); ?></th>
@@ -43,16 +51,6 @@
         <?php endforeach; ?>
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
-    <div class="actions">
-        <ul>
-            <?php if ($parentId > 0): ?>
-                <li><?php echo $this->Html->link(__('Upper level', true), array('action' => 'index', $upperLevelId)); ?></li>
-            <?php endif; ?>
-            <li><?php echo $this->Html->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'dialogControl')); ?></li>
-            <li><?php echo $this->Html->link(__('Members', true), array('controller' => 'members')); ?></li>
-            <li><?php echo $this->Html->link(__('Group Permissions', true), array('controller' => 'group_permissions')); ?></li>
-        </ul>
-    </div>
     <div id="GroupsAdminIndexPanel"></div>
     <?php
     echo $this->Html->scriptBlock('
