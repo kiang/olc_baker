@@ -18,7 +18,10 @@ class PermissibleAppModel extends AppModel {
         $db =& ConnectionManager::getDataSource($this->useDbConfig);
         $tablename = $db->fullTableName($this);
         if(!empty($tablename)) {
-            return $db->query('TRUNCATE TABLE ' . $tablename . ';');
+            $db->query('SET FOREIGN_KEY_CHECKS=0;');
+            $result = $db->query('TRUNCATE TABLE ' . $tablename . ';');
+            $db->query('SET FOREIGN_KEY_CHECKS=1;');
+            return $result;
         } else {
             return false;
         }
