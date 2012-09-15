@@ -7,8 +7,8 @@
             <?php echo $title_for_layout; ?>
         </title><?php
             echo $this->Html->meta('icon');
-            echo $this->Html->css('bootstrap.min');
-            echo $this->Html->css('jquery-ui', NULL, array('media' => 'screen, projection'));
+            echo $this->Html->css('jquery-ui');
+            echo $this->Html->css('bootstrap');
             echo $this->Html->css('default');
             echo $this->Html->script('bootstrap.min');
             echo $this->Html->script('jquery');
@@ -23,28 +23,24 @@
                 <h1><?php echo $this->Html->link('//<{$projectLabel}>', '/'); ?></h1>
             </div>
             <div id="content">
-                <div class="navbar">
-                    <div class="navbar-inner">
-                        <ul class="nav">
+                <div class="btn-group">
                             <?php if ($this->Session->read('Auth.User.id')): ?>
                                 //<{foreach from=$controllers key=key item=item}>
-                                <li><?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>'); ?></li>
+                                <?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>', array('class' => 'btn')); ?>
                                 //<{/foreach}>
-                                <li><?php echo $this->Html->link('Members', '/admin/members'); ?></li>
-                                <li><?php echo $this->Html->link('Groups', '/admin/groups'); ?></li>
-                                <li><?php echo $this->Html->link('Logout', '/members/logout'); ?></li>
+                                <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
+                                <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
+                                <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>
                             <?php else: ?>
-                                <li><?php echo $this->Html->link('Login', '/members/login'); ?></li>
+                                <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn')); ?>
                             <?php endif; ?>
                             <?php
                             if (!empty($actions_for_layout)) {
                                 foreach ($actions_for_layout as $title => $url) {
-                                    echo '<li>' . $this->Html->link($title, $url) . '</li>';
+                                    echo $this->Html->link($title, $url, array('class' => 'btn'));
                                 }
                             }
                             ?>
-                        </ul>
-                    </div>
                 </div>
 
                 <?php echo $this->Session->flash(); ?>
