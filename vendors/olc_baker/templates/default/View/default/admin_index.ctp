@@ -13,8 +13,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <h2><?php echo __('//<{$formLabel}>', true); ?></h2>
     <div class="btn-group">
             //<{if isset($relationships.belongsTo)}>
-            <?php $url = array_merge($url, array('action' => 'add')); ?>
-            <?php echo $this->Html->link(__('Add', true), $url, array('class' => 'btn dialogControl')); ?>
+            <?php echo $this->Html->link(__('Add', true), array_merge($url, array('action' => 'add')), array('class' => 'btn dialogControl')); ?>
             //<{else}>
             <?php echo $this->Html->link(__('Add', true), array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
             //<{/if}>
