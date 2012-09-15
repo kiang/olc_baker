@@ -10,22 +10,20 @@
     echo $this->Html->getCrumbs();
     $url = array($parent['GroupPermission']['id']);
     ?></h2>
-    <div class="actions">
-        <ul>
-            <li><?php echo $this->Html->link(__('New Group Permission', true), array(
-    'action' => 'add'), array('class' => 'groupPermissionsIndexControl')); ?></li>
-            <li><?php echo $this->Html->link(__('Members', true), array('controller' => 'members')); ?></li>
-            <li><?php echo $this->Html->link(__('Groups', true), array('controller' => 'groups')); ?></li>
-        </ul>
+    <div class="btn-group">
+            <?php echo $this->Html->link(__('New Group Permission', true), array(
+    'action' => 'add'), array('class' => 'btn groupPermissionsIndexControl')); ?>
+            <?php echo $this->Html->link(__('Members', true), array('controller' => 'members'), array('class' => 'btn')); ?>
+            <?php echo $this->Html->link(__('Groups', true), array('controller' => 'groups'), array('class' => 'btn')); ?>
     </div>
     <div class="paging"><?php echo $this->element('paginator', array('url' => $url)); ?></div>
     <table cellpadding="0" cellspacing="0">
         <tr>
-            <th><?php echo $this->Paginator->sort('id', array('url' => $url)); ?></th>
-            <th><?php echo $this->Paginator->sort('order', array('url' => $url)); ?></th>
-            <th><?php echo $this->Paginator->sort('name', array('url' => $url)); ?></th>
-            <th><?php echo $this->Paginator->sort('description', array('url' => $url)); ?></th>
-            <th><?php echo $this->Paginator->sort('acos', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('id', 'id', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('order', 'order', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('name', 'name', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('description', 'description', array('url' => $url)); ?></th>
+            <th><?php echo $this->Paginator->sort('acos', 'acos', array('url' => $url)); ?></th>
             <th class="actions"><?php __('Actions'); ?></th>
         </tr>
         <?php
