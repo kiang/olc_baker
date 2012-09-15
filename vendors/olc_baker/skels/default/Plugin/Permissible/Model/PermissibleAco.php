@@ -8,15 +8,15 @@
  * @package permissible
  * @subpackage permissible.models
  */
-class PermissibleAco extends PermissibleAppModel {
-
+class PermissibleAco extends PermissibleAppModel
+{
     /**
      * Sets the name for the model
      *
      * @var array
      * @access public
      */
-    var $name = 'PermissiableAco';
+    public $name = 'PermissiableAco';
 
     /**
      * Sets the table name for the model
@@ -24,7 +24,7 @@ class PermissibleAco extends PermissibleAppModel {
      * @var array
      * @access public
      */
-    var $useTable = 'acos';
+    public $useTable = 'acos';
 
     /**
      * Array containing the names of behaviours this model uses
@@ -32,7 +32,7 @@ class PermissibleAco extends PermissibleAppModel {
      * @var array
      * @access public
      */
-    var $actsAs = array('Tree');
+    public $actsAs = array('Tree');
 
     /**
      * Sets the model to cache queries for optimisation
@@ -40,7 +40,7 @@ class PermissibleAco extends PermissibleAppModel {
      * @var array
      * @access public
      */
-    var $cacheQueries = true;
+    public $cacheQueries = true;
 
     /**
      * Recursively saves a complete ACO tree
@@ -48,7 +48,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return null
      * @access public
      */
-    function completeTreeSave($tree, $parent_id = null) {
+    public function completeTreeSave($tree, $parent_id = null)
+    {
         if ($parent_id === null) {
             $this->truncate();
         }
@@ -70,7 +71,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return null
      * @access public
      */
-    function completeTreeUpdate($tree, $parent_id = null) {
+    public function completeTreeUpdate($tree, $parent_id = null)
+    {
         if (!is_array($tree)) {
             return;
         }
@@ -125,7 +127,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return array Results
      * @access public
      */
-    function afterFind($results, $primary) {
+    public function afterFind($results, $primary)
+    {
         foreach ($results as $key => $result) {
             if (!isset($result[$this->alias]['alias']) && isset($result[$this->alias]['model'])) {
                 $model = ClassRegistry::init($result[$this->alias]['model']);
@@ -151,6 +154,7 @@ class PermissibleAco extends PermissibleAppModel {
                 $results[$key][$this->alias]['alias'] = $alias;
             }
         }
+
         return $results;
     }
 
@@ -160,7 +164,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return array List
      * @access public
      */
-    function generateList($parent = null) {
+    public function generateList($parent = null)
+    {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
                 ), null, null, null, 1);
@@ -174,6 +179,7 @@ class PermissibleAco extends PermissibleAppModel {
             }
             $ret[] = $item[$this->alias];
         }
+
         return $ret;
     }
 
@@ -183,7 +189,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return array List
      * @access public
      */
-    function generateListPerms($Acl, $aro_alias, $aco_alias = array(), $parent = null) {
+    public function generateListPerms($Acl, $aro_alias, $aco_alias = array(), $parent = null)
+    {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
                 ), null, null, null, 1);
@@ -202,6 +209,7 @@ class PermissibleAco extends PermissibleAppModel {
             }
             $ret[] = $item[$this->alias];
         }
+
         return $ret;
     }
 
@@ -211,7 +219,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return boolean ACO/ARO tree valid
      * @access public
      */
-    function reset() {
+    public function reset()
+    {
         $this->completeTreeSave($this->getCompleteTree());
         $Aro = ClassRegistry::init('Permissible.PermissibleAro');
         $aro = $Aro->find('first', array(
@@ -220,6 +229,7 @@ class PermissibleAco extends PermissibleAppModel {
                 'PermissibleAro.alias' => 'everyone'
             )
                 ));
+
         return ($aro !== false);
     }
 
@@ -229,7 +239,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return null
      * @access public
      */
-    function refresh() {
+    public function refresh()
+    {
         $this->completeTreeUpdate($this->getCompleteTree());
     }
 
@@ -239,7 +250,8 @@ class PermissibleAco extends PermissibleAppModel {
      * @return array List
      * @access public
      */
-    function getCompleteTree() {
+    public function getCompleteTree()
+    {
         App::uses('Folder', 'Utility');
         $acos = array(
             'app' => array()
@@ -294,6 +306,7 @@ class PermissibleAco extends PermissibleAppModel {
                 }
             }
         }
+
         return $acos;
     }
 

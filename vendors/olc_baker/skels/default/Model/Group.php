@@ -1,11 +1,12 @@
 <?php
 
-class Group extends AppModel {
+class Group extends AppModel
+{
+    public $name = 'Group';
+    public $actsAs = array('Acl' => array('requester'));
 
-    var $name = 'Group';
-    var $actsAs = array('Acl' => array('requester'));
-
-    function parentNode() {
+    public function parentNode()
+    {
         if (!$this->id && empty($this->data)) {
             return null;
         }

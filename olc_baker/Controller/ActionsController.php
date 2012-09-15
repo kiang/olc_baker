@@ -1,10 +1,11 @@
 <?php
 
-class ActionsController extends AppController {
+class ActionsController extends AppController
+{
+    public $name = 'Actions';
 
-    var $name = 'Actions';
-
-    function add($formId = null) {
+    public function add($formId = null)
+    {
         if (!$formId) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -37,7 +38,8 @@ class ActionsController extends AppController {
         $this->set('engines', $this->Action->getEngineList());
     }
 
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (!$id || !$formId = $this->Action->field('form_id', array('Action.id' => $id))) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -48,7 +50,8 @@ class ActionsController extends AppController {
         }
     }
 
-    function engine_form($formId, $engine) {
+    public function engine_form($formId, $engine)
+    {
         /*
          * Fetch available fields
          */

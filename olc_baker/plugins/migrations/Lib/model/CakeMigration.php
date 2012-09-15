@@ -22,15 +22,15 @@ App::import('Model', 'CakeSchema', false);
  * @package       migrations
  * @subpackage    migrations.libs.model
  */
-class CakeMigration extends Object {
-
+class CakeMigration extends Object
+{
 /**
  * Migration description
  *
  * @var string
  * @access public
  */
-	var $description = '';
+    public $description = '';
 
 /**
  * Migration information
@@ -45,7 +45,7 @@ class CakeMigration extends Object {
  * @var array
  * @access public
  */
-	var $info = null;
+    public $info = null;
 
 /**
  * Actions to be performed
@@ -53,10 +53,10 @@ class CakeMigration extends Object {
  * @var array $migration
  * @access public
  */
-	var $migration = array(
-		'up' => array(),
-		'down' => array()
-	);
+    public $migration = array(
+        'up' => array(),
+        'down' => array()
+    );
 
 /**
  * Running direction
@@ -64,7 +64,7 @@ class CakeMigration extends Object {
  * @var string $direction
  * @access public
  */
-	var $direction = null;
+    public $direction = null;
 
 /**
  * Connection used
@@ -72,7 +72,7 @@ class CakeMigration extends Object {
  * @var string
  * @access public
  */
-	var $connection = 'default';
+    public $connection = 'default';
 
 /**
  * DataSource used
@@ -80,7 +80,7 @@ class CakeMigration extends Object {
  * @var DataSource
  * @access public
  */
-	var $db = null;
+    public $db = null;
 
 /**
  * CakeSchema instace
@@ -88,7 +88,7 @@ class CakeMigration extends Object {
  * @var CakeSchema
  * @access public
  */
-	var $Schema = null;
+    public $Schema = null;
 
 /**
  * Callback class that will be called before/after every action
@@ -96,7 +96,7 @@ class CakeMigration extends Object {
  * @var object
  * @access public
  */
-	var $callback = null;
+    public $callback = null;
 
 /**
  * Before migration callback
@@ -105,9 +105,10 @@ class CakeMigration extends Object {
  * @return boolean Should process continue
  * @access public
  */
-	function before($direction) {
-		return true;
-	}
+    public function before($direction)
+    {
+        return true;
+    }
 
 /**
  * After migration callback
@@ -116,32 +117,34 @@ class CakeMigration extends Object {
  * @return boolean Should process continue
  * @access public
  */
-	function after($direction) {
-		return true;
-	}
+    public function after($direction)
+    {
+        return true;
+    }
 
 /**
  * Constructor
  *
  * @param array $options optional load object properties
  */
-	function __construct($options = array()) {
-		parent::__construct();
+    public function __construct($options = array())
+    {
+        parent::__construct();
 
-		if (!empty($options['up'])) {
-			$this->migration['up'] = $options['up'];
-		}
-		if (!empty($options['down'])) {
-			$this->migration['down'] = $options['down'];
-		}
+        if (!empty($options['up'])) {
+            $this->migration['up'] = $options['up'];
+        }
+        if (!empty($options['down'])) {
+            $this->migration['down'] = $options['down'];
+        }
 
-		$allowed = array('connection', 'callback');
-		foreach ($allowed as $variable) {
-			if (!empty($options[$variable])) {
-				$this->{$variable} = $options[$variable];
-			}
-		}
-	}
+        $allowed = array('connection', 'callback');
+        foreach ($allowed as $variable) {
+            if (!empty($options[$variable])) {
+                $this->{$variable} = $options[$variable];
+            }
+        }
+    }
 
 /**
  * Run migration
@@ -150,59 +153,62 @@ class CakeMigration extends Object {
  * @return boolean Status of the process
  * @access public
  */
-	function run($direction) {
-		if (!in_array($direction, array('up', 'down'))) {
-			trigger_error(sprintf(__d('migrations', 'Migration direction (%s) is not one of valid directions.'), $direction), E_USER_NOTICE);
-			return false;
-		}
-		$this->direction = $direction;
+    public function run($direction)
+    {
+        if (!in_array($direction, array('up', 'down'))) {
+            trigger_error(sprintf(__d('migrations', 'Migration direction (%s) is not one of valid directions.'), $direction), E_USER_NOTICE);
 
-		$this->db =& ConnectionManager::getDataSource($this->connection);
-		$this->db->cacheSources = false;
-		$this->Schema = new CakeSchema(array('connection' => $this->connection));
+            return false;
+        }
+        $this->direction = $direction;
 
-		if (!$this->__invokeCallbacks('beforeMigration', $direction)) {
-			return false;
-		}
+        $this->db =& ConnectionManager::getDataSource($this->connection);
+        $this->db->cacheSources = false;
+        $this->Schema = new CakeSchema(array('connection' => $this->connection));
 
-		foreach ($this->migration[$direction] as $type => $info) {
-			switch ($type) {
-				case 'create_table':
-					$methodName = '_createTable';
-					break;
-				case 'drop_table':
-					$methodName = '_dropTable';
-					break;
-				case 'rename_table':
-					$methodName = '_renameTable';
-					break;
-				case 'create_field':
-					$type = 'add';
-					$methodName = '_alterTable';
-					break;
-				case 'drop_field':
-					$type = 'drop';
-					$methodName = '_alterTable';
-					break;
-				case 'alter_field':
-					$type = 'change';
-					$methodName = '_alterTable';
-					break;
-				case 'rename_field':
-					$type = 'rename';
-					$methodName = '_alterTable';
-					break;
-				default:
-					trigger_error(sprintf(__d('migrations', 'Migration action type (%s) is not one of valid actions type.'), $type), E_USER_NOTICE);
-					continue 2;
-			}
+        if (!$this->__invokeCallbacks('beforeMigration', $direction)) {
+            return false;
+        }
 
-			$this->{$methodName}($type, $info);
-		}
+        foreach ($this->migration[$direction] as $type => $info) {
+            switch ($type) {
+                case 'create_table':
+                    $methodName = '_createTable';
+                    break;
+                case 'drop_table':
+                    $methodName = '_dropTable';
+                    break;
+                case 'rename_table':
+                    $methodName = '_renameTable';
+                    break;
+                case 'create_field':
+                    $type = 'add';
+                    $methodName = '_alterTable';
+                    break;
+                case 'drop_field':
+                    $type = 'drop';
+                    $methodName = '_alterTable';
+                    break;
+                case 'alter_field':
+                    $type = 'change';
+                    $methodName = '_alterTable';
+                    break;
+                case 'rename_field':
+                    $type = 'rename';
+                    $methodName = '_alterTable';
+                    break;
+                default:
+                    trigger_error(sprintf(__d('migrations', 'Migration action type (%s) is not one of valid actions type.'), $type), E_USER_NOTICE);
+                    continue 2;
+            }
 
-		$this->__clearCache();
-		return $this->__invokeCallbacks('afterMigration', $direction);
-	}
+            $this->{$methodName}($type, $info);
+        }
+
+        $this->__clearCache();
+
+        return $this->__invokeCallbacks('afterMigration', $direction);
+    }
 
 /**
  * Create Table method
@@ -212,16 +218,18 @@ class CakeMigration extends Object {
  * @return boolean Return true in case of success, otherwise false
  * @access protected
  */
-	function _createTable($type, $tables) {
-		foreach ($tables as $table => $fields) {
-			$this->Schema->tables = array($table => $fields);
+    public function _createTable($type, $tables)
+    {
+        foreach ($tables as $table => $fields) {
+            $this->Schema->tables = array($table => $fields);
 
-			$this->__invokeCallbacks('beforeAction', 'create_table', array('table' => $table));
-			$this->db->execute($this->db->createSchema($this->Schema));
-			$this->__invokeCallbacks('afterAction', 'create_table', array('table' => $table));
-		}
-		return true;
-	}
+            $this->__invokeCallbacks('beforeAction', 'create_table', array('table' => $table));
+            $this->db->execute($this->db->createSchema($this->Schema));
+            $this->__invokeCallbacks('afterAction', 'create_table', array('table' => $table));
+        }
+
+        return true;
+    }
 
 /**
  * Drop Table method
@@ -231,16 +239,18 @@ class CakeMigration extends Object {
  * @return boolean Return true in case of success, otherwise false
  * @access protected
  */
-	function _dropTable($type, $tables) {
-		foreach ($tables as $table) {
-			$this->Schema->tables = array($table => array());
+    public function _dropTable($type, $tables)
+    {
+        foreach ($tables as $table) {
+            $this->Schema->tables = array($table => array());
 
-			$this->__invokeCallbacks('beforeAction', 'drop_table', array('table' => $table));
-			$this->db->execute($this->db->dropSchema($this->Schema));
-			$this->__invokeCallbacks('afterAction', 'drop_table', array('table' => $table));
-		}
-		return true;
-	}
+            $this->__invokeCallbacks('beforeAction', 'drop_table', array('table' => $table));
+            $this->db->execute($this->db->dropSchema($this->Schema));
+            $this->__invokeCallbacks('afterAction', 'drop_table', array('table' => $table));
+        }
+
+        return true;
+    }
 
 /**
  * Rename Table method
@@ -250,16 +260,18 @@ class CakeMigration extends Object {
  * @return boolean Return true in case of success, otherwise false
  * @access protected
  */
-	function _renameTable($type, $tables) {
-		foreach ($tables as $oldName => $newName) {
-			$sql = 'RENAME TABLE ' . $this->db->fullTableName($oldName) . ' TO ' . $this->db->fullTableName($newName) . ';';
+    public function _renameTable($type, $tables)
+    {
+        foreach ($tables as $oldName => $newName) {
+            $sql = 'RENAME TABLE ' . $this->db->fullTableName($oldName) . ' TO ' . $this->db->fullTableName($newName) . ';';
 
-			$this->__invokeCallbacks('beforeAction', 'rename_table', array('old_name' => $oldName, 'new_name' => $newName));
-			$this->db->execute($sql);
-			$this->__invokeCallbacks('afterAction', 'rename_table', array('old_name' => $oldName, 'new_name' => $newName));
-		}
-		return true;
-	}
+            $this->__invokeCallbacks('beforeAction', 'rename_table', array('old_name' => $oldName, 'new_name' => $newName));
+            $this->db->execute($sql);
+            $this->__invokeCallbacks('afterAction', 'rename_table', array('old_name' => $oldName, 'new_name' => $newName));
+        }
+
+        return true;
+    }
 
 /**
  * Alter Table method
@@ -269,72 +281,74 @@ class CakeMigration extends Object {
  * @return boolean Return true in case of success, otherwise false
  * @access protected
  */
-	function _alterTable($type, $tables) {
-		foreach ($tables as $table => $fields) {
-			$indexes = array();
-			if (isset($fields['indexes'])) {
-				$indexes = $fields['indexes'];
-				unset($fields['indexes']);
-			}
+    public function _alterTable($type, $tables)
+    {
+        foreach ($tables as $table => $fields) {
+            $indexes = array();
+            if (isset($fields['indexes'])) {
+                $indexes = $fields['indexes'];
+                unset($fields['indexes']);
+            }
 
-			foreach ($fields as $field => $col) {
-				switch ($type) {
-					case 'add':
-						$sql = $this->db->alterSchema(array(
-							$table => array('add' => array($field => $col))
-						));
-						break;
-					case 'drop':
-						$field = $col;
-						$sql = $this->db->alterSchema(array(
-							$table => array('drop' => array($field => array()))
-						));
-						break;
-					case 'change':
-						$model = new Model(array('table' => $table, 'ds' => $this->connection));
-						$tableFields = $this->db->describe($model);
+            foreach ($fields as $field => $col) {
+                switch ($type) {
+                    case 'add':
+                        $sql = $this->db->alterSchema(array(
+                            $table => array('add' => array($field => $col))
+                        ));
+                        break;
+                    case 'drop':
+                        $field = $col;
+                        $sql = $this->db->alterSchema(array(
+                            $table => array('drop' => array($field => array()))
+                        ));
+                        break;
+                    case 'change':
+                        $model = new Model(array('table' => $table, 'ds' => $this->connection));
+                        $tableFields = $this->db->describe($model);
 
-						$sql = $this->db->alterSchema(array(
-							$table => array('change' => array($field => array_merge($tableFields[$field], $col)))
-						));
-						break;
-					case 'rename':
-						$model = new Model(array('table' => $table, 'ds' => $this->connection));
-						$tableFields = $this->db->describe($model);
+                        $sql = $this->db->alterSchema(array(
+                            $table => array('change' => array($field => array_merge($tableFields[$field], $col)))
+                        ));
+                        break;
+                    case 'rename':
+                        $model = new Model(array('table' => $table, 'ds' => $this->connection));
+                        $tableFields = $this->db->describe($model);
 
-						$sql = $this->db->alterSchema(array(
-							$table => array('change' => array($field => array_merge($tableFields[$field], array('name' => $col))))
-						));
-						break;
-				}
+                        $sql = $this->db->alterSchema(array(
+                            $table => array('change' => array($field => array_merge($tableFields[$field], array('name' => $col))))
+                        ));
+                        break;
+                }
 
-				if ($type == 'rename') {
-					$data = array('table' => $table, 'old_name' => $field, 'new_name' => $col);
-				} else {
-					$data = array('table' => $table, 'field' => $field);
-				}
+                if ($type == 'rename') {
+                    $data = array('table' => $table, 'old_name' => $field, 'new_name' => $col);
+                } else {
+                    $data = array('table' => $table, 'field' => $field);
+                }
 
-				$this->__invokeCallbacks('beforeAction', $type . '_field', $data);
-				$this->db->execute($sql);
-				$this->__invokeCallbacks('afterAction', $type . '_field', $data);
-			}
+                $this->__invokeCallbacks('beforeAction', $type . '_field', $data);
+                $this->db->execute($sql);
+                $this->__invokeCallbacks('afterAction', $type . '_field', $data);
+            }
 
-			foreach ($indexes as $key => $index) {
-				if (is_numeric($key)) {
-					$key = $index;
-					$index = array();
-				}
-				$sql = $this->db->alterSchema(array(
-					$table => array($type => array('indexes' => array($key => $index)))
-				));
+            foreach ($indexes as $key => $index) {
+                if (is_numeric($key)) {
+                    $key = $index;
+                    $index = array();
+                }
+                $sql = $this->db->alterSchema(array(
+                    $table => array($type => array('indexes' => array($key => $index)))
+                ));
 
-				$this->__invokeCallbacks('beforeAction', $type . '_index', array('table' => $table, 'index' => $key));
-				$this->db->execute($sql);
-				$this->__invokeCallbacks('afterAction', $type . '_index', array('table' => $table, 'index' => $key));
-			}
-		}
-		return true;
-	}
+                $this->__invokeCallbacks('beforeAction', $type . '_index', array('table' => $table, 'index' => $key));
+                $this->db->execute($sql);
+                $this->__invokeCallbacks('afterAction', $type . '_index', array('table' => $table, 'index' => $key));
+            }
+        }
+
+        return true;
+    }
 
 /**
  * This method will invoke the before/afterAction callbacks, it is good when
@@ -348,19 +362,21 @@ class CakeMigration extends Object {
  * @return void
  * @access private
  */
-	function __invokeCallbacks($callback, $type, $data = array()) {
-		if ($this->callback !== null && method_exists($this->callback, $callback)) {
-			if ($callback == 'beforeMigration' || $callback == 'afterMigration') {
-				$this->callback->{$callback}($this, $type);
-			} else {
-				$this->callback->{$callback}($this, $type, $data);
-			}
-		}
-		if ($callback == 'beforeMigration' || $callback == 'afterMigration') {
-			$callback = str_replace('Migration', '', $callback);
-			return $this->{$callback}($type);
-		}
-	}
+    public function __invokeCallbacks($callback, $type, $data = array())
+    {
+        if ($this->callback !== null && method_exists($this->callback, $callback)) {
+            if ($callback == 'beforeMigration' || $callback == 'afterMigration') {
+                $this->callback->{$callback}($this, $type);
+            } else {
+                $this->callback->{$callback}($this, $type, $data);
+            }
+        }
+        if ($callback == 'beforeMigration' || $callback == 'afterMigration') {
+            $callback = str_replace('Migration', '', $callback);
+
+            return $this->{$callback}($type);
+        }
+    }
 
 /**
  * Clear all caches present related to models
@@ -372,10 +388,11 @@ class CakeMigration extends Object {
  * @return void
  * @access private
  */
-	function __clearCache() {
-		Cache::clear(false, '_cake_model_');
-		ClassRegistry::flush();
-	}
+    public function __clearCache()
+    {
+        Cache::clear(false, '_cake_model_');
+        ClassRegistry::flush();
+    }
 
 /**
  * Generate a instance of model for given options
@@ -385,16 +402,16 @@ class CakeMigration extends Object {
  * @return Model
  * @access public
  */
-	function generateModel($name, $table = null, $options = array()) {
-		if (empty($table)) {
-			$table = Inflector::tableize($name);
-		}
-		$defaults = array(
-			'name' => $name, 'table' => $table, 'ds' => $this->connection
-		);
-		$options = array_merge($defaults, $options);
+    public function generateModel($name, $table = null, $options = array())
+    {
+        if (empty($table)) {
+            $table = Inflector::tableize($name);
+        }
+        $defaults = array(
+            'name' => $name, 'table' => $table, 'ds' => $this->connection
+        );
+        $options = array_merge($defaults, $options);
 
-		return new AppModel($options);
-	}
+        return new AppModel($options);
+    }
 }
-?>

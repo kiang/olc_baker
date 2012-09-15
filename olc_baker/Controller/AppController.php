@@ -1,6 +1,7 @@
 <?php
 App::uses('Controller', 'Controller');
-class AppController extends Controller {
-    var $helpers = array('Html', 'Form', 'OaTool', 'Session');
-    var $components = array('RequestHandler', 'Session');
+class AppController extends Controller
+{
+    public $helpers = array('Html', 'Form', 'OaTool', 'Session');
+    public $components = array('RequestHandler', 'Session');
 }

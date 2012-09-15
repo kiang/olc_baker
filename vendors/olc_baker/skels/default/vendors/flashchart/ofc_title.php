@@ -6,13 +6,13 @@
  */
 class ofc_title
 {
-	function ofc_title( $text='' )
-	{
-		$this->text = $text;
-	}
+    public function ofc_title( $text='' )
+    {
+        $this->text = $text;
+    }
 
-	/**
-	 * A css string. Can optionally contain:
+    /**
+     * A css string. Can optionally contain:
      * - font-size
      * - font-family
      * - font-weight
@@ -30,10 +30,10 @@ class ofc_title
      * - padding-top
      * - padding-bottom
      * just like the css we use all the time :-)
-	 */
-	function set_style( $css )
-	{
-		$this->style = $css;
-		//"{font-size: 20px; color:#0000ff; font-family: Verdana; text-align: center;}";
-	}
+     */
+    public function set_style( $css )
+    {
+        $this->style = $css;
+        //"{font-size: 20px; color:#0000ff; font-family: Verdana; text-align: center;}";
+    }
 }

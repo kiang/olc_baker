@@ -8,14 +8,15 @@ require_once App::pluginPath('Permissible') . 'Config/init.php';
  * @package permissible
  * @subpackage permissible
  */
-class PermissibleAppController extends AppController {
+class PermissibleAppController extends AppController
+{
 /**
  * Array containing the names of components this plugin uses.
  *
  * @var array
  * @access public
  */
-    var $components = array(
+    public $components = array(
         'Security',
         'Acl',
         'Session'
@@ -26,7 +27,7 @@ class PermissibleAppController extends AppController {
  * @var array
  * @access public
  */
-    var $helpers = array(
+    public $helpers = array(
         'Javascript',
         'Js'
     );
@@ -37,7 +38,8 @@ class PermissibleAppController extends AppController {
  * @return null
  * @access public
  */
-    function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
     }
 }

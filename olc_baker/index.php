@@ -20,5 +20,4 @@
  * @lastmodified  $Date: 2008-10-31 01:30:26 +0800 (五, 31 10月 2008) $
  * @license       http://www.opensource.org/licenses/mit-license.php The MIT License
  */
-require 'webroot' . DIRECTORY_SEPARATOR . 'index.php';
-?>
+require 'webroot'. DIRECTORY_SEPARATOR . 'index.php';

@@ -9,57 +9,59 @@ require_once App::pluginPath('Permissible') . 'Config/init.php';
  * @package permissible
  * @subpackage permissible.views.helpers
  */
-class PHtmlHelper extends HtmlHelper {
+class PHtmlHelper extends HtmlHelper
+{
 /**
  * The session key name where the record of the current user is stored
  *
  * @var string
  * @access public
  */
-    var $sessionKey = null;
+    public $sessionKey = null;
 /**
  * User model name
  *
  * @var string
  * @access public
  */
-    var $userModel = null;
+    public $userModel = null;
 /**
  * User model primary key
  *
  * @var string
  * @access public
  */
-    var $userModelPrimary = null;
+    public $userModelPrimary = null;
 /**
  * Array containing the names of helpers this helper uses
  *
  * @var array
  * @access public
  */
-    var $helpers = array('Session');
+    public $helpers = array('Session');
 /**
  * Instance of an ACL class
  *
  * @var object
  * @access protected
  */
-    var $_Instance = null;
+    public $_Instance = null;
 /**
  * Array containing cached permissions from the current user
  *
  * @var array
  * @access protected
  */
-    var $_cache = array();
-    var $baseUrlLength = 0;
+    public $_cache = array();
+    public $baseUrlLength = 0;
 /**
  * Sets up various vars/classes required
  *
  * @return null
  * @access public
  */
-    function __construct($settings = array()) {
+    public function __construct($settings = array())
+    {
         $sessionKey = 'Auth';
         if (is_array($settings) && isset($settings[0])) {
             $sessionKey = $settings[0];
@@ -88,7 +90,8 @@ class PHtmlHelper extends HtmlHelper {
  * @return array User
  * @access protected
  */
-    function _user() {
+    public function _user()
+    {
         if (!$this->Session->check($this->sessionKey)) {
             return array($this->userModel => array($this->userModelPrimary => 0));
         } else {
@@ -96,6 +99,7 @@ class PHtmlHelper extends HtmlHelper {
             if ($user === array()) {
                 return array($this->userModel => array($this->userModelPrimary => 0));
             }
+
             return $user;
         }
     }
@@ -114,7 +118,8 @@ class PHtmlHelper extends HtmlHelper {
  * @return string An `<a />` element.
  * @access public
  */
-    function link($passTitle, $passUrl = null, $passOptions = array(), $passConfirmMessage = false) {
+    public function link($passTitle, $passUrl = null, $passOptions = array(), $passConfirmMessage = false)
+    {
         if (isset($passOptions['wrapper']) && is_string($passOptions['wrapper'])) {
             $wrapper = $passOptions['wrapper'];
         } else {
@@ -123,6 +128,7 @@ class PHtmlHelper extends HtmlHelper {
         unset($passOptions['wrapper']);
         if (isset($passOptions['auth']) && $passOptions['auth'] === false) {
             unset($passOptions['auth']);
+
             return str_replace('$1', parent::link($passTitle, $passUrl, $passOptions, $passConfirmMessage), $wrapper);
         }
         unset($passOptions['auth']);
@@ -131,7 +137,7 @@ class PHtmlHelper extends HtmlHelper {
         } else {
             $url = $this->url($passTitle);
         }
-        if(empty($this->baseUrlLength)) {
+        if (empty($this->baseUrlLength)) {
             $this->baseUrlLength = strlen($this->url('/')) - 1;
         }
         $url = substr($url, $this->baseUrlLength);
@@ -143,13 +149,14 @@ class PHtmlHelper extends HtmlHelper {
         if ($url['plugin'] !== null) {
             $action .= Inflector::camelize($url['plugin']) . '/';
         }
-        if(!empty($url['prefix'])) {
+        if (!empty($url['prefix'])) {
             $url['action'] = $url['prefix'] . '_' . $url['action'];
         }
         $action .= Inflector::camelize($url['controller']) . '/' . $url['action'];
         if ($this->check($action)) {
             return str_replace('$1', parent::link($passTitle, $passUrl, $passOptions, $passConfirmMessage), $wrapper);
         }
+
         return null;
     }
 /**
@@ -161,10 +168,12 @@ class PHtmlHelper extends HtmlHelper {
  * @return boolean Success
  * @access public
  */
-    function check($aco) {
+    public function check($aco)
+    {
         if (!isset($this->_cache[$aco])) {
             $this->_cache[$aco] = $this->_Instance->check($this->_user(), $aco);
         }
+
         return $this->_cache[$aco];
     }
 }

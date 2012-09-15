@@ -1,20 +1,21 @@
 <?php
 
-class Action extends AppModel {
-
-    var $name = 'Action';
-    var $validate = array(
+class Action extends AppModel
+{
+    public $name = 'Action';
+    public $validate = array(
         'action' => array('numeric'),
         'name' => array('notempty'),
     );
-    var $belongsTo = array(
+    public $belongsTo = array(
         'Form' => array(
             'className' => 'Form',
             'foreignKey' => 'form_id',
         )
     );
 
-    function getEngineList() {
+    public function getEngineList()
+    {
         App::uses('Folder', 'Utility');
         $sourcePath = VENDORS . 'olc_baker' . DS . 'actions' . DS;
         $fh = new Folder($sourcePath);
@@ -25,10 +26,12 @@ class Action extends AppModel {
             $fileContent = include($sourcePath . $fileName);
             $list[$pathInfo['filename']] = $fileContent['name'];
         }
+
         return $list;
     }
 
-    function getEngineContent($engine) {
+    public function getEngineContent($engine)
+    {
         $sourcePath = VENDORS . 'olc_baker' . DS . 'actions' . DS;
         $fileContent = array();
         if (file_exists($sourcePath . $engine . '.php')) {
@@ -36,6 +39,7 @@ class Action extends AppModel {
         } else {
             return '';
         }
+
         return $fileContent;
     }
 

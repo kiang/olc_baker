@@ -10,14 +10,17 @@
  * @link http://github.com/netguru/uploadbehavior
  * @version 0.1
  */
-class UploadHelper extends AppHelper {
-    var $helpers = array('Html');
+class UploadHelper extends AppHelper
+{
+    public $helpers = array('Html');
 
-    function image($data, $path, $style = 'original', $options = array()) {
+    public function image($data, $path, $style = 'original', $options = array())
+    {
         return $this->output($this->Html->image($this->url($data, $path, $style, false), $options));
     }
 
-    function url($data, $field, $style = 'original', $urlize = true) {
+    public function url($data, $field, $style = 'original', $urlize = true)
+    {
         list ($model, $field) = explode('.', $field);
         if (is_array($data)) {
             if (isset($data[$model])) {
@@ -37,6 +40,7 @@ class UploadHelper extends AppHelper {
             $settings = UploadBehavior::interpolate($model, null, $field, null, $style, array('webroot' => ''));
             $url = isset($settings['default_url']) ? $settings['default_url'] : null;
         }
+
         return $urlize ? $this->Html->url($url) : $url;
     }
 }

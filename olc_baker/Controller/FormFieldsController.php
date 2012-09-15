@@ -1,10 +1,11 @@
 <?php
 
-class FormFieldsController extends AppController {
+class FormFieldsController extends AppController
+{
+    public $name = 'FormFields';
 
-    var $name = 'FormFields';
-
-    function add($formId = null) {
+    public function add($formId = null)
+    {
         if (!$formId) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -27,7 +28,8 @@ class FormFieldsController extends AppController {
         $this->set('types', $this->FormField->getFieldTypeList());
     }
 
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -50,7 +52,8 @@ class FormFieldsController extends AppController {
         $this->set('types', $this->FormField->getFieldTypeList());
     }
 
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (!$id || !$formId = $this->FormField->field('form_id', array('FormField.id' => $id))) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -61,7 +64,8 @@ class FormFieldsController extends AppController {
         }
     }
 
-    function type_form($type, $id = null) {
+    public function type_form($type, $id = null)
+    {
         $this->set('content', $this->FormField->getFieldTypeContent($type, $id));
     }
 

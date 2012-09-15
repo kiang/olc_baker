@@ -3,12 +3,13 @@
 /**
  * @property Group Group
  */
-class GroupsController extends AppController {
+class GroupsController extends AppController
+{
+    public $name = 'Groups';
+    public $paginate = array();
 
-    var $name = 'Groups';
-    var $paginate = array();
-
-    function admin_index($parentId = 0) {
+    public function admin_index($parentId = 0)
+    {
         $this->paginate['Group'] = array(
             'contain' => array(),
         );
@@ -31,7 +32,8 @@ class GroupsController extends AppController {
         }
     }
 
-    function admin_add($parentId = 0) {
+    public function admin_add($parentId = 0)
+    {
         if (!empty($this->request->data)) {
             $this->Group->create();
             $this->request->data['Group']['parent_id'] = $parentId;
@@ -46,7 +48,8 @@ class GroupsController extends AppController {
         $this->set('parentId', $parentId);
     }
 
-    function admin_edit($id = null) {
+    public function admin_edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please select a group first!', true));
             $this->redirect($this->referer());
@@ -64,7 +67,8 @@ class GroupsController extends AppController {
         }
     }
 
-    function admin_delete($id = null) {
+    public function admin_delete($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please select a group first!', true));
             $this->redirect($this->referer());
@@ -76,7 +80,8 @@ class GroupsController extends AppController {
         }
     }
 
-    function admin_acos($groupId = 0) {
+    public function admin_acos($groupId = 0)
+    {
         if (empty($groupId) || !$aroGroup = $this->Group->find('first', array(
                     'fields' => array('Group.id'),
                     'conditions' => array(
@@ -94,7 +99,7 @@ class GroupsController extends AppController {
                     if ($val == '+') {
                         $this->Acl->allow($aroGroup, $key);
                         ++$count;
-                    } else if ($val == '-') {
+                    } elseif ($val == '-') {
                         $this->Acl->deny($aroGroup, $key);
                         ++$count;
                     }

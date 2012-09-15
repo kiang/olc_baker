@@ -4,19 +4,21 @@
  * @property Member Member
  *
  */
-class MembersController extends AppController {
+class MembersController extends AppController
+{
+    public $name = 'Members';
+    public $paginate = array();
 
-    var $name = 'Members';
-    var $paginate = array();
-
-    function beforeFilter() {
+    public function beforeFilter()
+    {
         parent::beforeFilter();
         if (isset($this->Auth)) {
             $this->Auth->allow('login', 'logout', 'setup');
         }
     }
 
-    function login() {
+    public function login()
+    {
         if (!$this->Member->hasAny()) {
             $this->redirect(array('action' => 'setup'));
         }
@@ -29,16 +31,18 @@ class MembersController extends AppController {
         }
     }
 
-    function logout() {
+    public function logout()
+    {
         $this->Auth->logout();
         $this->redirect(array('action' => 'login'));
     }
 
-    function setup() {
+    public function setup()
+    {
         if ($this->Member->hasAny(array('user_status' => 'Y'))) {
             $this->Session->setFlash(__('There are members in database. If you want to reset, please remove them first.', true));
             $this->redirect('/members/login');
-        } else if (!empty($this->request->data)) {
+        } elseif (!empty($this->request->data)) {
             $this->loadModel('Group');
             $this->request->data['Group']['name'] = 'Admin';
             $this->request->data['Group']['parent_id'] = 0;
@@ -66,7 +70,8 @@ class MembersController extends AppController {
         }
     }
 
-    function admin_index() {
+    public function admin_index()
+    {
         $scope = array();
         $keyword = '';
         if (isset($this->params['named']['keyword'])) {
@@ -90,7 +95,8 @@ class MembersController extends AppController {
         $this->set('keyword', $keyword);
     }
 
-    function admin_view($id = null) {
+    public function admin_view($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
@@ -98,7 +104,8 @@ class MembersController extends AppController {
         $this->set('member', $this->Member->read(null, $id));
     }
 
-    function admin_add() {
+    public function admin_add()
+    {
         if (!empty($this->request->data)) {
             $this->Member->create();
             if ($this->Member->save($this->request->data)) {
@@ -112,7 +119,8 @@ class MembersController extends AppController {
         $this->set('groups', $this->Member->Group->find('list'));
     }
 
-    function admin_edit($id = null) {
+    public function admin_edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
@@ -139,7 +147,8 @@ class MembersController extends AppController {
         $this->set('groups', $this->Member->Group->find('list'));
     }
 
-    function admin_delete($id = null) {
+    public function admin_delete($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
@@ -150,7 +159,8 @@ class MembersController extends AppController {
         }
     }
 
-    function admin_test($count = 50) {
+    public function admin_test($count = 50)
+    {
         $count = intval($count);
         if ($count > 0) {
             for ($i = 0; $i < $count; $i++) {
@@ -172,7 +182,8 @@ class MembersController extends AppController {
         $this->redirect($this->referer());
     }
 
-    function admin_acos() {
+    public function admin_acos()
+    {
         $this->loadModel('Permissible.PermissibleAco');
         $this->PermissibleAco->refresh();
         $this->redirect($this->referer());

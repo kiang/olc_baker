@@ -7,28 +7,30 @@
  * @package permissible
  * @subpackage permissible.models
  */
-class PermissibleGroup extends AppModel {
+class PermissibleGroup extends AppModel
+{
 /**
  * Array containing the names of behaviours this model uses
  *
  * @var array
  * @access public
  */
-    var $actsAs = array('Acl' => array('requester'));
+    public $actsAs = array('Acl' => array('requester'));
 /**
  * Default display field for this model.
  *
  * @var array
  * @access public
  */
-    var $displayField = 'id';
+    public $displayField = 'id';
 /**
  * Returns the parent node of a group - everyone
  *
  * @return string 'everyone'
  * @access public
  */
-    function parentNode() {
+    public function parentNode()
+    {
         return 'everyone';
     }
 }

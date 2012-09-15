@@ -7,19 +7,20 @@
  * @package permissible
  * @subpackage permissible.models
  */
-class PermissibleAroAco extends PermissibleAppModel {
+class PermissibleAroAco extends PermissibleAppModel
+{
 /**
  * Sets the name for the model
  *
  * @var array
  * @access public
  */
-    var $name = 'PermissibleAroAco';
+    public $name = 'PermissibleAroAco';
 /**
  * Sets the table name for the model
  *
  * @var array
  * @access public
  */
-    var $useTable = 'aros_acos';
+    public $useTable = 'aros_acos';
 }

@@ -1,2 +1,2 @@
 <?php
-require 'webroot' . DIRECTORY_SEPARATOR . 'index.php';
+require 'webroot'. DIRECTORY_SEPARATOR . 'index.php';

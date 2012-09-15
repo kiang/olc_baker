@@ -34,29 +34,29 @@
  * @package       cake
  * @subpackage    cake.cake.libs.controller
  */
-class PagesController extends AppController {
-
+class PagesController extends AppController
+{
     /**
      * Controller name
      *
      * @var string
      * @access public
      */
-    var $name = 'Pages';
+    public $name = 'Pages';
     /**
      * Default helper
      *
      * @var array
      * @access public
      */
-    var $helpers = array('Html');
+    public $helpers = array('Html');
     /**
      * This controller does not use a model
      *
      * @var array
      * @access public
      */
-    var $uses = array();
+    public $uses = array();
 
     /**
      * Displays a view
@@ -64,7 +64,8 @@ class PagesController extends AppController {
      * @param mixed What page to display
      * @access public
      */
-    function display() {
+    public function display()
+    {
         $path = func_get_args();
 
         $count = count($path);
@@ -87,5 +88,3 @@ class PagesController extends AppController {
     }
 
 }
-
-?>

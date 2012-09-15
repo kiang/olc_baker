@@ -1,11 +1,12 @@
 <?php
 
-class AppModel extends Model {
+class AppModel extends Model
+{
+    public $actsAs = array('Containable');
+    public $recursive = -1;
 
-    var $actsAs = array('Containable');
-    var $recursive = -1;
-
-    function checkUnique($data) {
+    public function checkUnique($data)
+    {
         foreach ($data AS $key => $value) {
             if (empty($value)) {
                 return false;

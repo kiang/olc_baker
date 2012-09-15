@@ -4,47 +4,47 @@ include_once 'ofc_bar_base.php';
 
 class bar_stack extends bar_base
 {
-	function bar_stack()
-	{
-		$this->type      = "bar_stack";
-		parent::bar_base();
-	}
-	
-	function append_stack( $v )
-	{
-		$this->append_value( $v );
-	}
-	
-	// an array of HEX colours strings
-	// e.g. array( '#ff0000', '#00ff00' );
-	function set_colours( $colours )
-	{
-		$this->colours = $colours;
-	}
-	
-	// an array of bar_stack_value
-	function set_keys( $keys )
-	{
-		$this->keys = $keys;
-	}
+    public function bar_stack()
+    {
+        $this->type      = "bar_stack";
+        parent::bar_base();
+    }
+
+    public function append_stack( $v )
+    {
+        $this->append_value( $v );
+    }
+
+    // an array of HEX colours strings
+    // e.g. array( '#ff0000', '#00ff00' );
+    public function set_colours( $colours )
+    {
+        $this->colours = $colours;
+    }
+
+    // an array of bar_stack_value
+    public function set_keys( $keys )
+    {
+        $this->keys = $keys;
+    }
 }
 
 class bar_stack_value
 {
-	function bar_stack_value( $val, $colour )
-	{
-		$this->val = $val;
-		$this->colour = $colour;
-	}
+    public function bar_stack_value( $val, $colour )
+    {
+        $this->val = $val;
+        $this->colour = $colour;
+    }
 }
 
 class bar_stack_key
 {
-	function bar_stack_key( $colour, $text, $font_size )
-	{
-		$this->colour = $colour;
-		$this->text = $text;
-		$tmp = 'font-size';
-		$this->$tmp = $font_size;
-	}
+    public function bar_stack_key( $colour, $text, $font_size )
+    {
+        $this->colour = $colour;
+        $this->text = $text;
+        $tmp = 'font-size';
+        $this->$tmp = $font_size;
+    }
 }

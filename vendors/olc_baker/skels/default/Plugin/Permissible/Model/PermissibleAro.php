@@ -7,42 +7,44 @@
  * @package permissible
  * @subpackage permissible.models
  */
-class PermissibleAro extends PermissibleAppModel {
+class PermissibleAro extends PermissibleAppModel
+{
 /**
  * Sets the name for the model
  *
  * @var array
  * @access public
  */
-    var $name = 'PermissibleAro';
+    public $name = 'PermissibleAro';
 /**
  * Sets the table name for the model
  *
  * @var array
  * @access public
  */
-    var $useTable = 'aros';
+    public $useTable = 'aros';
 /**
  * Array containing the names of behaviours this model uses
  *
  * @var array
  * @access public
  */
-    var $actsAs = array('Tree');
+    public $actsAs = array('Tree');
 /**
  * Sets the model to cache queries for optimisation
  *
  * @var array
  * @access public
  */
-    var $cacheQueries = true;
+    public $cacheQueries = true;
 /**
  * Automates finding of ACO aliases where possible
  *
  * @return array Results
  * @access public
  */
-    function afterFind($results, $primary) {
+    public function afterFind($results, $primary)
+    {
         foreach ($results as $key => $result) {
             if (!isset($result[$this->alias]['alias']) && isset($result[$this->alias]['model'])) {
                 $model = ClassRegistry::init($result[$this->alias]['model']);
@@ -68,6 +70,7 @@ class PermissibleAro extends PermissibleAppModel {
                 $results[$key][$this->alias]['alias'] = $alias;
             }
         }
+
         return $results;
     }
 /**
@@ -76,7 +79,8 @@ class PermissibleAro extends PermissibleAppModel {
  * @return array List
  * @access public
  */
-    function generateList($parent = null) {
+    public function generateList($parent = null)
+    {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
         ), null, null, null, 1);
@@ -90,6 +94,7 @@ class PermissibleAro extends PermissibleAppModel {
             }
             $ret[] = $item[$this->alias];
         }
+
         return $ret;
     }
 /**
@@ -98,7 +103,8 @@ class PermissibleAro extends PermissibleAppModel {
  * @return array List
  * @access public
  */
-    function generateListPerms($Acl, $aco_alias, $aro_alias = array(), $parent = null) {
+    public function generateListPerms($Acl, $aco_alias, $aro_alias = array(), $parent = null)
+    {
         $temp = $this->generateTreeList(array(
             'parent_id' => $parent
         ), null, null, null, 1);
@@ -117,6 +123,7 @@ class PermissibleAro extends PermissibleAppModel {
             }
             $ret[] = $item[$this->alias];
         }
+
         return $ret;
     }
 /**
@@ -125,7 +132,8 @@ class PermissibleAro extends PermissibleAppModel {
  * @return boolean ACO/ARO tree valid
  * @access public
  */
-    function reset() {
+    public function reset()
+    {
         $this->truncate();
         $this->save(array(
             'PermissibleAro' => array(
@@ -193,6 +201,7 @@ class PermissibleAro extends PermissibleAppModel {
                 'PermissibleAco.alias' => 'app'
             )
         ));
+
         return ($aco !== false);
     }
 /**
@@ -201,7 +210,8 @@ class PermissibleAro extends PermissibleAppModel {
  * @return boolean ACO/ARO tree valid
  * @access public
  */
-    function refresh() {
+    public function refresh()
+    {
         $aros = $this->find('all', array(
             'conditions' => array(
                 'PermissibleAro.model !=' => null,
@@ -279,6 +289,7 @@ class PermissibleAro extends PermissibleAppModel {
                 }
             }
         }
+
         return ;
     }
 }

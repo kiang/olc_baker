@@ -1,20 +1,20 @@
 <?php
 
-class Form extends AppModel {
-
-    var $name = 'Form';
-    var $validate = array(
+class Form extends AppModel
+{
+    public $name = 'Form';
+    public $validate = array(
         'project_id' => array('numeric'),
         'name' => array('notempty'),
         'label' => array('notempty')
     );
-    var $belongsTo = array(
+    public $belongsTo = array(
         'Project' => array(
             'className' => 'Project',
             'foreignKey' => 'project_id',
         )
     );
-    var $hasMany = array(
+    public $hasMany = array(
         'FormField' => array(
             'className' => 'FormField',
             'foreignKey' => 'form_id',
@@ -29,8 +29,8 @@ class Form extends AppModel {
         ),
     );
 
-    function generateModel() {
-
+    public function generateModel()
+    {
     }
 
 }

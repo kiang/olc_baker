@@ -1,8 +1,9 @@
 <?php
 
-class OaToolHelper extends AppHelper {
-
-    function relation_type($key) {
+class OaToolHelper extends AppHelper
+{
+    public function relation_type($key)
+    {
         switch ($key) {
             case 'bt':
                 return 'has an ancestor (belongsTo)';
@@ -17,10 +18,12 @@ class OaToolHelper extends AppHelper {
                 return 'many with many (hasAndBelongsToMany)';
                 break;
         }
+
         return 'Unknown';
     }
 
-    function relation_list() {
+    public function relation_list()
+    {
         return array(
             'bt' => $this->relation_type('bt'),
             'ho' => $this->relation_type('ho'),

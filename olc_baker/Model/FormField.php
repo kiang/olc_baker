@@ -1,22 +1,23 @@
 <?php
 
-class FormField extends AppModel {
-
-    var $name = 'FormField';
-    var $validate = array(
+class FormField extends AppModel
+{
+    public $name = 'FormField';
+    public $validate = array(
         'form_id' => array('numeric'),
         'name' => array('notempty'),
         'label' => array('notempty'),
         'type' => array('notempty')
     );
-    var $belongsTo = array(
+    public $belongsTo = array(
         'Form' => array(
             'className' => 'Form',
             'foreignKey' => 'form_id',
         )
     );
 
-    function getFieldTypeList() {
+    public function getFieldTypeList()
+    {
         App::uses('Folder', 'Utility');
         $sourcePath = VENDORS . 'olc_baker' . DS . 'field_types' . DS;
         $fh = new Folder($sourcePath);
@@ -27,10 +28,12 @@ class FormField extends AppModel {
             $fileContent = include($sourcePath . $fileName);
             $list[$pathInfo['filename']] = $fileContent['name'];
         }
+
         return $list;
     }
 
-    function getFieldTypeContent($typeName, $id = null) {
+    public function getFieldTypeContent($typeName, $id = null)
+    {
         $sourcePath = VENDORS . 'olc_baker' . DS . 'field_types' . DS;
         $fileContent = array();
         if (file_exists($sourcePath . $typeName . '.php')) {
@@ -50,6 +53,7 @@ class FormField extends AppModel {
                 }
             }
         }
+
         return $fileContent;
     }
 

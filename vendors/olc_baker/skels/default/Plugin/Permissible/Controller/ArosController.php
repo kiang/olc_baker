@@ -7,21 +7,22 @@
  * @package permissible
  * @subpackage permissible.controllers
  */
-class ArosController extends PermissibleAppController {
+class ArosController extends PermissibleAppController
+{
 /**
  * Name of the controller
  *
  * @var string
  * @access public
  */
-    var $name = 'Aros';
+    public $name = 'Aros';
 /**
  * Name of model used by the controller
  *
  * @var array
  * @access public
  */
-    var $uses = array(
+    public $uses = array(
         'Permissible.PermissibleAro'
     );
 /**
@@ -30,7 +31,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function index() {
+    public function index()
+    {
         $this->set('aros', $this->PermissibleAro->generateList());
     }
 /**
@@ -39,7 +41,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function refresh() {
+    public function refresh()
+    {
         $this->PermissibleAro->refresh();
         $this->Session->setFlash('The ARO list has been refreshed');
         $this->redirect(array('plugin' => 'permissible', 'controller' => 'aros', 'action' => 'index'));
@@ -50,7 +53,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function reset() {
+    public function reset()
+    {
         if ($this->PermissibleAro->reset()) {
             $this->Acl->deny('everyone', 'app');
         }
@@ -63,7 +67,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function manage($id = null) {
+    public function manage($id = null)
+    {
         $this->PermissibleAro->id = $id;
         $aro = $this->PermissibleAro->read();
         if ($aro === false) {
@@ -80,7 +85,7 @@ class ArosController extends PermissibleAppController {
             $cascade = (isset($this->request->data['PermissibleAro']['cascade']) && $this->request->data['PermissibleAro']['cascade'] === '1');
             unset($this->request->data['PermissibleAro']['cascade']);
             foreach ($this->request->data['PermissibleAro'] as $aco_alias => $perm) {
-                $perm = ((int)$perm === 1);
+                $perm = ((int) $perm === 1);
                 if ($perm) {
                     if ($cascade) {
                         $this->_multiAllow($alias, $aco_alias);
@@ -108,7 +113,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access protected
  */
-    function _multiAllow($aro, $aco) {
+    public function _multiAllow($aro, $aco)
+    {
         $this->Acl->allow($aro, $aco);
         $aro_info = $this->Acl->Aro->node($aro);
         $this->PermissibleAro->id = $aro_info[0]['Aro']['id'];
@@ -122,7 +128,8 @@ class ArosController extends PermissibleAppController {
  * @return null
  * @access protected
  */
-    function _multiDeny($aro, $aco) {
+    public function _multiDeny($aro, $aco)
+    {
         $this->Acl->deny($aro, $aco);
         $aro_info = $this->Acl->Aro->node($aro);
         $this->PermissibleAro->id = $aro_info[0]['Aro']['id'];

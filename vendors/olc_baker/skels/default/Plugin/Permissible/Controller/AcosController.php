@@ -7,28 +7,30 @@
  * @package permissible
  * @subpackage permissible.controllers
  */
-class AcosController extends PermissibleAppController {
+class AcosController extends PermissibleAppController
+{
 /**
  * Name of the controller
  *
  * @var string
  * @access public
  */
-    var $name = 'Acos';
+    public $name = 'Acos';
 /**
  * Name of model used by the controller
  *
  * @var array
  * @access public
  */
-    var $uses = array('Permissible.PermissibleAco');
+    public $uses = array('Permissible.PermissibleAco');
 /**
  * Index for ACOs - list all acos to be selected for management
  *
  * @return null
  * @access public
  */
-    function index() {
+    public function index()
+    {
         $this->set('acos', $this->PermissibleAco->generateList());
     }
 /**
@@ -37,7 +39,8 @@ class AcosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function refresh() {
+    public function refresh()
+    {
         $this->PermissibleAco->refresh();
         $this->Session->setFlash('The ACO list has been refreshed');
         $this->redirect(array('plugin' => 'permissible', 'controller' => 'acos', 'action' => 'index'));
@@ -48,7 +51,8 @@ class AcosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function reset() {
+    public function reset()
+    {
         if ($this->PermissibleAco->reset()) {
             $this->Acl->deny('everyone', 'app');
         }
@@ -61,7 +65,8 @@ class AcosController extends PermissibleAppController {
  * @return null
  * @access public
  */
-    function manage($id = null) {
+    public function manage($id = null)
+    {
         $this->PermissibleAco->id = $id;
         $aco = $this->PermissibleAco->read();
         if ($aco === false) {
@@ -78,7 +83,7 @@ class AcosController extends PermissibleAppController {
             $cascade = (isset($this->request->data['PermissibleAco']['cascade']) && $this->request->data['PermissibleAco']['cascade'] === '1');
             unset($this->request->data['PermissibleAco']['cascade']);
             foreach ($this->request->data['PermissibleAco'] as $aro_alias => $perm) {
-                $perm = ((int)$perm === 1);
+                $perm = ((int) $perm === 1);
                 if ($perm) {
                     if ($cascade) {
                         $this->_multiAllow($aro_alias, $alias);
@@ -106,7 +111,8 @@ class AcosController extends PermissibleAppController {
  * @return null
  * @access protected
  */
-    function _multiAllow($aro, $aco) {
+    public function _multiAllow($aro, $aco)
+    {
         $this->Acl->allow($aro, $aco);
         $aco_info = $this->Acl->Aco->node($aco);
         $this->PermissibleAco->id = $aco_info[0]['Aco']['id'];
@@ -120,7 +126,8 @@ class AcosController extends PermissibleAppController {
  * @return null
  * @access protected
  */
-    function _multiDeny($aro, $aco) {
+    public function _multiDeny($aro, $aco)
+    {
         $this->Acl->deny($aro, $aco);
         $aco_info = $this->Acl->Aco->node($aco);
         $this->PermissibleAco->id = $aco_info[0]['Aco']['id'];

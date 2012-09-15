@@ -1,10 +1,11 @@
 <?php
 
-class FormsController extends AppController {
+class FormsController extends AppController
+{
+    public $name = 'Forms';
 
-    var $name = 'Forms';
-
-    function view($id = null) {
+    public function view($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
@@ -24,7 +25,8 @@ class FormsController extends AppController {
                 )));
     }
 
-    function add($projectId = null) {
+    public function add($projectId = null)
+    {
         if (!$projectId) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -42,7 +44,8 @@ class FormsController extends AppController {
         $this->set('projectId', $projectId);
     }
 
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
@@ -60,11 +63,12 @@ class FormsController extends AppController {
         }
     }
 
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (!$id || !$projectId = $this->Form->field('project_id', array('Form.id' => $id))) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect($this->referer());
-        } else if ($this->Form->delete($id)) {
+        } elseif ($this->Form->delete($id)) {
             $this->Session->setFlash(__('The data has been deleted'));
             $this->redirect(array('controller' => 'projects', 'action' => 'view', $projectId));
         }

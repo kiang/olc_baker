@@ -8,28 +8,30 @@ require_once App::pluginPath('Permissible') . 'Config/init.php';
  * @package permissible
  * @subpackage permissible.models
  */
-class PermissibleUser extends AppModel {
+class PermissibleUser extends AppModel
+{
 /**
  * Array containing the names of behaviours this model uses
  *
  * @var array
  * @access public
  */
-    var $actsAs = array('Acl' => array('requester'));
+    public $actsAs = array('Acl' => array('requester'));
 /**
  * Default display field for this model.
  *
  * @var array
  * @access public
  */
-    var $displayField = 'id';
+    public $displayField = 'id';
 /**
  * Returns the parent node of a user - the group id
  *
  * @return array Group array
  * @access public
  */
-    function parentNode() {
+    public function parentNode()
+    {
         if (!$this->id && empty($this->data)) {
             return null;
         }

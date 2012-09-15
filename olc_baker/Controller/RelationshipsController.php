@@ -1,10 +1,11 @@
 <?php
 
-class RelationshipsController extends AppController {
+class RelationshipsController extends AppController
+{
+    public $name = 'Relationships';
 
-    var $name = 'Relationships';
-
-    function add($formId = null) {
+    public function add($formId = null)
+    {
         if (!$formId || !$baseForm = $this->Relationship->BaseForm->find('first', array(
                     'conditions' => array('BaseForm.id' => $formId),
                     'contain' => array(),
@@ -53,10 +54,11 @@ class RelationshipsController extends AppController {
         $this->set('baseForm', $baseForm);
     }
 
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (!$id || !$parentId = $this->Relationship->field('parent_id', array('Relationship.id' => $id))) {
             $this->Session->setFlash(__('Please do following links in the page'));
-        } else if ($this->Relationship->delete($id) && $this->Relationship->delete($parentId)) {
+        } elseif ($this->Relationship->delete($id) && $this->Relationship->delete($parentId)) {
             $this->Session->setFlash(__('Data has been deleted'));
         }
         $this->redirect($this->referer());

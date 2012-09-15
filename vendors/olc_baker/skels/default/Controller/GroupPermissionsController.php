@@ -1,11 +1,12 @@
 <?php
 
-class GroupPermissionsController extends AppController {
+class GroupPermissionsController extends AppController
+{
+    public $name = 'GroupPermissions';
+    public $paginate = array();
 
-    var $name = 'GroupPermissions';
-    var $paginate = array();
-
-    function admin_index($parentId = 0) {
+    public function admin_index($parentId = 0)
+    {
         $parentId = intval($parentId);
         $parent = array('GroupPermission' => array(
             'id' => 0
@@ -26,7 +27,8 @@ class GroupPermissionsController extends AppController {
         $this->set('parent', $parent);
     }
 
-    function admin_group($groupId = 0) {
+    public function admin_group($groupId = 0)
+    {
         $groupId = intval($groupId);
         if ($groupId <= 0 || !$aro = $this->Acl->Aro->find('first', array(
             'fields' => array('lft', 'rght'),
@@ -76,32 +78,32 @@ class GroupPermissionsController extends AppController {
         if (!empty($this->request->data['GroupPermission'])) {
             $keyStack = Set::combine($groupPermissions, '{n}.GroupPermission.id', '{n}.GroupPermission');
             $allowedStack = array();
-            foreach($keyStack AS $gpId => $gp) {
-                if(!empty($this->request->data['GroupPermission'][$gpId])) {
+            foreach ($keyStack AS $gpId => $gp) {
+                if (!empty($this->request->data['GroupPermission'][$gpId])) {
                     $acoArray = explode(chr(10), $gp['acos']);
-                    foreach($acoArray AS $acoItem) {
+                    foreach ($acoArray AS $acoItem) {
                         $allowedStack[$acoItem] = 1;
                     }
                 }
             }
-            foreach($acos AS $acoAlias => $isAllowed) {
-                if(!isset($allowedStack[$acoAlias])) {
+            foreach ($acos AS $acoAlias => $isAllowed) {
+                if (!isset($allowedStack[$acoAlias])) {
                     $this->Acl->deny($group, $acoAlias);
-                } elseif($allowedStack[$acoAlias] != $isAllowed) {
+                } elseif ($allowedStack[$acoAlias] != $isAllowed) {
                     $this->Acl->allow($group, $acoAlias);
                 }
             }
         }
 
         $items = array();
-        foreach($groupPermissions AS $groupPermission) {
-            if($groupPermission['GroupPermission']['parent_id'] == 0) {
+        foreach ($groupPermissions AS $groupPermission) {
+            if ($groupPermission['GroupPermission']['parent_id'] == 0) {
                 $items[$groupPermission['GroupPermission']['id']]['category'] = $groupPermission['GroupPermission'];
             } else {
                 $groupAcos = explode(chr(10), $groupPermission['GroupPermission']['acos']);
                 $groupPermission['GroupPermission']['acos'] = 1;
-                foreach($groupAcos AS $groupAco) {
-                    if($groupPermission['GroupPermission']['acos'] == 1 && (!isset($acos[$groupAco]) || $acos[$groupAco] == -1)) {
+                foreach ($groupAcos AS $groupAco) {
+                    if ($groupPermission['GroupPermission']['acos'] == 1 && (!isset($acos[$groupAco]) || $acos[$groupAco] == -1)) {
                         $groupPermission['GroupPermission']['acos'] = -1;
                     }
                 }
@@ -112,7 +114,8 @@ class GroupPermissionsController extends AppController {
         $this->set('group', $group);
     }
 
-    function admin_add() {
+    public function admin_add()
+    {
         if (!empty($this->request->data)) {
             $this->GroupPermission->create();
             if ($this->GroupPermission->save($this->request->data)) {
@@ -130,7 +133,8 @@ class GroupPermissionsController extends AppController {
         $this->set('acos', $this->_getAcos());
     }
 
-    function admin_edit($id = null) {
+    public function admin_edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Invalid group permission', true));
             $this->redirect(array('action' => 'index'));
@@ -155,7 +159,8 @@ class GroupPermissionsController extends AppController {
         $this->set('acos', $this->_getAcos());
     }
 
-    function admin_delete($id = null) {
+    public function admin_delete($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Invalid id for group permission', true));
             $this->redirect(array('action' => 'index'));
@@ -168,7 +173,8 @@ class GroupPermissionsController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    private function _getAcos($key = 'alias') {
+    private function _getAcos($key = 'alias')
+    {
         $aco =  & $this->Acl->Aco;
         $results = $aco->find('all', array(
                     'fields' => array(
@@ -181,9 +187,9 @@ class GroupPermissionsController extends AppController {
             while ($stack && ($stack[count($stack) - 1]['rght'] < $result['Aco']['rght'])) {
                 array_pop($stack);
             }
-            if(!empty($stack)) {
+            if (!empty($stack)) {
                 $alias = '';
-                foreach($stack AS $acoNode) {
+                foreach ($stack AS $acoNode) {
                     $alias .= '/' . $acoNode['alias'];
                 }
                 $alias = substr($alias, 1) . '/' . $result['Aco']['alias'];
@@ -199,6 +205,7 @@ class GroupPermissionsController extends AppController {
             }
             $stack[] = $result['Aco'];
         }
+
         return $options;
     }
 

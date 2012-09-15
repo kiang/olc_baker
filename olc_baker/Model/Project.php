@@ -1,14 +1,14 @@
 <?php
-class Project extends AppModel {
-
-    var $name = 'Project';
-    var $validate = array(
+class Project extends AppModel
+{
+    public $name = 'Project';
+    public $validate = array(
         'name' => array('notempty'),
         'label' => array('notempty'),
         'rewrite_base' => array('notempty'),
         'app_path' => array('notempty')
     );
-    var $hasMany = array(
+    public $hasMany = array(
         'Form' => array(
             'className' => 'Form',
             'foreignKey' => 'project_id',
@@ -16,7 +16,8 @@ class Project extends AppModel {
         )
     );
 
-    function __construct($id = false, $table = null, $ds = null) {
+    public function __construct($id = false, $table = null, $ds = null)
+    {
         parent::__construct($id, $table, $ds);
         require_once VENDORS . 'smarty/Smarty.class.php';
         if (class_exists('Smarty')) {
@@ -29,10 +30,11 @@ class Project extends AppModel {
         }
     }
 
-    var $tasks = array();
-    var $errorMessage = '';
+    public $tasks = array();
+    public $errorMessage = '';
 
-    function fetchProject($projectId) {
+    public function fetchProject($projectId)
+    {
         return $this->find('first', array(
             'conditions' => array('Project.id' => $projectId),
             'contain' => array(
@@ -58,12 +60,14 @@ class Project extends AppModel {
      * Make sure if the $appPath exists and copy the skel to there
      * @param string $appPath
      */
-    function initialAppPath($appPath) {
+    public function initialAppPath($appPath)
+    {
         App::uses('Folder', 'Utility');
         $fh = new Folder();
         if (file_exists($appPath)) {
             if (false === $fh->delete($appPath)) {
                 $this->errorMessage = __('Target path exists. But the program could not delete the folder automatically');
+
                 return false;
             } else {
                 $this->tasks[] = array(
@@ -84,6 +88,7 @@ class Project extends AppModel {
         $errors = $fh->errors();
         if (!empty($errors)) {
             $this->errorMessage = __('The program could not copy files to the folder automatically');
+
             return false;
         } else {
             $this->tasks[] = array(
@@ -91,6 +96,7 @@ class Project extends AppModel {
                 'operactions' => $fh->messages(),
             );
         }
+
         return true;
     }
 

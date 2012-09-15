@@ -1,10 +1,10 @@
 <?php
 
-class GroupPermission extends AppModel {
-
-    var $name = 'GroupPermission';
-    var $displayField = 'name';
-    var $validate = array(
+class GroupPermission extends AppModel
+{
+    public $name = 'GroupPermission';
+    public $displayField = 'name';
+    public $validate = array(
         'name' => array(
             'notempty' => array(
                 'rule' => array('notempty'),
@@ -17,17 +17,19 @@ class GroupPermission extends AppModel {
         ),
     );
 
-    function  beforeSave($options = array()) {
-        if(!empty($this->data['GroupPermission']['acos'])) {
+    public function  beforeSave($options = array())
+    {
+        if (!empty($this->data['GroupPermission']['acos'])) {
             $acos = explode(chr(10), $this->data['GroupPermission']['acos']);
-            foreach($acos AS $key => $aco) {
+            foreach ($acos AS $key => $aco) {
                 $acos[$key] = trim($aco);
-                if(empty($acos[$key])) {
+                if (empty($acos[$key])) {
                     unset($acos[$key]);
                 }
             }
             $this->data['GroupPermission']['acos'] = implode(chr(10), array_unique($acos));
         }
+
         return parent::beforeSave($options);
     }
 

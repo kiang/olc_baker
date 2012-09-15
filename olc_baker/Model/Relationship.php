@@ -1,9 +1,9 @@
 <?php
 
-class Relationship extends AppModel {
-
-    var $name = 'Relationship';
-    var $belongsTo = array(
+class Relationship extends AppModel
+{
+    public $name = 'Relationship';
+    public $belongsTo = array(
         'Project' => array(
             'className' => 'Project',
             'foreignKey' => 'project_id',

@@ -1,4 +1,5 @@
 <?php
-class AppModel extends Model {
-    var $actsAs = array('Containable');
+class AppModel extends Model
+{
+    public $actsAs = array('Containable');
 }

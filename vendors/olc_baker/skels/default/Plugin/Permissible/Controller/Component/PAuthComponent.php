@@ -9,21 +9,23 @@ App::import('Component', 'Auth');
  * @package permissible
  * @subpackage permissible.controllers.components
  */
-class PAuthComponent extends AuthComponent {
+class PAuthComponent extends AuthComponent
+{
 /**
  * Tracking variable to optimise knowing if the user is logged in or not
  *
  * @var boolean
  * @access protected
  */
-    var $_unlogged = false;
+    public $_unlogged = false;
 /**
  * Over-ride of startup function. Adds 'User' with id of 0 if not logged in for use in ACL
  *
  * @return null
  * @access public
  */
-    function startup (&$controller) {
+    public function startup (&$controller)
+    {
         $user = ClassRegistry::init(Configure::read('Permissible.UserModel'));
         $this->actionPath = 'app/';
         $this->authorize = 'actions';
@@ -44,7 +46,8 @@ class PAuthComponent extends AuthComponent {
  * @return null
  * @access public
  */
-    function __destruct() {
+    public function __destruct()
+    {
         if ($this->_unlogged) {
             $this->Session->delete($this->sessionKey);
         }

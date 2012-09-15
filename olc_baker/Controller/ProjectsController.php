@@ -1,15 +1,17 @@
 <?php
 
-class ProjectsController extends AppController {
+class ProjectsController extends AppController
+{
+    public $name = 'Projects';
 
-    var $name = 'Projects';
-
-    function index() {
+    public function index()
+    {
         $this->Project->recursive = 0;
         $this->set('projects', $this->paginate());
     }
 
-    function view($id = null) {
+    public function view($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
@@ -18,7 +20,8 @@ class ProjectsController extends AppController {
         $this->set('forms', $this->paginate($this->Project->Form, array('Form.project_id' => $id)));
     }
 
-    function add() {
+    public function add()
+    {
         if (!empty($this->request->data)) {
             $this->Project->create();
             if (!empty($this->request->data['Project']['option'])) {
@@ -34,7 +37,8 @@ class ProjectsController extends AppController {
         }
     }
 
-    function edit($id = null) {
+    public function edit($id = null)
+    {
         if (!$id && empty($this->request->data)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
@@ -56,7 +60,8 @@ class ProjectsController extends AppController {
         }
     }
 
-    function delete($id = null) {
+    public function delete($id = null)
+    {
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
@@ -72,7 +77,8 @@ class ProjectsController extends AppController {
      * http://cakebaker.42dh.com/2007/10/17/pagination-of-data-from-a-habtm-relationship/
      */
 
-    function build($projectId = null) {
+    public function build($projectId = null)
+    {
         if (!$projectId || !$project = $this->Project->fetchProject($projectId)) {
             $this->Session->setFlash(__('Please do following links in the page'));
             $this->redirect(array('action' => 'index'));
@@ -472,7 +478,8 @@ class ProjectsController extends AppController {
         }
     }
 
-    function rebuild_db($projectId = null) {
+    public function rebuild_db($projectId = null)
+    {
         if (!$projectId || !$project = $this->Project->find('first', array(
             'conditions' => array('Project.id' => $projectId),
             'contain' => array(),
@@ -493,7 +500,7 @@ class ProjectsController extends AppController {
             $dbn = $db->getDataSource('olc_baker-dev');
             $sqlPath = $project['Project']['app_path'] . DS . 'Config' . DS . 'schema';
             $dbn->execute('CREATE DATABASE IF NOT EXISTS `' . $project['Project']['db_name'] . '`
-		    DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
+            DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;');
             $dbn->execute('USE `' . $project['Project']['db_name'] . '`;');
             $migrations = new Migrations('olc_baker-dev');
             $migrations->load($sqlPath . DS . 'schema.yaml');
@@ -508,7 +515,8 @@ class ProjectsController extends AppController {
      * Generate forms from the tables of database
      */
 
-    function db($projectId = 0, $tableName = null) {
+    public function db($projectId = 0, $tableName = null)
+    {
         $projectId = intval($projectId);
 
         if ($project = $this->Project->read(null, $projectId)) {

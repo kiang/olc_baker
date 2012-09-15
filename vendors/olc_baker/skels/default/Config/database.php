@@ -1,7 +1,7 @@
 <?php
 
-class DATABASE_CONFIG {
-
+class DATABASE_CONFIG
+{
     public $default = array(
         'datasource' => 'Database/Mysql',
         'persistent' => false,

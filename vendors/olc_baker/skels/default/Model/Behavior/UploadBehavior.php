@@ -11,18 +11,19 @@
  * @version 0.1
  */
 App::import('Core', 'String');
-class UploadBehavior extends ModelBehavior {
+class UploadBehavior extends ModelBehavior
+{
+    public static $__settings = array();
 
-    static $__settings = array();
+    public $toWrite = array();
 
-    var $toWrite = array();
+    public $toDelete = array();
 
-    var $toDelete = array();
-
-    function setup(&$model, $settings = array()) {
+    public function setup(&$model, $settings = array())
+    {
         $defaults = array(
-        	'path' => ':webroot/upload/:model/:id/:basename_:style.:extension',
-        	'styles' => array()
+            'path' => ':webroot/upload/:model/:id/:basename_:style.:extension',
+            'styles' => array()
         );
 
         foreach ($settings as $field => $array) {
@@ -30,7 +31,8 @@ class UploadBehavior extends ModelBehavior {
         }
     }
 
-    function beforeSave(&$model) {
+    public function beforeSave(&$model)
+    {
         $this->_reset();
         foreach (self::$__settings[$model->name] as $field => $settings) {
             if (!empty($model->data[$model->name][$field]) && is_array($model->data[$model->name][$field]) && is_uploaded_file($model->data[$model->name][$field]['tmp_name'])) {
@@ -46,36 +48,44 @@ class UploadBehavior extends ModelBehavior {
                 unset($model->data[$model->name][$field]);
             }
         }
+
         return true;
     }
 
-    function afterSave(&$model, $create) {
+    public function afterSave(&$model, $create)
+    {
         if (!$create) {
             $this->_deleteFiles($model);
         }
         $this->_writeFiles($model);
     }
 
-    function beforeDelete(&$model) {
+    public function beforeDelete(&$model)
+    {
         $this->_reset();
         $this->_prepareToDeleteFiles($model);
+
         return true;
     }
 
-    function afterDelete(&$model) {
+    public function afterDelete(&$model)
+    {
         $this->_deleteFiles($model);
     }
 
-    function _reset() {
+    public function _reset()
+    {
         $this->_toWrite = null;
         $this->_toDelete = null;
     }
 
-    function _prepareToWriteFiles(&$model, $field) {
+    public function _prepareToWriteFiles(&$model, $field)
+    {
         $this->toWrite[$field] = $model->data[$model->name][$field];
     }
 
-    function _writeFiles(&$model) {
+    public function _writeFiles(&$model)
+    {
         if (!empty($this->toWrite)) {
             foreach ($this->toWrite as $field => $toWrite) {
                 $settings = $this->_interpolate($model, $field, $toWrite['name'], 'original');
@@ -96,7 +106,8 @@ class UploadBehavior extends ModelBehavior {
         }
     }
 
-    function _prepareToDeleteFiles(&$model, $field = null, $forceRead = false) {
+    public function _prepareToDeleteFiles(&$model, $field = null, $forceRead = false)
+    {
         $needToRead = true;
         if ($field === null) {
             $fields = array_keys(self::$__settings[$model->name]);
@@ -126,7 +137,8 @@ class UploadBehavior extends ModelBehavior {
         $this->toDelete['id'] = $model->id;
     }
 
-    function _deleteFiles(&$model) {
+    public function _deleteFiles(&$model)
+    {
         foreach (self::$__settings[$model->name] as $field => $settings) {
             if (!empty($this->toDelete[$field])) {
                 $styles = array_keys($settings['styles']);
@@ -141,19 +153,21 @@ class UploadBehavior extends ModelBehavior {
         }
     }
 
-    function _interpolate(&$model, $field, $filename, $style) {
+    public function _interpolate(&$model, $field, $filename, $style)
+    {
         return self::interpolate($model->name, $model->id, $field, $filename, $style);
     }
 
-    static function interpolate($modelName, $modelId, $field, $filename, $style, $defaults = array()) {
+    public static function interpolate($modelName, $modelId, $field, $filename, $style, $defaults = array())
+    {
         $pathinfo = pathinfo($filename);
         $interpolations = array_merge(array(
-        	'webroot' => preg_replace('/\/$/', '', WWW_ROOT),
-        	'model' => Inflector::tableize($modelName),
-        	'basename' => !empty($filename) ? $pathinfo['filename'] : null,
-        	'extension' => !empty($filename) ? $pathinfo['extension'] : null,
-        	'id' => $modelId,
-        	'style' => $style
+            'webroot' => preg_replace('/\/$/', '', WWW_ROOT),
+            'model' => Inflector::tableize($modelName),
+            'basename' => !empty($filename) ? $pathinfo['filename'] : null,
+            'extension' => !empty($filename) ? $pathinfo['extension'] : null,
+            'id' => $modelId,
+            'style' => $style
         ), $defaults);
         $settings = self::$__settings[$modelName][$field];
         $keys = array('path', 'url', 'default_url');
@@ -164,10 +178,12 @@ class UploadBehavior extends ModelBehavior {
                 }
             }
         }
+
         return $settings;
     }
 
-    function _resize($srcFile, $destFile, $geometry) {
+    public function _resize($srcFile, $destFile, $geometry)
+    {
         copy($srcFile, $destFile);
         $pathinfo = pathinfo($srcFile);
         $src = null;
@@ -217,8 +233,10 @@ class UploadBehavior extends ModelBehavior {
             imagefill($img, 0, 0, imagecolorallocate($img, 255, 255, 255));
             imagecopyresampled($img, $src, $destX, $destY, 0, 0, $destW, $destH, $srcW, $srcH);
             $outputHandler($img, $destFile);
+
             return true;
         }
+
         return false;
     }
 

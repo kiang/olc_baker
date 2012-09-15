@@ -1,17 +1,18 @@
 <?php
 
-class Member extends AppModel {
-
-    var $name = 'Member';
-    var $actsAs = array('Acl' => array('requester'));
-    var $belongsTo = array(
+class Member extends AppModel
+{
+    public $name = 'Member';
+    public $actsAs = array('Acl' => array('requester'));
+    public $belongsTo = array(
         'Group' => array(
             'foreignKey' => 'group_id',
             'className' => 'Group',
         ),
     );
 
-    function parentNode() {
+    public function parentNode()
+    {
         if (!$this->id && empty($this->data)) {
             return null;
         }
@@ -25,8 +26,9 @@ class Member extends AppModel {
             return array('Group' => array('id' => $data['Member']['group_id']));
         }
     }
-    
-    function beforeSave($options) {
+
+    public function beforeSave($options)
+    {
         if (isset($this->data['Member']['password'])) {
             $this->data['Member']['password'] = trim($this->data['Member']['password']);
             if (!empty($this->data['Member']['password'])) {
@@ -35,6 +37,7 @@ class Member extends AppModel {
                 unset($this->data['Member']['password']);
             }
         }
+
         return true;
     }
 
