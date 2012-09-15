@@ -3,18 +3,18 @@ return array(
     'name' => __('Flash charts', true),
     'description' => __('Several types of flash charts', true),
     'options' => array(
-		'blocks' => array(
-			'group_field' => array(
-            	'type' => 'fieldWithId',
-            	'label' => __('Group by field:', true),
+        'blocks' => array(
+            'group_field' => array(
+                'type' => 'fieldWithId',
+                'label' => __('Group by field:', true),
             ),
             'calculate_field' => array(
-            	'type' => 'fieldWithId',
-            	'label' => __('Calculate field:', true),
+                'type' => 'fieldWithId',
+                'label' => __('Calculate field:', true),
             ),
             'label_field' => array(
-            	'type' => 'field',
-            	'label' => __('Chart label field:', true),
+                'type' => 'field',
+                'label' => __('Chart label field:', true),
             ),
         ),
         'settings' => array(

@@ -17,18 +17,18 @@
             'group' => array('<{$d_className}>.<{$d_key}>'),
         ));
         $charData = array();
-        foreach($baseFields AS $baseField) {
+        foreach ($baseFields AS $baseField) {
             $data = $this-><{$modelName}>->find('all', array(
                 'conditions' => array(
                     '<{$d_className}>.<{$d_key}>' => $baseField['<{$d_className}>']['<{$d_key}>']
                 ),
-            	'fields' => array(
-                	'<{$parameters.settings.sql_method}>(<{$b_className}>.<{$b_key}>) AS value',
+                'fields' => array(
+                    '<{$parameters.settings.sql_method}>(<{$b_className}>.<{$b_key}>) AS value',
                 ),
-            	'group' => array('<{$className}>.<{$key}>'),
+                'group' => array('<{$className}>.<{$key}>'),
             ));
             $charData[$baseField['<{$d_className}>']['<{$d_key}>']]['label'] = $baseField['<{$c_className}>']['<{$c_key}>'];
-            foreach($data AS $item) {
+            foreach ($data AS $item) {
                 $charData[$baseField['<{$d_className}>']['<{$d_key}>']]['value'][] = $item[0]['value'];
             }
         }

@@ -17,7 +17,7 @@
             'group' => array('<{$className}>.<{$key}>'),
         ));
         $charData = array();
-        foreach($data AS $item) {
+        foreach ($data AS $item) {
             $charData[$item['<{$className}>']['<{$key}>']]['value'] = $item[0]['value'];
             $charData[$item['<{$className}>']['<{$key}>']]['label'] = $item['<{$c_className}>']['<{$c_key}>'];
         }

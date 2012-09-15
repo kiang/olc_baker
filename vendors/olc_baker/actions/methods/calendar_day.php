@@ -1,17 +1,17 @@
 
     function <{$actionName}>($year = 0, $month = 0, $day = 0) {
         $year = intval($year);
-        if($year < 1900 || $year > 2300) {
+        if ($year < 1900 || $year > 2300) {
             $year = date('Y');
         }
         $month = intval($month);
-        if($month < 1 || $month > 12) {
+        if ($month < 1 || $month > 12) {
             $month = date('n');
         }
         $day = intval($day);
-        if(!checkdate($month, $day, $year)) {
-        	$year = date('Y');
-        	$month = date('n');
+        if (!checkdate($month, $day, $year)) {
+            $year = date('Y');
+            $month = date('n');
             $day = date('j');
         }
         $dayRange['start'] = mktime(0, 0, 0, $month, $day, $year);
@@ -39,7 +39,7 @@
             'order' => array($dayTimeField . ' ASC'),
         ));
         $events = array();
-        foreach($listEvents AS $event) {
+        foreach ($listEvents AS $event) {
             $hour = date('G', strtotime($event['<{$modelName}>'][$dayTimeFieldName]));
             $events[$hour][] = $event;
         }

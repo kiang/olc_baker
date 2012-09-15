@@ -3,22 +3,22 @@ return array(
     'name' => __('Multiple line flash chart', true),
     'description' => __('Multiple line flash chart', true),
     'options' => array(
-		'blocks' => array(
+        'blocks' => array(
             'base_field' => array(
                 'type' => 'fieldWithId',
                 'label' => __('Base field:', true),
             ),
             'label_field' => array(
-            	'type' => 'field',
-            	'label' => __('Display field:', true),
+                'type' => 'field',
+                'label' => __('Display field:', true),
             ),
             'group_field' => array(
-            	'type' => 'fieldWithId',
-            	'label' => __('Group by field:', true),
+                'type' => 'fieldWithId',
+                'label' => __('Group by field:', true),
             ),
             'calculate_field' => array(
-            	'type' => 'fieldWithId',
-            	'label' => __('Calculate field:', true),
+                'type' => 'fieldWithId',
+                'label' => __('Calculate field:', true),
             ),
         ),
         'settings' => array(

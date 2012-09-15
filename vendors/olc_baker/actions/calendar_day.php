@@ -3,14 +3,14 @@ return array(
     'name' => __('Calendar(day)', true),
     'description' => __('A day by day calendar', true),
     'options' => array(
-		'blocks' => array(
-			'datetime' => array(
-            	'type' => 'dateTimeField',
-            	'label' => __('Time field:', true),
+        'blocks' => array(
+            'datetime' => array(
+                'type' => 'dateTimeField',
+                'label' => __('Time field:', true),
             ),
             'title' => array(
-            	'type' => 'field',
-            	'label' => __('Title field:', true),
+                'type' => 'field',
+                'label' => __('Title field:', true),
             ),
         ),
         'links' => array(

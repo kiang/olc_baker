@@ -3,10 +3,10 @@ return array(
     'name' => __('Normal list', true),
     'description' => __('A table based list page', true),
     'options' => array(
-		'blocks' => array(
-			'body' => array(
-            	'type' => 'fields',
-            	'label' => __('Display fields:', true),
+        'blocks' => array(
+            'body' => array(
+                'type' => 'fields',
+                'label' => __('Display fields:', true),
             ),
         ),
         'links' => array(

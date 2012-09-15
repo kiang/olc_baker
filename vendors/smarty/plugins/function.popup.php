@@ -28,7 +28,7 @@ function smarty_function_popup($params, $template)
             case 'trigger':
             case 'function':
             case 'inarray':
-                $$_key = (string)$_value;
+                $$_key = (string) $_value;
                 if ($_key == 'function' || $_key == 'inarray')
                     $append .= ',' . strtoupper($_key) . ",'$_value'";
                 break;
@@ -101,6 +101,7 @@ function smarty_function_popup($params, $template)
 
     if (empty($text) && !isset($inarray) && empty($function)) {
         trigger_error("overlib: attribute 'text' or 'inarray' or 'function' required",E_USER_WARNING);
+
         return false;
     }
 
@@ -111,8 +112,5 @@ function smarty_function_popup($params, $template)
     if ($trigger == 'onmouseover')
        $retval .= ' onmouseout="nd();"';
 
-
     return $retval;
 }
-
-?>
