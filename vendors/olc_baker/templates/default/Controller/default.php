@@ -1,9 +1,9 @@
 <?php
 class //<{$controllerName}>Controller extends AppController {
 
-    var $name = '//<{$controllerName}>';
-    var $paginate = array();
-    var $helpers = array(//<{if $uploads}>'Upload',//<{/if}>);
+    public $name = '//<{$controllerName}>';
+    public $paginate = array();
+    public $helpers = array(//<{if $uploads}>'Upload',//<{/if}>);
 
 //<{if isset($relationships.belongsTo) || isset($relationships.hasAndBelongsToMany)}>
 

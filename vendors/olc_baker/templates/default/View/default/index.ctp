@@ -1,14 +1,14 @@
 <div id="//<{$controllerName}>Index">
     <h2><?php echo __('//<{$formLabel}>', true); ?></h2>
-    //<{if isset($actions)}>
+//<{if isset($actions)}>
     <div class="clear actions">
         <ul>
-            //<{foreach from=$actions key=linkPath item=linkItem}>
+//<{foreach from=$actions key=linkPath item=linkItem}>
             <li><?php echo $this->Html->link('//<{$linkItem.label}>', array('action' => '//<{$linkPath}>'), array('class' => '//<{$linkItem.class}>')); ?></li>
-            //<{/foreach}>
+//<{/foreach}>
         </ul>
     </div>
-    //<{/if}>
+//<{/if}>
     <p>
         <?php
         $url = array();
@@ -27,19 +27,19 @@
     <table class="table table-bordered" id="//<{$controllerName}>IndexTable">
         <thead>
             <tr>
-                //<{if isset($relationships.belongsTo)}>
-                //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{if isset($relationships.belongsTo)}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
                 <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
                     <th><?php echo $this->Paginator->sort('//<{$modelName}>.//<{$rOption.foreignKey}>', '//<{$models[$rOption.className].label}>', array('url' => $url)); ?></th>
                 <?php endif; ?>
-                //<{/foreach}>
-                //<{/if}>
+//<{/foreach}>
+//<{/if}>
 
-                //<{foreach from=$fields key=className item=classFields}>
-                //<{foreach from=$classFields key=key item=item}>
+//<{foreach from=$fields key=className item=classFields}>
+//<{foreach from=$classFields key=key item=item}>
                 <th><?php echo $this->Paginator->sort('//<{$modelName}>.//<{$key}>', '//<{$item.label}>', array('url' => $url)); ?></th>
-                //<{/foreach}>
-                //<{/foreach}>
+//<{/foreach}>
+//<{/foreach}>
                 <th class="actions"><?php echo __('Action', true); ?></th>
             </tr>
         </thead>
@@ -53,8 +53,8 @@
                 }
                 ?>
                 <tr<?php echo $class; ?>>
-                    //<{if isset($relationships.belongsTo)}>
-                    //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+//<{if isset($relationships.belongsTo)}>
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
                     <?php if (empty($scope['//<{$modelName}>.//<{$rOption.foreignKey}>'])): ?>
                         <td><?php
                 if (empty($item['//<{$rOption.className}>']['id'])) {
@@ -68,11 +68,11 @@
                 }
                         ?></td>
                     <?php endif; ?>
-                    //<{/foreach}>
-                    //<{/if}>
+//<{/foreach}>
+//<{/if}>
 
-                    //<{foreach from=$fields key=className item=classFields}>
-                    //<{foreach from=$classFields key=key item=item}>
+//<{foreach from=$fields key=className item=classFields}>
+//<{foreach from=$classFields key=key item=item}>
                     <td><?php
                 if ($item['//<{$className}>']['//<{$key}>']) {
 //<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
@@ -89,25 +89,25 @@
 //<{/if}>
                 }
                     ?></td>
-                    //<{/foreach}>
-                    //<{/foreach}>
+//<{/foreach}>
+//<{/foreach}>
                     <td class="actions">
-    <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
+                        <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
                     </td>
                 </tr>
-                    <?php }; // End of foreach ($items as $item) {  ?>
+            <?php }; // End of foreach ($items as $item) {  ?>
         </tbody>
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <div id="//<{$controllerName}>IndexPanel"></div>
-<?php
-$scripts = '
-$(function() {
-    $(\'#//<{$controllerName}>IndexTable th a, div.paging a, a.//<{$controllerName}>IndexControl\').click(function() {
-        $(\'#//<{$controllerName}>Index\').parent().load(this.href);
-        return false;
-    });
-});';
-echo $this->Html->scriptBlock($scripts);
-?>
+    <script type="text/javascript">
+        //<![CDATA[
+        $(function() {
+            $('#//<{$controllerName}>IndexTable th a, div.paging a, a.//<{$controllerName}>IndexControl').click(function() {
+                $('#//<{$controllerName}>Index').parent().load(this.href);
+                return false;
+            });
+        });
+        //]]>
+    </script>
 </div>

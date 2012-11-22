@@ -3,7 +3,7 @@
     <head>
         <?php echo $this->Html->charset(); ?>
         <title>
-            //<{$projectLabel}>::
+//<{$projectLabel}>::
             <?php echo $title_for_layout; ?>
         </title><?php
             echo $this->Html->meta('icon');
@@ -24,23 +24,23 @@
             </div>
             <div id="content">
                 <div class="btn-group">
-                            <?php if ($this->Session->read('Auth.User.id')): ?>
-                                //<{foreach from=$controllers key=key item=item}>
-                                <?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>', array('class' => 'btn')); ?>
-                                //<{/foreach}>
-                                <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
-                                <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
-                                <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>
-                            <?php else: ?>
-                                <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn')); ?>
-                            <?php endif; ?>
-                            <?php
-                            if (!empty($actions_for_layout)) {
-                                foreach ($actions_for_layout as $title => $url) {
-                                    echo $this->Html->link($title, $url, array('class' => 'btn'));
-                                }
-                            }
-                            ?>
+                    <?php if ($this->Session->read('Auth.User.id')): ?>
+//<{foreach from=$controllers key=key item=item}>
+                        <?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>', array('class' => 'btn')); ?>
+//<{/foreach}>
+                        <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
+                        <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
+                        <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>
+                    <?php else: ?>
+                        <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn')); ?>
+                    <?php endif; ?>
+                    <?php
+                    if (!empty($actions_for_layout)) {
+                        foreach ($actions_for_layout as $title => $url) {
+                            echo $this->Html->link($title, $url, array('class' => 'btn'));
+                        }
+                    }
+                    ?>
                 </div>
 
                 <?php echo $this->Session->flash(); ?>
@@ -59,14 +59,16 @@
         </div>
         <?php
         echo $this->element('sql_dump');
-        echo $this->Html->scriptBlock('
-$(function() {
-    $(\'a.dialogControl\').click(function() {
-        dialogFull(this);
-        return false;
-    });
-});
-');
         ?>
+        <script type="text/javascript">
+            //<![CDATA[
+            $(function() {
+                $('a.dialogControl').click(function() {
+                    dialogFull(this);
+                    return false;
+                });
+            });
+            //]]>
+        </script>
     </body>
 </html>
