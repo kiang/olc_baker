@@ -1,19 +1,26 @@
 <?php
 /**
  * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  *
  * Licensed under The MIT License
+ * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright 2005-2011, Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
  * @link          http://cakephp.org CakePHP(tm) Project
  * @package       Cake.Utility
  * @since         CakePHP(tm) v 2.2.0
- * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
+
 App::uses('Hash', 'Utility');
 
+/**
+ * Class HashTest
+ *
+ * @package       Cake.Utility
+ */
 class HashTest extends CakeTestCase {
 
 	public static function articleData() {
@@ -167,9 +174,20 @@ class HashTest extends CakeTestCase {
 /**
  * Test get()
  *
- * return void
+ * @return void
  */
 	public function testGet() {
+		$data = array('abc', 'def');
+
+		$result = Hash::get($data, '0');
+		$this->assertEquals('abc', $result);
+
+		$result = Hash::get($data, 0);
+		$this->assertEquals('abc', $result);
+
+		$result = Hash::get($data, '1');
+		$this->assertEquals('def', $result);
+
 		$data = self::articleData();
 
 		$result = Hash::get(array(), '1.Article.title');
@@ -186,6 +204,10 @@ class HashTest extends CakeTestCase {
 
 		$result = Hash::get($data, '5.Article.title');
 		$this->assertNull($result);
+
+		$default = array('empty');
+		$this->assertEquals($default, Hash::get($data, '5.Article.title', $default));
+		$this->assertEquals($default, Hash::get(array(), '5.Article.title', $default));
 
 		$result = Hash::get($data, '1.Article.title.not_there');
 		$this->assertNull($result);
@@ -298,7 +320,6 @@ class HashTest extends CakeTestCase {
 				'Author' => array('id' => '3', 'user' => 'larry', 'password' => null),
 			)
 		);
-
 		$result = Hash::flatten($data);
 		$expected = array(
 			'0.Post.id' => '1',
@@ -314,6 +335,21 @@ class HashTest extends CakeTestCase {
 			'1.Author.id' => '3',
 			'1.Author.user' => 'larry',
 			'1.Author.password' => null
+		);
+		$this->assertEquals($expected, $result);
+
+		$data = array(
+			array(
+				'Post' => array('id' => '1', 'author_id' => null, 'title' => 'First Post'),
+				'Author' => array(),
+			)
+		);
+		$result = Hash::flatten($data);
+		$expected = array(
+			'0.Post.id' => '1',
+			'0.Post.author_id' => null,
+			'0.Post.title' => 'First Post',
+			'0.Author' => array()
 		);
 		$this->assertEquals($expected, $result);
 
@@ -495,7 +531,7 @@ class HashTest extends CakeTestCase {
 			'Validator',
 			'Transactional'
 		);
-		$this->assertEquals(Hash::merge($a, $b), $expected);
+		$this->assertEquals($expected, Hash::merge($a, $b));
 	}
 
 /**
@@ -561,6 +597,12 @@ class HashTest extends CakeTestCase {
 		);
 		$this->assertTrue(Hash::contains($b, $a));
 		$this->assertFalse(Hash::contains($a, $b));
+
+		$a = array(0 => 'test', 'string' => null);
+		$this->assertTrue(Hash::contains($a, array('string' => null)));
+
+		$a = array(0 => 'test', 'string' => null);
+		$this->assertTrue(Hash::contains($a, array('test')));
 	}
 
 /**
@@ -627,6 +669,9 @@ class HashTest extends CakeTestCase {
 
 		$data = array('one', 2 => 'two', 3 => 'three', 4 => 'four', 'a' => 'five');
 		$this->assertFalse(Hash::numeric(array_keys($data)));
+
+		$data = array(2.4, 1, 0, -1, -2);
+		$this->assertTrue(Hash::numeric($data));
 	}
 
 /**
@@ -645,6 +690,9 @@ class HashTest extends CakeTestCase {
 
 		$result = Hash::extract($data, '1.Article.title');
 		$this->assertEquals(array('Second Article'), $result);
+
+		$result = Hash::extract(array(false), '{n}.Something.another_thing');
+		$this->assertEquals(array(), $result);
 	}
 
 /**
@@ -788,6 +836,59 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Test extracting based on attributes with boolean values.
+ *
+ * @return void
+ */
+	public function testExtractAttributeBoolean() {
+		$users = array(
+			array(
+				'id' => 2,
+				'username' => 'johndoe',
+				'active' => true
+			),
+			array(
+				'id' => 5,
+				'username' => 'kevin',
+				'active' => true
+			),
+			array(
+				'id' => 9,
+				'username' => 'samantha',
+				'active' => false
+			),
+		);
+		$result = Hash::extract($users, '{n}[active=false]');
+		$this->assertCount(1, $result);
+		$this->assertEquals($users[2], $result[0]);
+
+		$result = Hash::extract($users, '{n}[active=true]');
+		$this->assertCount(2, $result);
+		$this->assertEquals($users[0], $result[0]);
+		$this->assertEquals($users[1], $result[1]);
+	}
+
+/**
+ * Test that attribute matchers don't cause errors on scalar data.
+ *
+ * @return void
+ */
+	public function testExtractAttributeEqualityOnScalarValue() {
+		$data = array(
+			'Entity' => array(
+				'id' => 1,
+				'data1' => 'value',
+			)
+		);
+		$result = Hash::extract($data, 'Entity[id=1].data1');
+		$this->assertEquals(array('value'), $result);
+
+		$data = array('Entity' => false );
+		$result = Hash::extract($data, 'Entity[id=1].data1');
+		$this->assertEquals(array(), $result);
+	}
+
+/**
  * Test comparison operators.
  *
  * @return void
@@ -844,10 +945,16 @@ class HashTest extends CakeTestCase {
 		$result = Hash::extract($data, '{n}.Article[title=/^First/]');
 		$expected = array($data[0]['Article']);
 		$this->assertEquals($expected, $result);
+
+		$result = Hash::extract($data, '{n}.Article[title=/^Fir[a-z]+/]');
+		$expected = array($data[0]['Article']);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
  * Test that extract() + matching can hit null things.
+ *
+ * @return void
  */
 	public function testExtractMatchesNull() {
 		$data = array(
@@ -914,6 +1021,9 @@ class HashTest extends CakeTestCase {
  * @return void
  */
 	public function testSort() {
+		$result = Hash::sort(array(), '{n}.name', 'asc');
+		$this->assertEquals(array(), $result);
+
 		$a = array(
 			0 => array(
 				'Person' => array('name' => 'Jeff'),
@@ -1000,7 +1110,7 @@ class HashTest extends CakeTestCase {
 			1 => array('Person' => array('name' => 'Jeff')),
 		);
 		$a = Hash::sort($a, '{n}.Person.name', 'ASC', 'STRING');
-		$this->assertEquals($a, $b);
+		$this->assertSame($a, $b);
 
 		$names = array(
 			array('employees' => array(
@@ -1023,7 +1133,38 @@ class HashTest extends CakeTestCase {
 			array('employees' => array(array('name' => array()))),
 			array('employees' => array(array('name' => array())))
 		);
-		$this->assertEquals($expected, $result);
+		$this->assertSame($expected, $result);
+
+		$a = array(
+			'SU' => array(
+				'total_fulfillable' => 2
+			),
+			'AA' => array(
+				'total_fulfillable' => 1
+			),
+			'LX' => array(
+				'total_fulfillable' => 0
+			),
+			'BL' => array(
+				'total_fulfillable' => 3
+			),
+		);
+		$expected = array(
+			'LX' => array(
+				'total_fulfillable' => 0
+			),
+			'AA' => array(
+				'total_fulfillable' => 1
+			),
+			'SU' => array(
+				'total_fulfillable' => 2
+			),
+			'BL' => array(
+				'total_fulfillable' => 3
+			),
+		);
+		$result = Hash::sort($a, '{s}.total_fulfillable', 'asc');
+		$this->assertSame($expected, $result);
 	}
 
 /**
@@ -1095,6 +1236,28 @@ class HashTest extends CakeTestCase {
 			array('Item' => array('image' => 'img99.jpg')),
 		);
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test that sort() with 'natural' type will fallback to 'regular' as SORT_NATURAL is introduced in PHP 5.4
+ *
+ * @return void
+ */
+	public function testSortNaturalFallbackToRegular() {
+		if (version_compare(PHP_VERSION, '5.4.0', '>=')) {
+			$this->markTestSkipped('Skipping SORT_NATURAL fallback test on PHP >= 5.4');
+		}
+
+		$a = array(
+			0 => array('Person' => array('name' => 'Jeff')),
+			1 => array('Shirt' => array('color' => 'black'))
+		);
+		$b = array(
+			0 => array('Shirt' => array('color' => 'black')),
+			1 => array('Person' => array('name' => 'Jeff')),
+		);
+		$sorted = Hash::sort($a, '{n}.Person.name', 'asc', 'natural');
+		$this->assertEquals($sorted, $b);
 	}
 
 /**
@@ -1202,6 +1365,23 @@ class HashTest extends CakeTestCase {
 		$result = Hash::insert($data, '{n}.Comment.{n}.insert', 'value');
 		$this->assertEquals('value', $result[0]['Comment'][0]['insert']);
 		$this->assertEquals('value', $result[0]['Comment'][1]['insert']);
+
+		$data = array(
+			0 => array('Item' => array('id' => 1, 'title' => 'first')),
+			1 => array('Item' => array('id' => 2, 'title' => 'second')),
+			2 => array('Item' => array('id' => 3, 'title' => 'third')),
+			3 => array('Item' => array('id' => 4, 'title' => 'fourth')),
+			4 => array('Item' => array('id' => 5, 'title' => 'fifth')),
+		);
+		$result = Hash::insert($data, '{n}.Item[id=/\b2|\b4/]', array('test' => 2));
+		$expected = array(
+			0 => array('Item' => array('id' => 1, 'title' => 'first')),
+			1 => array('Item' => array('id' => 2, 'title' => 'second', 'test' => 2)),
+			2 => array('Item' => array('id' => 3, 'title' => 'third')),
+			3 => array('Item' => array('id' => 4, 'title' => 'fourth', 'test' => 2)),
+			4 => array('Item' => array('id' => 5, 'title' => 'fifth')),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -1265,6 +1445,23 @@ class HashTest extends CakeTestCase {
 		$result = Hash::remove($a, 'pages.2.vars');
 		$expected = $a;
 		$this->assertEquals($expected, $result);
+
+		$a = array(
+			0 => array(
+				'name' => 'pages'
+			),
+			1 => array(
+				'name' => 'files'
+			)
+		);
+
+		$result = Hash::remove($a, '{n}[name=files]');
+		$expected = array(
+			0 => array(
+				'name' => 'pages'
+			)
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -1284,6 +1481,22 @@ class HashTest extends CakeTestCase {
 		$this->assertFalse(isset($result[0]['Article']['user_id']));
 		$this->assertFalse(isset($result[0]['Article']['title']));
 		$this->assertFalse(isset($result[0]['Article']['body']));
+
+		$data = array(
+			0 => array('Item' => array('id' => 1, 'title' => 'first')),
+			1 => array('Item' => array('id' => 2, 'title' => 'second')),
+			2 => array('Item' => array('id' => 3, 'title' => 'third')),
+			3 => array('Item' => array('id' => 4, 'title' => 'fourth')),
+			4 => array('Item' => array('id' => 5, 'title' => 'fifth')),
+		);
+
+		$result = Hash::remove($data, '{n}.Item[id=/\b2|\b4/]');
+		$expected = array(
+			0 => array('Item' => array('id' => 1, 'title' => 'first')),
+			2 => array('Item' => array('id' => 3, 'title' => 'third')),
+			4 => array('Item' => array('id' => 5, 'title' => 'fifth')),
+		);
+		$this->assertEquals($expected, $result);
 	}
 
 /**
@@ -1347,6 +1560,34 @@ class HashTest extends CakeTestCase {
 			14 => 'Larry E. Masters',
 			25 => 'The Gwoo');
 		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * test combine() giving errors on key/value length mismatches.
+ *
+ * @expectedException CakeException
+ * @return void
+ */
+	public function testCombineErrorMissingValue() {
+		$data = array(
+			array('User' => array('id' => 1, 'name' => 'mark')),
+			array('User' => array('name' => 'jose')),
+		);
+		Hash::combine($data, '{n}.User.id', '{n}.User.name');
+	}
+
+/**
+ * test combine() giving errors on key/value length mismatches.
+ *
+ * @expectedException CakeException
+ * @return void
+ */
+	public function testCombineErrorMissingKey() {
+		$data = array(
+			array('User' => array('id' => 1, 'name' => 'mark')),
+			array('User' => array('id' => 2)),
+		);
+		Hash::combine($data, '{n}.User.id', '{n}.User.name');
 	}
 
 /**
@@ -2002,6 +2243,25 @@ class HashTest extends CakeTestCase {
 	}
 
 /**
+ * Tests that nest() returns an empty array for invalid input instead of throwing notices.
+ *
+ * @return void
+ */
+	public function testNestInvalid() {
+		$input = array(
+			array(
+				'ParentCategory' => array(
+					'id' => '1',
+					'name' => 'Lorem ipsum dolor sit amet',
+					'parent_id' => '1'
+				)
+			)
+		);
+		$result = Hash::nest($input);
+		$this->assertSame(array(), $result);
+	}
+
+/**
  * testMergeDiff method
  *
  * @return void
@@ -2145,7 +2405,157 @@ class HashTest extends CakeTestCase {
 				)
 			)
 		);
-		$this->assertEquals($result, $expected);
+		$this->assertEquals($expected, $result);
+
+		$data = array('a.b.100.a' => null, 'a.b.200.a' => null);
+		$expected = array(
+			'a' => array(
+				'b' => array(
+					100 => array('a' => null),
+					200 => array('a' => null)
+				)
+			)
+		);
+		$result = Hash::expand($data);
+		$this->assertEquals($expected, $result);
+	}
+
+/**
+ * Test that flattening a large complex set doesn't loop forever.
+ *
+ * @return void
+ */
+	public function testFlattenInfiniteLoop() {
+		$data = array(
+			'Order.ASI' => '0',
+			'Order.Accounting' => '0',
+			'Order.Admin' => '0',
+			'Order.Art' => '0',
+			'Order.ArtChecker' => '0',
+			'Order.Canned' => '0',
+			'Order.Customer_Tags' => '',
+			'Order.Embroidery' => '0',
+			'Order.Item.0.Product.style_number' => 'a11222',
+			'Order.Item.0.Product.slug' => 'a11222',
+			'Order.Item.0.Product._id' => '4ff8b8d3d7bbe8ad30000000',
+			'Order.Item.0.Product.Color.slug' => 'kelly_green',
+			'Order.Item.0.Product.ColorSizes.0.Color.color' => 'Sport Grey',
+			'Order.Item.0.Product.ColorSizes.0.Color.slug' => 'sport_grey',
+			'Order.Item.0.Product.ColorSizes.1.Color.color' => 'Kelly Green',
+			'Order.Item.0.Product.ColorSizes.1.Color.slug' => 'kelly_green',
+			'Order.Item.0.Product.ColorSizes.2.Color.color' => 'Orange',
+			'Order.Item.0.Product.ColorSizes.2.Color.slug' => 'orange',
+			'Order.Item.0.Product.ColorSizes.3.Color.color' => 'Yellow Haze',
+			'Order.Item.0.Product.ColorSizes.3.Color.slug' => 'yellow_haze',
+			'Order.Item.0.Product.brand' => 'OUTER BANKS',
+			'Order.Item.0.Product.style' => 'T-shirt',
+			'Order.Item.0.Product.description' => 'uhiuhuih oin ooi ioo ioio',
+			'Order.Item.0.Product.sizes.0.Size.qty' => '',
+			'Order.Item.0.Product.sizes.0.Size.size' => '0-3mo',
+			'Order.Item.0.Product.sizes.0.Size.id' => '38',
+			'Order.Item.0.Product.sizes.1.Size.qty' => '',
+			'Order.Item.0.Product.sizes.1.Size.size' => '3-6mo',
+			'Order.Item.0.Product.sizes.1.Size.id' => '39',
+			'Order.Item.0.Product.sizes.2.Size.qty' => '78',
+			'Order.Item.0.Product.sizes.2.Size.size' => '6-9mo',
+			'Order.Item.0.Product.sizes.2.Size.id' => '40',
+			'Order.Item.0.Product.sizes.3.Size.qty' => '',
+			'Order.Item.0.Product.sizes.3.Size.size' => '6-12mo',
+			'Order.Item.0.Product.sizes.3.Size.id' => '41',
+			'Order.Item.0.Product.sizes.4.Size.qty' => '',
+			'Order.Item.0.Product.sizes.4.Size.size' => '12-18mo',
+			'Order.Item.0.Product.sizes.4.Size.id' => '42',
+			'Order.Item.0.Art.imprint_locations.0.id' => 2,
+			'Order.Item.0.Art.imprint_locations.0.name' => 'Left Chest',
+			'Order.Item.0.Art.imprint_locations.0.imprint_type.id' => 7,
+			'Order.Item.0.Art.imprint_locations.0.imprint_type.type' => 'Embroidery',
+			'Order.Item.0.Art.imprint_locations.0.art' => '',
+			'Order.Item.0.Art.imprint_locations.0.num_colors' => 3,
+			'Order.Item.0.Art.imprint_locations.0.description' => 'Wooo! This is Embroidery!!',
+			'Order.Item.0.Art.imprint_locations.0.lines.0' => 'Platen',
+			'Order.Item.0.Art.imprint_locations.0.lines.1' => 'Logo',
+			'Order.Item.0.Art.imprint_locations.0.height' => 4,
+			'Order.Item.0.Art.imprint_locations.0.width' => 5,
+			'Order.Item.0.Art.imprint_locations.0.stitch_density' => 'Light',
+			'Order.Item.0.Art.imprint_locations.0.metallic_thread' => true,
+			'Order.Item.0.Art.imprint_locations.1.id' => 4,
+			'Order.Item.0.Art.imprint_locations.1.name' => 'Full Back',
+			'Order.Item.0.Art.imprint_locations.1.imprint_type.id' => 6,
+			'Order.Item.0.Art.imprint_locations.1.imprint_type.type' => 'Screenprinting',
+			'Order.Item.0.Art.imprint_locations.1.art' => '',
+			'Order.Item.0.Art.imprint_locations.1.num_colors' => 3,
+			'Order.Item.0.Art.imprint_locations.1.description' => 'Wooo! This is Screenprinting!!',
+			'Order.Item.0.Art.imprint_locations.1.lines.0' => 'Platen',
+			'Order.Item.0.Art.imprint_locations.1.lines.1' => 'Logo',
+			'Order.Item.0.Art.imprint_locations.2.id' => 26,
+			'Order.Item.0.Art.imprint_locations.2.name' => 'HS - JSY Name Below',
+			'Order.Item.0.Art.imprint_locations.2.imprint_type.id' => 9,
+			'Order.Item.0.Art.imprint_locations.2.imprint_type.type' => 'Names',
+			'Order.Item.0.Art.imprint_locations.2.description' => 'Wooo! This is Names!!',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.active' => 1,
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.name' => 'Benjamin Talavera',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.color' => 'Red',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.height' => '3',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.layout' => 'Arched',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.0.style' => 'Classic',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.active' => 0,
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.name' => 'Rishi Narayan',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.color' => 'Cardinal',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.height' => '4',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.layout' => 'Straight',
+			'Order.Item.0.Art.imprint_locations.2.sizes.S.1.style' => 'Team US',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.active' => 1,
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.name' => 'Brandon Plasters',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.color' => 'Red',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.height' => '3',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.layout' => 'Arched',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.0.style' => 'Classic',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.active' => 0,
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.name' => 'Andrew Reed',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.color' => 'Cardinal',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.height' => '4',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.layout' => 'Straight',
+			'Order.Item.0.Art.imprint_locations.2.sizes.M.1.style' => 'Team US',
+			'Order.Job.0._id' => 'job-1',
+			'Order.Job.0.type' => 'screenprinting',
+			'Order.Job.0.postPress' => 'job-2',
+			'Order.Job.1._id' => 'job-2',
+			'Order.Job.1.type' => 'embroidery',
+			'Order.Postpress' => '0',
+			'Order.PriceAdjustment.0._id' => 'price-adjustment-1',
+			'Order.PriceAdjustment.0.adjustment' => '-20',
+			'Order.PriceAdjustment.0.adjustment_type' => 'percent',
+			'Order.PriceAdjustment.0.type' => 'grand_total',
+			'Order.PriceAdjustment.1.adjustment' => '20',
+			'Order.PriceAdjustment.1.adjustment_type' => 'flat',
+			'Order.PriceAdjustment.1.min-items' => '10',
+			'Order.PriceAdjustment.1.type' => 'min-items',
+			'Order.PriceAdjustment.1._id' => 'another-test-adjustment',
+			'Order.Purchasing' => '0',
+			'Order.QualityControl' => '0',
+			'Order.Receiving' => '0',
+			'Order.ScreenPrinting' => '0',
+			'Order.Stage.art_approval' => 0,
+			'Order.Stage.draft' => 1,
+			'Order.Stage.quote' => 1,
+			'Order.Stage.order' => 1,
+			'Order.StoreLiason' => '0',
+			'Order.Tag_UI_Email' => '',
+			'Order.Tags' => '',
+			'Order._id' => 'test-2',
+			'Order.add_print_location' => '',
+			'Order.created' => '2011-Dec-29 05:40:18',
+			'Order.force_admin' => '0',
+			'Order.modified' => '2012-Jul-25 01:24:49',
+			'Order.name' => 'towering power',
+			'Order.order_id' => '135961',
+			'Order.slug' => 'test-2',
+			'Order.title' => 'test job 2',
+			'Order.type' => 'ttt'
+		);
+		$expanded = Hash::expand($data);
+		$flattened = Hash::flatten($expanded);
+		$this->assertEquals($data, $flattened);
 	}
 
 }
