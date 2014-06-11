@@ -27,7 +27,7 @@ class Member extends AppModel
         }
     }
 
-    public function beforeSave($options)
+    public function beforeSave($options = array())
     {
         if (isset($this->data['Member']['password'])) {
             $this->data['Member']['password'] = trim($this->data['Member']['password']);

@@ -10,7 +10,7 @@
 class PermissibleAro extends PermissibleAppModel
 {
 /**
- * Sets the name for the model
+ * Sets the name for the modelafterFind
  *
  * @var array
  * @access public
@@ -43,7 +43,7 @@ class PermissibleAro extends PermissibleAppModel
  * @return array Results
  * @access public
  */
-    public function afterFind($results, $primary)
+    public function afterFind($results, $primary = false)
     {
         foreach ($results as $key => $result) {
             if (!isset($result[$this->alias]['alias']) && isset($result[$this->alias]['model'])) {

@@ -75,7 +75,7 @@ class //<{$modelName}> extends AppModel {
 //<{/if}>
 
 
-    function afterSave($created) {
+    function afterSave($created, $options = array()) {
 //<{if isset($relationships.hasOne)}>
 
 //<{foreach from=$relationships.hasOne key=rModel item=rOption}>

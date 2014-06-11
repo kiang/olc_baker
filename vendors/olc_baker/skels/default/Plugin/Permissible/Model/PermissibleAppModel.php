@@ -17,7 +17,7 @@ class PermissibleAppModel extends AppModel
  */
     public function truncate()
     {
-        $db =& ConnectionManager::getDataSource($this->useDbConfig);
+        $db = ConnectionManager::getDataSource($this->useDbConfig);
         $tablename = $db->fullTableName($this);
         if (!empty($tablename)) {
             $db->query('SET FOREIGN_KEY_CHECKS=0;');
