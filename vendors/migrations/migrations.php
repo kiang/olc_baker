@@ -65,7 +65,7 @@ class migrations
     {
         if(class_exists('Spyc'))
             $this->bSpycReady = true;
-        $this->oDb = & ConnectionManager::getDataSource($sConnection);
+        $this->oDb = ConnectionManager::getDataSource($sConnection);
     }
 
     /**
