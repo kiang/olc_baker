@@ -75,7 +75,13 @@ class MembersController extends AppController
         $scope = array();
         $keyword = '';
         if (isset($this->params['named']['keyword'])) {
-            $keyword = $this->params['named']['keyword'];
+            if(is_array($this->params['named']['keyword'])) {
+                foreach($this->params['named']['keyword'] AS $keyword) {
+                    continue;
+                }
+            } else {
+                $keyword = $this->params['named']['keyword'];
+            }
             $this->Session->write('Members.index.keyword', $keyword);
         } else {
             $keyword = $this->Session->read('Members.index.keyword');
