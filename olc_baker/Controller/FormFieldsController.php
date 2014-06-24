@@ -24,6 +24,11 @@ class FormFieldsController extends AppController
                 $this->Session->setFlash(__('Something was wrong during saving, please try again'));
             }
         }
+        if(!isset($this->request->data['FormField']['sort'])) {
+            $this->request->data['FormField']['sort'] = $this->FormField->find('count', array(
+                'conditions' => array('form_id' => $formId),
+            )) + 1;
+        }
         $this->set('formId', $formId);
         $this->set('types', $this->FormField->getFieldTypeList());
     }

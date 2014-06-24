@@ -6,7 +6,7 @@
         echo $this->Form->input('name', array('label' => __('System name')));
         echo $this->Form->input('label', array('label' => __('Display name')));
         echo $this->Form->input('type', array('label' => __('Field type'), 'type' => 'select', 'options' => $types));
-        echo $this->Form->input('sort', array('label' => __('Sort'), 'value' => 0));
+        echo $this->Form->input('sort', array('label' => __('Sort')));
         echo $this->Form->input('is_required', array('label' => __('Required?')));
         echo $this->Form->input('function_type', array('type' => 'select', 'label' => __('Field function type'),
             'options' => array(
