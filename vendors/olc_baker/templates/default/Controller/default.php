@@ -228,11 +228,8 @@ class //<{$controllerName}>Controller extends AppController {
             $this->//<{$modelName}>->create();
             if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.//<{$modelName}>.data', $this->data);
-                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
@@ -246,11 +243,8 @@ class //<{$controllerName}>Controller extends AppController {
             $this->//<{$modelName}>->create();
             if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.//<{$modelName}>.data', $this->data);
-                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
@@ -266,63 +260,13 @@ class //<{$controllerName}>Controller extends AppController {
         if (!empty($this->data)) {
             if ($this->//<{$modelName}>->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->Session->delete('form.//<{$modelName}>');
                 $this->redirect(array('action'=>'index'));
             } else {
-                $this->Session->write('form.//<{$modelName}>.data', $this->data);
-                $this->Session->write('form.//<{$modelName}>.validationErrors', $this->//<{$modelName}>->validationErrors);
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         $this->set('id', $id);
         $this->data = $this->//<{$modelName}>->read(null, $id);
-    }
-
-    function admin_form($id = 0, $foreignModel = '') {
-        $id = intval($id);
-        if($sessionFormData = $this->Session->read('form.//<{$modelName}>.data')) {
-            $this->//<{$modelName}>->validationErrors = $this->Session->read('form.//<{$modelName}>.validationErrors');
-            $this->Session->delete('form.//<{$modelName}>');
-        }
-        if($id > 0) {
-            $this->data = $this->//<{$modelName}>->read(null, $id);
-            if(!empty($sessionFormData['//<{$modelName}>'])) {
-                foreach($sessionFormData['//<{$modelName}>'] AS $key => $val) {
-                    if(isset($this->data['//<{$modelName}>'][$key])) {
-                        $this->data['//<{$modelName}>'][$key] = $val;
-                    }
-                }
-            }
-        } else if(!empty($sessionFormData)) {
-            $this->data = $sessionFormData;
-        }
-
-        $this->set('id', $id);
-        $this->set('foreignModel', $foreignModel);
-//<{if isset($relationships.belongsTo)}>
-
-        $belongsToModels = array(
-//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
-
-            'list//<{$rModel}>' => array(
-                'label' => '//<{$models[$rOption.className].label}>',
-                'modelName' => '//<{$rModel}>',
-                'foreignKey' => '//<{$rOption.foreignKey}>',
-            ),
-//<{/foreach}>
-
-        );
-
-        foreach($belongsToModels AS $key => $model) {
-            if($foreignModel == $model['modelName']) {
-                unset($belongsToModels[$key]);
-                continue;
-            }
-            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
-        }
-        $this->set('belongsToModels', $belongsToModels);
-//<{/if}>
-
     }
 
     function admin_delete($id = null) {

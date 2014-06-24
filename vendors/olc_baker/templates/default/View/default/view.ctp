@@ -1,10 +1,10 @@
 <div id="//<{$controllerName}>View">
     <h3><?php echo __('View //<{$formLabel}>', true); ?></h3><hr />
-    <div class="col-sm-12">
+    <div class="col-md-12">
 //<{if isset($relationships.belongsTo)}>
 //<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
-        <div class="col-sm-2">//<{$models[$rOption.className].label}></div>
-        <div class="col-sm-9"><?php
+        <div class="col-md-2">//<{$models[$rOption.className].label}></div>
+        <div class="col-md-9"><?php
 if (empty($this->data['//<{$rOption.className}>']['id'])) {
     echo '--';
 } else {
@@ -20,8 +20,8 @@ if (empty($this->data['//<{$rOption.className}>']['id'])) {
 
 //<{foreach from=$fields key=className item=classFields}>
 //<{foreach from=$classFields key=key item=item}>
-        <div class="col-sm-2">//<{$item.label}></div>
-        <div class="col-sm-9"><?php
+        <div class="col-md-2">//<{$item.label}></div>
+        <div class="col-md-9"><?php
             if ($this->data['//<{$className}>']['//<{$key}>']) {
 //<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
 

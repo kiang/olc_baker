@@ -74,20 +74,15 @@
 //<{foreach from=$fields key=className item=classFields}>
 //<{foreach from=$classFields key=key item=item}>
                     <td><?php
-                if ($item['//<{$className}>']['//<{$key}>']) {
 //<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
-
                     echo $this->Html->link(FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>')) . '<br />';
 //<{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
-
                     echo $this->Html->link(
                             $upload->image($item, '//<{$className}>.//<{$key}>', 'thumb'), FULL_BASE_URL . $upload->url($item, '//<{$className}>.//<{$key}>'), array(), false, false
                     );
 //<{else}>
-
                     echo $item['//<{$className}>']['//<{$key}>'];
 //<{/if}>
-                }
                     ?></td>
 //<{/foreach}>
 //<{/foreach}>

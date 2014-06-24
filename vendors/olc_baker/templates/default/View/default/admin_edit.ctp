@@ -1,23 +1,96 @@
 <div id="//<{$controllerName}>AdminEdit">
     <?php echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'class' => 'form-inline')); ?>
-    <div class="editForm"><?php echo $this->Html->link(' ', array('action' => 'form', $id)); ?></div>
-//<{if isset($relationships.hasOne)}>
-//<{foreach from=$relationships.hasOne key=rModel item=rOption}>
-    <?php if ($foreignId = $this->Form->value('//<{$rOption.className}>.//<{$rOption.foreignKey}>')): ?>
-        <div class="editForm"><?php echo $this->Html->link(' ', array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'form', $foreignId, '//<{$modelName}>')); ?></div>
-    <?php endif; ?>
-//<{/foreach}>
+    <div class="//<{$controllerName}> form">
+    <fieldset>
+         <legend><?php
+         if($id > 0) {
+             echo __('Edit //<{$formLabel}>', true);
+         } else {
+             echo __('Add //<{$formLabel}>', true);
+         }
+         ?></legend>
+    <?php
+    if($id > 0) {
+        echo $this->Form->input('//<{$modelName}>.id');
+    }
+//<{if isset($relationships.belongsTo)}>
+    foreach($belongsToModels AS $key => $model) {
+        echo $this->Form->input('//<{$modelName}>.' . $model['foreignKey'], array(
+        	'type' => 'select',
+        	'label' => $model['label'],
+            'options' => $$key,
+        	'div' => 'control-group',
+        	'class' => 'controls',
+        ));
+    }
 //<{/if}>
+
+
+//<{foreach from=$fields key=className item=classFields}>
+
+//<{foreach from=$classFields key=key item=group}>
+
+//<{if isset($uploads.$key) && $uploads.$key eq 'file'}>
+    if(!empty($this->data['//<{$className}>']['//<{$key}>'])) {
+        echo $this->Html->link(FULL_BASE_URL . $upload->url($this->data, '//<{$className}>.//<{$key}>')) . '<br />';
+    }
+//<{elseif isset($uploads.$key) && $uploads.$key eq 'image'}>
+    if(!empty($this->data['//<{$className}>']['//<{$key}>'])) {
+        echo $this->Html->link(
+            $upload->image($this->data, '//<{$className}>.//<{$key}>', 'thumb'),
+            FULL_BASE_URL . $upload->url($this->data, '//<{$className}>.//<{$key}>'),
+            array(), false, false
+        );
+    }
+//<{/if}>
+
+//<{if $fieldTypes.$className.$key.function_type eq 1}>
+    echo $this->Form->input('//<{$className}>.//<{$key}>', array(
+//<{foreach from=$group key=key2 item=value}>
+        '//<{$key2}>' => '//<{$value}>',
+//<{/foreach}>
+        'div' => 'control-group',
+        'class' => 'controls',
+    ));
+//<{elseif $fieldTypes.$className.$key.function_type eq 2}>
+
+    if($id > 0) {
+        echo '<div>//<{$classFields.$key.label}>：' . $this->data['//<{$className}>']['//<{$key}>'] . '</div>';
+    } else {
+        echo $this->Form->input('//<{$className}>.//<{$key}>', array(
+//<{foreach from=$group key=key2 item=value}>
+            '//<{$key2}>' => '//<{$value}>',
+//<{/foreach}>
+            ));
+    }
+//<{elseif $fieldTypes.$className.$key.function_type eq 3}>
+    if($id > 0) {
+        echo '<div>//<{$classFields.$key.label}>：' . $this->data['//<{$className}>']['//<{$key}>'] . '</div>';
+    } else {
+        echo $this->Form->input('//<{$className}>.//<{$key}>', array('type' => 'hidden', 'value' => //<{$fieldTypes.$className.$key.function_string}>));
+    }
+//<{elseif $fieldTypes.$className.$key.function_type eq 4}>
+    if($id > 0) {
+        echo $this->Form->input('//<{$className}>.//<{$key}>', array(
+//<{foreach from=$group key=key2 item=value}>
+            '//<{$key2}>' => '//<{$value}>',
+//<{/foreach}>
+            ));
+    } else {
+        echo $this->Form->input('//<{$className}>.//<{$key}>', array('type' => 'hidden', 'value' => //<{$fieldTypes.$className.$key.function_string}>));
+    }
+//<{elseif $fieldTypes.$className.$key.function_type eq 5}>
+    echo $this->Form->input('//<{$className}>.//<{$key}>', array('type' => 'hidden', 'value' => //<{$fieldTypes.$className.$key.function_string}>));
+//<{/if}>
+
+//<{/foreach}>
+
+//<{/foreach}>
+
+?>
+</fieldset>
+</div>
     <?php
     echo $this->Form->end(__('Submit', true));
     ?>
-    <script type="text/javascript">
-        //<![CDATA[
-        $(function() {
-            $('#//<{$controllerName}>AdminEdit div.editForm a').each(function() {
-                $(this).parent().load(this.href);
-            });
-        });
-        //]]>
-    </script>
 </div>

@@ -6,7 +6,7 @@ echo $group['Group']['name'];
     <?php echo $this->Form->create('GroupPermission', array('url' => array('action' => 'group', $group['Group']['id']))); ?>
     <table>
         <tr>
-            <th><div class="col-sm-4">Category</div></th>
+            <th><div class="col-md-4">Category</div></th>
             <th>Permissions</th>
         </tr>
         <?php
@@ -25,7 +25,7 @@ echo $group['Group']['name'];
             <td><?php
                 if (!empty($item['items'])) {
                     foreach ($item['items'] AS $aco) {
-                        echo '<div class="col-sm-6"><input type="checkbox" name="data[GroupPermission][' . $aco['id'] . ']" value="1"';
+                        echo '<div class="col-md-6"><input type="checkbox" name="data[GroupPermission][' . $aco['id'] . ']" value="1"';
                         if ($aco['acos'] == 1) {
                             echo ' checked="checked"';
                         }
