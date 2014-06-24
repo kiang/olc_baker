@@ -321,7 +321,6 @@ class ProjectsController extends AppController
                         'admin_edit.ctp',
                         'admin_index.ctp',
                         'admin_view.ctp',
-                        'admin_form.ctp',
                         'view.ctp',
                     );
                     if (!empty($relationships['hasAndBelongsToMany'])) {
