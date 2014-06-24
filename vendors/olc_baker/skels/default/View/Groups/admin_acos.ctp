@@ -21,7 +21,7 @@
                 echo '<input type="checkbox" name="ctrl' . $aco['Aco']['alias'] . '" class="acoController">';
                 echo '<hr /><div id="sub' . $aco['Aco']['alias'] . '">';
                 foreach ($aco['Aco']['Aco'] AS $actionAco) {
-                    echo '<div class="span5"><input type="checkbox" name="' . $aco['Aco']['alias'] . '___' . $actionAco['alias'] . '"';
+                    echo '<div class="col-sm-5"><input type="checkbox" name="' . $aco['Aco']['alias'] . '___' . $actionAco['alias'] . '"';
                     if ($actionAco['permitted'] == 1) {
                         echo ' checked="checked"';
                     }
