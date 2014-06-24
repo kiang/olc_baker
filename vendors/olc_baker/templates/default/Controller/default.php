@@ -235,6 +235,27 @@ class //<{$controllerName}>Controller extends AppController {
         }
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
+        
+//<{if isset($relationships.belongsTo)}>
+        $belongsToModels = array(
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+            'list//<{$rModel}>' => array(
+                'label' => '//<{$models[$rOption.className].label}>',
+                'modelName' => '//<{$rModel}>',
+                'foreignKey' => '//<{$rOption.foreignKey}>',
+            ),
+//<{/foreach}>
+        );
+
+        foreach($belongsToModels AS $key => $model) {
+            if($foreignModel == $model['modelName']) {
+                unset($belongsToModels[$key]);
+                continue;
+            }
+            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
+        }
+        $this->set('belongsToModels', $belongsToModels);
+//<{/if}>
     }
 //<{else}>
 
@@ -267,6 +288,27 @@ class //<{$controllerName}>Controller extends AppController {
         }
         $this->set('id', $id);
         $this->data = $this->//<{$modelName}>->read(null, $id);
+
+//<{if isset($relationships.belongsTo)}>
+        $belongsToModels = array(
+//<{foreach from=$relationships.belongsTo key=rModel item=rOption}>
+            'list//<{$rModel}>' => array(
+                'label' => '//<{$models[$rOption.className].label}>',
+                'modelName' => '//<{$rModel}>',
+                'foreignKey' => '//<{$rOption.foreignKey}>',
+            ),
+//<{/foreach}>
+        );
+
+        foreach($belongsToModels AS $key => $model) {
+            if($foreignModel == $model['modelName']) {
+                unset($belongsToModels[$key]);
+                continue;
+            }
+            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
+        }
+        $this->set('belongsToModels', $belongsToModels);
+//<{/if}>
     }
 
     function admin_delete($id = null) {
