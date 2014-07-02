@@ -1,4 +1,7 @@
 <?php
+
+App::uses('AppModel', 'Model');
+
 class //<{$modelName}> extends AppModel {
 
     var $name = '//<{$modelName}>';
