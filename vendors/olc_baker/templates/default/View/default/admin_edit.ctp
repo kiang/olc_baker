@@ -1,5 +1,5 @@
 <div id="//<{$controllerName}>AdminEdit">
-    <?php echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'class' => 'form-inline')); ?>
+    <?php echo $this->Form->create('//<{$modelName}>', array('type' => 'file')); ?>
     <div class="//<{$controllerName}> form">
         <fieldset>
             <legend><?php
@@ -13,8 +13,8 @@
                     'type' => 'select',
                     'label' => $model['label'],
                     'options' => $$key,
-                    'div' => 'control-group',
-                    'class' => 'controls',
+                    'div' => 'form-group',
+                    'class' => 'form-control',
                 ));
             }
 //<{/if}>
@@ -36,8 +36,8 @@
 //<{foreach from=$group key=key2 item=value}>
                 '//<{$key2}>' => '//<{$value}>',
 //<{/foreach}>
-                'div' => 'control-group',
-                'class' => 'controls',
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
 //<{elseif $fieldTypes.$className.$key.function_type eq 2}>
 

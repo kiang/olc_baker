@@ -8,7 +8,7 @@
         $url = array('action' => 'add');
         $foreignModel = '';
     }
-    echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'url' => $url, 'class' => 'form-inline'));
+    echo $this->Form->create('//<{$modelName}>', array('type' => 'file', 'url' => $url));
     ?>
     <div class="//<{$controllerName}> form">
         <fieldset>
@@ -22,8 +22,8 @@
                     'type' => 'select',
                     'label' => $model['label'],
                     'options' => $$key,
-                    'div' => 'control-group',
-                    'class' => 'controls',
+                    'div' => 'form-group',
+                    'class' => 'form-control',
                 ));
             }
 //<{/if}>
@@ -45,8 +45,8 @@
 //<{foreach from=$group key=key2 item=value}>
                 '//<{$key2}>' => '//<{$value}>',
 //<{/foreach}>
-                'div' => 'control-group',
-                'class' => 'controls',
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
 //<{elseif $fieldTypes.$className.$key.function_type eq 2}>
 
@@ -81,8 +81,8 @@
                     'type' => 'select',
                     'label' => $model['label'],
                     'options' => $$key,
-                    'div' => 'control-group',
-                    'class' => 'controls',
+                    'div' => 'form-group',
+                    'class' => 'form-control',
                 ));
             }
 //<{/if}>
@@ -104,8 +104,8 @@
 //<{foreach from=$group key=key2 item=value}>
                 '//<{$key2}>' => '//<{$value}>',
 //<{/foreach}>
-                'div' => 'control-group',
-                'class' => 'controls',
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
 //<{elseif $fieldTypes.$className.$key.function_type eq 2}>
 
