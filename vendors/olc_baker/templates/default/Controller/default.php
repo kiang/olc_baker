@@ -304,10 +304,6 @@ class //<{$controllerName}>Controller extends AppController {
         );
 
         foreach($belongsToModels AS $key => $model) {
-            if($foreignModel == $model['modelName']) {
-                unset($belongsToModels[$key]);
-                continue;
-            }
             $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
