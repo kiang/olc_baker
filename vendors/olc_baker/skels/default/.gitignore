@@ -2,7 +2,6 @@
 Config/core.php
 Config/database.php
 tmp/*
-webroot/index.php
 webroot/media/*
 webroot/.htaccess
 webroot/css/cc_*
