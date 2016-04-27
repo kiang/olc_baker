@@ -42,27 +42,25 @@ if (empty($this->data['//<{$rOption.className}>']['id'])) {
 //<{/foreach}>
     </div>
     <hr />
-    <div class="actions">
-        <ul>
-            <li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('//<{$modelName}>.id')), null, __('Delete the item, sure?', true)); ?></li>
-            <li><?php echo $this->Html->link(__('//<{$formLabel}> List', true), array('action' => 'index')); ?> </li>
+    <div class="btn-group">
+        <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('//<{$modelName}>.id')), array('class' => 'btn btn-default'), __('Delete the item, sure?', true)); ?>
+        <?php echo $this->Html->link(__('//<{$formLabel}> List', true), array('action' => 'index'), array('class' => 'btn btn-default')); ?>
 //<{if isset($relationships.hasOne)}>
 //<{foreach from=$relationships.hasOne key=rModel item=rOption}>
-            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['//<{$rOption.className}>']['id']), array('class' => '//<{$controllerName}>AdminViewControl')); ?></li>
+        <?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'view', $this->data['//<{$rOption.className}>']['id']), array('class' => 'btn btn-default //<{$controllerName}>AdminViewControl')); ?>
 //<{/foreach}>
 //<{/if}>
 //<{if isset($relationships.hasMany)}>
 //<{foreach from=$relationships.hasMany key=rModel item=rOption}>
-            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>AdminViewControl')); ?></li>
+        <?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => 'btn btn-default //<{$controllerName}>AdminViewControl')); ?>
 //<{/foreach}>
 //<{/if}>
 //<{if isset($relationships.hasAndBelongsToMany)}>
 //<{foreach from=$relationships.hasAndBelongsToMany key=rModel item=rOption}>
-            <li><?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>AdminViewControl')); ?></li>
-            <li><?php echo $this->Html->link(__('Set Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id'], 'set'), array('class' => '//<{$controllerName}>AdminViewControl')); ?></li>
+        <?php echo $this->Html->link(__('View Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id']), array('class' => 'btn btn-default //<{$controllerName}>AdminViewControl')); ?>
+        <?php echo $this->Html->link(__('Set Related //<{$models[$rOption.className].label}>', true), array('controller' => '//<{$models[$rOption.className].table_name}>', 'action' => 'index', '//<{$modelName}>', $this->data['//<{$modelName}>']['id'], 'set'), array('class' => 'btn btn-default //<{$controllerName}>AdminViewControl')); ?>
 //<{/foreach}>
 //<{/if}>
-        </ul>
     </div>
     <div id="//<{$controllerName}>AdminViewPanel"></div>
 <?php

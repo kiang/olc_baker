@@ -10,9 +10,9 @@
             echo $this->Html->css('jquery-ui');
             echo $this->Html->css('bootstrap');
             echo $this->Html->css('default');
-            echo $this->Html->script('bootstrap.min');
             echo $this->Html->script('jquery');
             echo $this->Html->script('jquery-ui');
+            echo $this->Html->script('bootstrap.min');
             echo $this->Html->script('olc');
             echo $scripts_for_layout;
             ?>
@@ -26,13 +26,13 @@
                 <div class="btn-group">
                     <?php if ($this->Session->read('Auth.User.id')): ?>
 //<{foreach from=$controllers key=key item=item}>
-                        <?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>', array('class' => 'btn')); ?>
+                        <?php echo $this->Html->link('//<{$item}>', '/admin///<{$key}>', array('class' => 'btn btn-default')); ?>
 //<{/foreach}>
-                        <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>
+                        <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn btn-default')); ?>
+                        <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn btn-default')); ?>
+                        <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default')); ?>
                     <?php else: ?>
-                        <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn')); ?>
+                        <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn btn-default')); ?>
                     <?php endif; ?>
                     <?php
                     if (!empty($actions_for_layout)) {

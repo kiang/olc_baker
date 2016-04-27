@@ -1,12 +1,10 @@
 <div id="//<{$controllerName}>Index">
     <h2><?php echo __('//<{$formLabel}>', true); ?></h2>
 //<{if isset($actions)}>
-    <div class="clear actions">
-        <ul>
+    <div class="btn-group">
 //<{foreach from=$actions key=linkPath item=linkItem}>
-            <li><?php echo $this->Html->link('//<{$linkItem.label}>', array('action' => '//<{$linkPath}>'), array('class' => '//<{$linkItem.class}>')); ?></li>
+        <?php echo $this->Html->link('//<{$linkItem.label}>', array('action' => '//<{$linkPath}>'), array('class' => 'btn btn-default //<{$linkItem.class}>')); ?>
 //<{/foreach}>
-        </ul>
     </div>
 //<{/if}>
     <p>
@@ -86,8 +84,10 @@
                     ?></td>
 //<{/foreach}>
 //<{/foreach}>
-                    <td class="actions">
-                        <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => '//<{$controllerName}>IndexControl')); ?>
+                    <td>
+                        <div class="btn-group">
+                            <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => 'btn btn-default //<{$controllerName}>IndexControl')); ?>
+                        </div>
                     </td>
                 </tr>
             <?php }; // End of foreach ($items as $item) {  ?>

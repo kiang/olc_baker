@@ -13,9 +13,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <h2><?php echo __('//<{$formLabel}>', true); ?></h2>
     <div class="btn-group">
 //<{if isset($relationships.belongsTo)}>
-        <?php echo $this->Html->link(__('Add', true), array_merge($url, array('action' => 'add')), array('class' => 'btn dialogControl')); ?>
+        <?php echo $this->Html->link(__('Add', true), array_merge($url, array('action' => 'add')), array('class' => 'btn btn-default dialogControl')); ?>
 //<{else}>
-        <?php echo $this->Html->link(__('Add', true), array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
+        <?php echo $this->Html->link(__('Add', true), array('action' => 'add'), array('class' => 'btn btn-default dialogControl')); ?>
 //<{/if}>
     </div>
     <div><?php
@@ -106,10 +106,12 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                     ?></td>
 //<{/foreach}>
 //<{/foreach}>
-                    <td class="actions">
-                        <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['//<{$modelName}>']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $item['//<{$modelName}>']['id']), null, __('Delete the item, sure?', true)); ?>
+                    <td>
+                        <div class="btn-group">
+                                <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['//<{$modelName}>']['id']), array('class' => 'btn btn-default dialogControl')); ?>
+                                <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['//<{$modelName}>']['id']), array('class' => 'btn btn-default dialogControl')); ?>
+                                <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $item['//<{$modelName}>']['id']), array('class' => 'btn btn-default'), __('Delete the item, sure?', true)); ?>
+                        </div>
                     </td>
                 </tr>
             <?php } // End of foreach ($items as $item) {  ?>
@@ -120,10 +122,6 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <script type="text/javascript">
         //<![CDATA[
         $(function() {
-            $('#//<{$controllerName}>AdminIndexTable th a, #//<{$controllerName}>AdminIndex div.paging a').click(function() {
-                $('#//<{$controllerName}>AdminIndex').parent().load(this.href);
-                return false;
-            });
 //<{if isset($relationships.hasAndBelongsToMany)}>
 <?php
 if (!empty($op)) {
