@@ -1,12 +1,12 @@
 <div id="GroupsAdminIndex">
     <h2><?php echo __('Groups', true); ?></h2>
     <div class="btn-group">
-            <?php if ($parentId > 0): ?>
-                <?php echo $this->Html->link(__('Upper level', true), array('action' => 'index', $upperLevelId), array('class' => 'btn')); ?>
-            <?php endif; ?>
-            <?php echo $this->Html->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'btn dialogControl')); ?>
-            <?php echo $this->Html->link(__('Members', true), array('controller' => 'members'), array('class' => 'btn')); ?>
-            <?php echo $this->Html->link(__('Group Permissions', true), array('controller' => 'group_permissions'), array('class' => 'btn')); ?>
+        <?php if ($parentId > 0): ?>
+            <?php echo $this->Html->link(__('Upper level', true), array('action' => 'index', $upperLevelId), array('class' => 'btn')); ?>
+        <?php endif; ?>
+        <?php echo $this->Html->link(__('New', true), array('action' => 'add', $parentId), array('class' => 'btn dialogControl')); ?>
+        <?php echo $this->Html->link(__('Members', true), array('controller' => 'members'), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link(__('Group Permissions', true), array('controller' => 'group_permissions'), array('class' => 'btn')); ?>
     </div>
     <p>
         <?php
@@ -37,29 +37,21 @@
                 <td>
                     <?php echo $group['Group']['name']; ?>
                 </td>
-                <td class="actions">
-                    <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $group['Group']['id']), array('class' => 'dialogControl')); ?>
-                    <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $group['Group']['id']), null, __('Delete the item, sure?', true)); ?>
-                    <?php echo $this->Html->link(__('Sub group', true), array('action' => 'index', $group['Group']['id'])); ?>
-                    <?php
-                    if ($group['Group']['id'] != 1) {
-                        echo $this->Html->link(__('Permission', true), array('controller' => 'group_permissions', 'action' => 'group', $group['Group']['id']));
-                    }
-                    ?>
+                <td>
+                    <div class="btn-group">
+                        <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $group['Group']['id']), array('class' => 'btn btn-default dialogControl')); ?>
+                        <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $group['Group']['id']), array('class' => 'btn btn-default'), __('Delete the item, sure?', true)); ?>
+                        <?php echo $this->Html->link(__('Sub group', true), array('action' => 'index', $group['Group']['id']), array('class' => 'btn btn-default')); ?>
+                        <?php
+                        if ($group['Group']['id'] != 1) {
+                            echo $this->Html->link(__('Permission', true), array('controller' => 'group_permissions', 'action' => 'group', $group['Group']['id']), array('class' => 'btn btn-default'));
+                        }
+                        ?>
+                    </div>
                 </td>
             </tr>
         <?php endforeach; ?>
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <div id="GroupsAdminIndexPanel"></div>
-    <?php
-    echo $this->Html->scriptBlock('
-$(function() {
-    $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
-        $(\'#GroupsAdminIndex\').parent().load(this.href);
-        return false;
-    });
-});
-');
-    ?>
 </div>
