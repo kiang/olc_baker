@@ -102,7 +102,6 @@ class ProjectsController extends AppController
             $this->Project->smarty->assign('rewriteBase', $project['Project']['rewrite_base']);
             $this->Project->smarty->assign('rootPath', dirname($project['Project']['app_path']));
             $this->Project->smarty->assign('appDir', basename($project['Project']['app_path']));
-            $this->Project->smarty->assign('cakeIncludePath', CAKE_CORE_INCLUDE_PATH);
             $this->Project->smarty->assign('db_host', $project['Project']['db_host']);
             $this->Project->smarty->assign('db_login', $project['Project']['db_login']);
             $this->Project->smarty->assign('db_password', $project['Project']['db_password']);
@@ -111,7 +110,6 @@ class ProjectsController extends AppController
                 DS . '.htaccess',
                 DS . 'webroot' . DS . '.htaccess',
                 DS . 'Config' . DS . 'database.php',
-                DS . 'webroot' . DS . 'index.php',
             );
 
             $operactions = array();

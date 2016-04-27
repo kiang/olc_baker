@@ -4,8 +4,8 @@
 .buildpath
 
 # OLC Baker settings
-olc_baker/config/database.php
-olc_baker/config/core.php
+olc_baker/Config/database.php
+olc_baker/Config/core.php
 
 # Cake cache
 olc_baker/tmp/cache/*
