@@ -28,7 +28,7 @@ class AssetDispatcher extends DispatcherFilter {
  * Default priority for all methods in this filter
  * This filter should run before the request gets parsed by router
  *
- * @var integer
+ * @var int
  */
 	public $priority = 9;
 
@@ -42,7 +42,7 @@ class AssetDispatcher extends DispatcherFilter {
 	public function beforeDispatch(CakeEvent $event) {
 		$url = urldecode($event->data['request']->url);
 		if (strpos($url, '..') !== false || strpos($url, '.') === false) {
-			return;
+			return null;
 		}
 
 		if ($result = $this->_filterAsset($event)) {
@@ -108,7 +108,7 @@ class AssetDispatcher extends DispatcherFilter {
 /**
  * Builds asset file path based off url
  *
- * @param string $url
+ * @param string $url URL
  * @return string Absolute path for asset file
  */
 	protected function _getAssetFile($url) {
@@ -149,12 +149,11 @@ class AssetDispatcher extends DispatcherFilter {
 			}
 			$response->type($contentType);
 		}
-		if (!$compressionEnabled) {
-			$response->header('Content-Length', filesize($assetFile));
-		}
+		$response->length(false);
 		$response->cache(filemtime($assetFile));
 		$response->send();
 		ob_clean();
+
 		if ($ext === 'css' || $ext === 'js') {
 			include $assetFile;
 		} else {
