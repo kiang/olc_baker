@@ -5,7 +5,7 @@ class Action extends AppModel
     public $name = 'Action';
     public $validate = array(
         'action' => array('numeric'),
-        'name' => array('notempty'),
+        'name' => array('notBlank'),
     );
     public $belongsTo = array(
         'Form' => array(

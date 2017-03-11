@@ -4,10 +4,10 @@ class Project extends AppModel {
 
     public $name = 'Project';
     public $validate = array(
-        'name' => array('notempty'),
-        'label' => array('notempty'),
-        'rewrite_base' => array('notempty'),
-        'app_path' => array('notempty')
+        'name' => array('notBlank'),
+        'label' => array('notBlank'),
+        'rewrite_base' => array('notBlank'),
+        'app_path' => array('notBlank')
     );
     public $hasMany = array(
         'Form' => array(

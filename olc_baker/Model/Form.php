@@ -5,8 +5,8 @@ class Form extends AppModel
     public $name = 'Form';
     public $validate = array(
         'project_id' => array('numeric'),
-        'name' => array('notempty'),
-        'label' => array('notempty')
+        'name' => array('notBlank'),
+        'label' => array('notBlank')
     );
     public $belongsTo = array(
         'Project' => array(

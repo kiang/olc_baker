@@ -5,9 +5,9 @@ class FormField extends AppModel
     public $name = 'FormField';
     public $validate = array(
         'form_id' => array('numeric'),
-        'name' => array('notempty'),
-        'label' => array('notempty'),
-        'type' => array('notempty')
+        'name' => array('notBlank'),
+        'label' => array('notBlank'),
+        'type' => array('notBlank')
     );
     public $belongsTo = array(
         'Form' => array(
