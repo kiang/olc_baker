@@ -255,7 +255,7 @@ class //<{$controllerName}>Controller extends AppController {
                 unset($belongsToModels[$key]);
                 continue;
             }
-            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
+            $this->set($key, $this->//<{$modelName}>->{$model['modelName']}->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
 //<{/if}>
@@ -304,7 +304,7 @@ class //<{$controllerName}>Controller extends AppController {
         );
 
         foreach($belongsToModels AS $key => $model) {
-            $this->set($key, $this->//<{$modelName}>->$model['modelName']->find('list'));
+            $this->set($key, $this->//<{$modelName}>->{$model['modelName']}->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
 //<{/if}>
@@ -340,7 +340,7 @@ class //<{$controllerName}>Controller extends AppController {
         if(empty($foreignModel) || $foreignId <= 0 || $id <= 0 || empty($switch)) {
             $this->set('habtmMessage', __('Wrong Parameters'));
         } else {
-            $habtmModel = &$this->//<{$modelName}>->$habtmKeys[$foreignModel]['alias'];
+            $habtmModel = &$this->//<{$modelName}>->{$habtmKeys[$foreignModel]['alias']};
             $conditions = array(
                 $habtmKeys[$foreignModel]['associationForeignKey'] => $foreignId,
                 $habtmKeys[$foreignModel]['foreignKey'] => $id,
